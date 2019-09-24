@@ -8,4 +8,8 @@ public class Constant {
     public static final int DUP_ID = 2;
     public static final int DUP_USER = 3;
     public static final int ERR_CHK_ID = 4;
+
+    //login
+    public static final int ERR_LOG_ID = 1;
+    public static final int ERR_LOG_PW = 2;
 }

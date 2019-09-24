@@ -14,25 +14,46 @@ import android.widget.TextView;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 public class MainActivity extends AppCompatActivity {
+    USession session;
+
+    ConstraintLayout beforeLogin;
+    LinearLayout afterLogin;
+    LinearLayout txtBefore;
+    LinearLayout txtAfter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConstraintLayout beforeLogin = findViewById(R.id.beforeLogin);
-        LinearLayout afterLogin = findViewById(R.id.afterLogin);
+        session = USession.getInstance();
 
-        beforeLogin.setVisibility(View.VISIBLE);
-        afterLogin.setVisibility(View.INVISIBLE);
-
-        LinearLayout txtBefore = findViewById(R.id.txtBefore);
-        LinearLayout txtAfter = findViewById(R.id.txtAfter);
-
-        txtBefore.setVisibility(View.VISIBLE);
-        txtAfter.setVisibility(View.INVISIBLE);
+        beforeLogin = findViewById(R.id.beforeLogin);
+        afterLogin = findViewById(R.id.afterLogin);
+        txtBefore = findViewById(R.id.txtBefore);
+        txtAfter = findViewById(R.id.txtAfter);
 
         View txtLayout = findViewById(R.id.txtBefore);
         onTxtClicked(txtLayout);
+
+        setDisplay();
+    }
+
+    private void setDisplay(){
+        if(!session.getIsLogin()){
+            beforeLogin.setVisibility(View.VISIBLE);
+            afterLogin.setVisibility(View.INVISIBLE);
+
+            txtBefore.setVisibility(View.VISIBLE);
+            txtAfter.setVisibility(View.INVISIBLE);
+        }
+        else{
+            beforeLogin.setVisibility(View.INVISIBLE);
+            afterLogin.setVisibility(View.VISIBLE);
+
+            txtBefore.setVisibility(View.INVISIBLE);
+            txtAfter.setVisibility(View.VISIBLE);
+        }
     }
 
     public void onTxtClicked(View view){
@@ -44,7 +65,10 @@ public class MainActivity extends AppCompatActivity {
        txtLogin.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+               Intent intent = new Intent(getApplicationContext(),LoginPage.class);
+               intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
+               startActivity(intent);
            }
        });
 
