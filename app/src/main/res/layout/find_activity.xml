@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FindPage">
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#F3C62B"
+        android:gravity="center"
+        android:text="Find"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:text="■ID 찾기"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/warnFindId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="모든 항목을 입력하세요."
+        android:textColor="#B90000"
+        android:textSize="0dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingRight="25dp"
+            android:text="Name"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/iptName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            android:ems="10"
+            android:hapticFeedbackEnabled="false"
+            android:inputType="textPersonName"
+            android:selectAllOnFocus="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingRight="25dp"
+            android:text="E-mail"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/iptFindId2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            android:ems="10"
+            android:hapticFeedbackEnabled="false"
+            android:inputType="textPersonName"
+            android:selectAllOnFocus="false" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnFindId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/btn_black"
+        android:onClick="onBtnFindIdClicked"
+        android:text="Find"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:text="■PW 찾기"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/warnFindPw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="모든 항목을 입력하세요."
+        android:textColor="#B90000"
+        android:textSize="0dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingRight="25dp"
+            android:text="Name"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/iptFindPw1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            android:ems="10"
+            android:hapticFeedbackEnabled="false"
+            android:inputType="textPersonName"
+            android:selectAllOnFocus="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:paddingRight="25dp"
+            android:text="ID"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/iptFindPw2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            android:ems="10"
+            android:hapticFeedbackEnabled="false"
+            android:inputType="textPersonName"
+            android:selectAllOnFocus="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingRight="25dp"
+            android:text="E-mail"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/iptFindPw3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            android:ems="10"
+            android:hapticFeedbackEnabled="false"
+            android:inputType="textPersonName"
+            android:selectAllOnFocus="false" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnFindPw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/btn_black"
+        android:onClick="onBtnFindPwClicked"
+        android:text="Find"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>
