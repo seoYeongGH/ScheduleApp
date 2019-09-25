@@ -53,7 +53,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/iptName"
+            android:id="@+id/iptFindId1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="25dp"
