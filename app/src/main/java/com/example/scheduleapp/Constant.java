@@ -2,6 +2,7 @@ package com.example.scheduleapp;
 
 public class Constant {
     public static final int SUCCESS = 200;
+    public static final int ERR = 999;
     public static final int ERR_NULL = 1;
 
     //join
@@ -12,4 +13,7 @@ public class Constant {
     //login
     public static final int ERR_LOG_ID = 1;
     public static final int ERR_LOG_PW = 2;
+
+    //find
+    public static final int NO_DATA = 2;
 }

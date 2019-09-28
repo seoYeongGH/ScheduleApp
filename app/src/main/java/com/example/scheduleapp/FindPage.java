@@ -1,7 +1,9 @@
 package com.example.scheduleapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +20,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.example.scheduleapp.Constant.NO_DATA;
+import static com.example.scheduleapp.Constant.SUCCESS;
+import static com.example.scheduleapp.Constant.ERR;
+
 public class FindPage extends AppCompatActivity {
     EditText findIdName;
     EditText findIdEmail;
@@ -28,6 +34,8 @@ public class FindPage extends AppCompatActivity {
 
     TextView warnId;
     TextView warnPw;
+
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,8 @@ public class FindPage extends AppCompatActivity {
 
         warnId = findViewById(R.id.warnFindId);
         warnPw = findViewById(R.id.warnFindPw);
+
+        alertDialog = makeAlert();
     }
 
     public void onBtnFindIdClicked(View view){
@@ -96,6 +106,7 @@ public class FindPage extends AppCompatActivity {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
+                    showAlert(response.body().intValue());
                 }
                 else{
                     Log.d("FIND_ERR","Find Retrofit Err");
@@ -109,5 +120,33 @@ public class FindPage extends AppCompatActivity {
         });
     }
 
+    private void showAlert(int code){
+        String msg;
 
+        switch(code){
+            case SUCCESS: msg = "입력한 메일로 정보를 전송했습니다!"; break;
+            case NO_DATA: msg = "일치하는 정보가 없습니다."; break;
+            case ERR: msg = "Error가 발생했습니다. 다시 시도해주세요."; break;
+            default: msg = "ERR!!"; break;
+        }
+
+        alertDialog.setMessage(msg);
+        alertDialog.show();
+
+        return ;
+    }
+
+    private AlertDialog makeAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(":)");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        return dialog;
+    }
 }

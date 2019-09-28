@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout afterLogin;
     LinearLayout txtBefore;
     LinearLayout txtAfter;
+    TextView txtViewId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
         beforeLogin = findViewById(R.id.beforeLogin);
         afterLogin = findViewById(R.id.afterLogin);
+
         txtBefore = findViewById(R.id.txtBefore);
         txtAfter = findViewById(R.id.txtAfter);
+
+        txtViewId = findViewById(R.id.txtViewId);
 
         View txtLayout = findViewById(R.id.txtBefore);
         onTxtClicked(txtLayout);
@@ -46,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
             txtBefore.setVisibility(View.VISIBLE);
             txtAfter.setVisibility(View.INVISIBLE);
+
+            txtViewId.setText("로그인 후 이용하세요.");
         }
         else{
             beforeLogin.setVisibility(View.INVISIBLE);
@@ -53,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
             txtBefore.setVisibility(View.INVISIBLE);
             txtAfter.setVisibility(View.VISIBLE);
+
+            txtViewId.setText(USession.getInstance().getId()+"님의 일정입니다.");
         }
     }
 
