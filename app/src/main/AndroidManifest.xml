@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FindPage"></activity>
+        <activity android:name=".MyPage"></activity>
+        <activity android:name=".FindPage" />
         <activity android:name=".LoginPage" />
         <activity android:name=".JoinPage" />
         <activity android:name=".MainActivity">
