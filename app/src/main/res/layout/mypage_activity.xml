@@ -39,13 +39,14 @@
 
         </ListView>
 
+        <TextView
+            android:id="@+id/txtInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textColor="#000000"
+            android:textSize="0sp" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/txtInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="0sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -53,6 +54,6 @@
         android:layout_marginRight="20dp"
         android:gravity="right"
         android:text="탈퇴하기"
-        android:textSize="15sp" />
+        android:textSize="13sp" />
 
 </LinearLayout>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="3dp"
+    tools:context=".ChangePwPage">
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="현재 비밀번호"
+        android:textColor="#F1EFEF"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/iptPw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/whitelayout"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="#2E2E2E"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txtChkPw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="22dp"
+        android:gravity="right"
+        android:text="비밀번호가 일치하지 않습니다."
+        android:textColor="#C70101"
+        android:textSize="0sp" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:text="새 비밀번호"
+        android:textColor="#F1EFEF"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/iptNewPw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/whitelayout"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:paddingLeft="5sp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="#2E2E2E"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="새 비밀번호 확인"
+        android:textColor="#F1EFEF"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/iptChkNew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/whitelayout"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:paddingLeft="5sp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="#2E2E2E"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txtNewPw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="22dp"
+        android:gravity="right"
+        android:text="비밀번호가 일치하지않습니다."
+        android:textColor="#C70101"
+        android:textSize="0sp" />
+
+    <TextView
+        android:id="@+id/txtWarnNull"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="22dp"
+        android:gravity="right"
+        android:text="새로운 비밀번호를 입력하세요."
+        android:textColor="#C70101"
+        android:textSize="0sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:background="#000000"
+            android:clickable="false"
+            android:onClick="onBtnCancelClicked"
+            android:text="Cancel"
+            android:textColor="#F1EFEF" />
+
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:background="#000000"
+            android:onClick="onBtnOkClicked"
+            android:text="@android:string/ok"
+            android:textColor="#F1EFEF" />
+    </LinearLayout>
+
+</LinearLayout>

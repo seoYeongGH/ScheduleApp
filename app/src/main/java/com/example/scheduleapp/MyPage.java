@@ -2,6 +2,7 @@ package com.example.scheduleapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,8 @@ import retrofit2.Retrofit;
 
 public class MyPage extends AppCompatActivity {
     TextView txtInfo;
+    private String id;
+
     private boolean isShow;
 
     @Override
@@ -29,6 +32,7 @@ public class MyPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_activity);
 
+        id = USession.getInstance().getId();
         txtInfo = findViewById(R.id.txtInfo);
 
         final String[] arrMenu = {"▶ 쪽지함","▶ 내가 작성한 글", "▶ 내 정보보기", "▶ 비밀번호 변경"};
@@ -36,6 +40,7 @@ public class MyPage extends AppCompatActivity {
 
         HashMap hashMap = new HashMap();
         hashMap.put("doing","getInfo");
+        hashMap.put("id",id);
 
         getCommunication(hashMap);
 
@@ -51,9 +56,14 @@ public class MyPage extends AppCompatActivity {
                     if(isShow)
                         txtInfo.setTextSize(0);
                     else
-                        txtInfo.setTextSize(18);
+                        txtInfo.setTextSize(20);
 
                     isShow = !isShow;
+                }
+                else if(i==3){
+                    Intent intent = new Intent(getApplicationContext(),ChangePwPage.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
                 }
             }
         });
@@ -71,8 +81,7 @@ public class MyPage extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Log.d("DODO","START");
                     HashMap hashInfo =  response.body();
-                    Log.d("GETINFO","ID: "+hashInfo.get("id")+"\n이름; "+hashInfo.get("name")+"\nE-mail: "+hashInfo.get("email"));
-                    txtInfo.setText("ID: "+hashInfo.get("id")+"\n이름; "+hashInfo.get("name")+"\nE-mail: "+hashInfo.get("email"));
+                    txtInfo.setText("My Info\n  ID: "+id+"\n  이름: "+hashInfo.get("name")+"\n  E-mail: "+hashInfo.get("email"));
                 }
                 else{
                     Log.d("INFO_ERR","Info Retrofit Err");
@@ -81,7 +90,7 @@ public class MyPage extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<HashMap> call, Throwable t) {
-
+                Log.d("ERRRRR",t.getMessage());
             }
         });
     }
