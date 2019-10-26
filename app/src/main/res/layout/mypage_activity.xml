@@ -49,9 +49,11 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/txtWithdraw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
+        android:clickable="true"
         android:gravity="right"
         android:text="탈퇴하기"
         android:textSize="13sp" />

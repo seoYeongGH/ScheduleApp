@@ -23,8 +23,9 @@ import retrofit2.Retrofit;
 
 public class MyPage extends AppCompatActivity {
     TextView txtInfo;
-    private String id;
+    TextView txtWithdraw;
 
+    private String id;
     private boolean isShow;
 
     @Override
@@ -34,6 +35,16 @@ public class MyPage extends AppCompatActivity {
 
         id = USession.getInstance().getId();
         txtInfo = findViewById(R.id.txtInfo);
+        txtWithdraw = findViewById(R.id.txtWithdraw);
+
+        txtWithdraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),WithdrawPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        });
 
         final String[] arrMenu = {"▶ 쪽지함","▶ 내가 작성한 글", "▶ 내 정보보기", "▶ 비밀번호 변경"};
         isShow = false;
@@ -81,7 +92,7 @@ public class MyPage extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Log.d("DODO","START");
                     HashMap hashInfo =  response.body();
-                    txtInfo.setText("My Info\n  ID: "+id+"\n  이름: "+hashInfo.get("name")+"\n  E-mail: "+hashInfo.get("email"));
+                    txtInfo.setText("My Info\n\nID: "+id+"\n이름: "+hashInfo.get("name")+"\nE-mail: "+hashInfo.get("email"));
                 }
                 else{
                     Log.d("INFO_ERR","Info Retrofit Err");
