@@ -14,13 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.scheduleapp.Fragment.AfterLoginFragment;
+import com.example.scheduleapp.Fragment.BeforeLoginFragment;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 public class MainActivity extends AppCompatActivity {
     USession session;
 
-    ConstraintLayout beforeLogin;
-    LinearLayout afterLogin;
+    BeforeLoginFragment beforeFragment;
+    AfterLoginFragment afterFragment;
+
     LinearLayout txtBefore;
     LinearLayout txtAfter;
     TextView txtViewId;
@@ -32,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         session = USession.getInstance();
 
-        beforeLogin = findViewById(R.id.beforeLogin);
-        afterLogin = findViewById(R.id.afterLogin);
+        beforeFragment = new BeforeLoginFragment();
+        afterFragment = new AfterLoginFragment();
 
         txtBefore = findViewById(R.id.txtBefore);
         txtAfter = findViewById(R.id.txtAfter);
@@ -48,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setDisplay(){
         if(!session.getIsLogin()){
-            beforeLogin.setVisibility(View.VISIBLE);
-            afterLogin.setVisibility(View.INVISIBLE);
+                getSupportFragmentManager().beginTransaction().remove(afterFragment).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.container,beforeFragment).commit();
 
             txtBefore.setVisibility(View.VISIBLE);
             txtAfter.setVisibility(View.INVISIBLE);
@@ -57,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
             txtViewId.setText("로그인 후 이용하세요.");
         }
         else{
-            beforeLogin.setVisibility(View.INVISIBLE);
-            afterLogin.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().remove(beforeFragment).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.container,afterFragment).commit();
 
             txtBefore.setVisibility(View.INVISIBLE);
             txtAfter.setVisibility(View.VISIBLE);
