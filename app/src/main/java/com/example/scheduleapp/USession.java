@@ -9,7 +9,7 @@ public class USession {
     private USession(){
         isLogin = false;
         id = null;
-    }
+        }
 
     public static USession getInstance(){
         if(instance == null)
