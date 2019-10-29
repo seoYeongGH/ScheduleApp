@@ -2,21 +2,18 @@ package com.example.scheduleapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.scheduleapp.Fragment.AfterLoginFragment;
-import com.example.scheduleapp.Fragment.BeforeLoginFragment;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.example.scheduleapp.fragment.AfterLoginFragment;
+import com.example.scheduleapp.fragment.BeforeLoginFragment;
+import com.example.scheduleapp.structure.USession;
 
 public class MainActivity extends AppCompatActivity {
     USession session;

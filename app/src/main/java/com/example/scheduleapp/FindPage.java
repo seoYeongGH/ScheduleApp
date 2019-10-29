@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.scheduleapp.Retro.RetroController;
-import com.example.scheduleapp.Retro.UserService;
+import com.example.scheduleapp.retro.RetroController;
+import com.example.scheduleapp.retro.UserService;
 
 import java.util.HashMap;
 
@@ -20,9 +20,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.example.scheduleapp.Constant.NO_DATA;
-import static com.example.scheduleapp.Constant.SUCCESS;
-import static com.example.scheduleapp.Constant.ERR;
+import static com.example.scheduleapp.structure.Constant.NO_DATA;
+import static com.example.scheduleapp.structure.Constant.SUCCESS;
+import static com.example.scheduleapp.structure.Constant.ERR;
 
 public class FindPage extends AppCompatActivity {
     EditText findIdName;

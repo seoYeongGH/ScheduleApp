@@ -1,4 +1,4 @@
-package com.example.scheduleapp;
+package com.example.scheduleapp.structure;
 
 public class Constant {
     public static final int SUCCESS = 200;

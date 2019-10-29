@@ -11,10 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.scheduleapp.Retro.RetroController;
-import com.example.scheduleapp.Retro.UserService;
-
-import org.w3c.dom.Text;
+import com.example.scheduleapp.retro.RetroController;
+import com.example.scheduleapp.retro.UserService;
 
 import java.util.HashMap;
 
@@ -23,8 +21,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.example.scheduleapp.Constant.ERR_LOG_PW;
-import static com.example.scheduleapp.Constant.SUCCESS;
+import static com.example.scheduleapp.structure.Constant.ERR_LOG_PW;
+import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class ChangePwPage extends AppCompatActivity {
     EditText iptPw;

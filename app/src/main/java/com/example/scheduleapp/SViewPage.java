@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import static com.example.scheduleapp.Constant.ADD_SCHEDULE;
+import static com.example.scheduleapp.structure.Constant.ADD_SCHEDULE;
 
 public class SViewPage extends AppCompatActivity {
     String date = null;
@@ -27,7 +27,8 @@ public class SViewPage extends AppCompatActivity {
     public void onBtnAddClicked(View view){
         Intent intent = new Intent(getApplicationContext(),SInputPage.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        intent.putExtra("flag",ADD_SCHEDULE);
+        intent.putExtra("flag","addSchedule");
+        intent.putExtra("date",date);
 
         startActivity(intent);
     }

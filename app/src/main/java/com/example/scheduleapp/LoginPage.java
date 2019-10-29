@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.scheduleapp.Retro.RetroController;
-import com.example.scheduleapp.Retro.UserService;
+import com.example.scheduleapp.retro.RetroController;
+import com.example.scheduleapp.retro.UserService;
+import com.example.scheduleapp.structure.USession;
 
 import java.util.HashMap;
 
@@ -21,9 +22,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.example.scheduleapp.Constant.ERR_LOG_ID;
-import static com.example.scheduleapp.Constant.ERR_LOG_PW;
-import static com.example.scheduleapp.Constant.SUCCESS;
+import static com.example.scheduleapp.structure.Constant.ERR_LOG_ID;
+import static com.example.scheduleapp.structure.Constant.ERR_LOG_PW;
+import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class LoginPage extends AppCompatActivity {
     private EditText iptId;

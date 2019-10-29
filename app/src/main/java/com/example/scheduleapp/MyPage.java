@@ -11,8 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.scheduleapp.Retro.RetroController;
-import com.example.scheduleapp.Retro.UserService;
+import com.example.scheduleapp.retro.RetroController;
+import com.example.scheduleapp.retro.UserService;
+import com.example.scheduleapp.structure.USession;
 
 import java.util.HashMap;
 

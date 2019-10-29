@@ -1,4 +1,4 @@
-package com.example.scheduleapp;
+package com.example.scheduleapp.structure;
 
 public class USession {
     private static USession instance;

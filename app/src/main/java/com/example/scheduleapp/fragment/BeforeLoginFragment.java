@@ -1,7 +1,5 @@
-package com.example.scheduleapp.Fragment;
+package com.example.scheduleapp.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;

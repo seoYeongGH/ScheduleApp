@@ -15,8 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.scheduleapp.Retro.RetroController;
-import com.example.scheduleapp.Retro.UserService;
+import com.example.scheduleapp.retro.RetroController;
+import com.example.scheduleapp.retro.UserService;
 
 import java.util.HashMap;
 
@@ -25,11 +25,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.example.scheduleapp.Constant.ERR_CHK_ID;
-import static com.example.scheduleapp.Constant.ERR_NULL;
-import static com.example.scheduleapp.Constant.SUCCESS;
-import static com.example.scheduleapp.Constant.DUP_ID;
-import static com.example.scheduleapp.Constant.DUP_USER;
+import static com.example.scheduleapp.structure.Constant.ERR_CHK_ID;
+import static com.example.scheduleapp.structure.Constant.ERR_NULL;
+import static com.example.scheduleapp.structure.Constant.SUCCESS;
+import static com.example.scheduleapp.structure.Constant.DUP_ID;
+import static com.example.scheduleapp.structure.Constant.DUP_USER;
 
 public class JoinPage extends AppCompatActivity {
 

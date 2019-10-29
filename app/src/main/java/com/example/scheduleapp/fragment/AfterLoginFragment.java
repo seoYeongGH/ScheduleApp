@@ -1,9 +1,7 @@
-package com.example.scheduleapp.Fragment;
+package com.example.scheduleapp.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +11,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.scheduleapp.R;
 import com.example.scheduleapp.SViewPage;

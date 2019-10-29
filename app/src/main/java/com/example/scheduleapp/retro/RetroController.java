@@ -1,4 +1,4 @@
-package com.example.scheduleapp.Retro;
+package com.example.scheduleapp.retro;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
