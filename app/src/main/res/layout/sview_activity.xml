@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:background="@drawable/btn_black"
+        android:onClick="onBtnAddClicked"
         android:text="일정추가"
         android:textColor="#ECECEC" />
 

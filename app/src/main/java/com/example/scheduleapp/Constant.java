@@ -16,4 +16,8 @@ public class Constant {
 
     //find
     public static final int NO_DATA = 2;
+
+    //SView
+    public static final int ADD_SCHEDULE = 0;
+    public static final int MODIFY_SCHEDULE = 1;
 }

@@ -12,10 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SViewPage"
-                  android:theme="@style/noTitleDialog">
-
-        </activity>
+        <activity android:name=".SInputPage"
+                  android:theme="@style/noTitleDialog"></activity>
+        <activity
+            android:name=".SViewPage"
+            android:theme="@style/noTitleDialog"></activity>
         <activity
             android:name=".WithdrawPage"
             android:label="탈퇴하기"
