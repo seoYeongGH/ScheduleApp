@@ -10,10 +10,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.scheduleapp.retro.RetroController;
-import com.example.scheduleapp.retro.UserService;
-import com.example.scheduleapp.structure.ScheduleStruct;
+import com.example.scheduleapp.retro.ScheduleService;
 
 import java.util.HashMap;
 
@@ -22,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.example.scheduleapp.structure.Constant.ERR;
+import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class SInputPage extends AppCompatActivity {
     EditText iptSchedule;
@@ -38,7 +38,7 @@ public class SInputPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sinput_page);
+        setContentView(R.layout.sinput_activity);
 
         iptSchedule = findViewById(R.id.iptSchedule);
         iptStartH = findViewById(R.id.iptStartH);
@@ -79,11 +79,13 @@ public class SInputPage extends AppCompatActivity {
         }
         else {
             txtWarn.setTextSize(0);
-            ScheduleStruct schStruct = new ScheduleStruct(date,strStartH,strStartM,strEndH,strEndM,strSchedule);
 
             HashMap hashMap = new HashMap();
-            hashMap.put("flag",flag);
-            hashMap.put("schedule",schStruct);
+            hashMap.put("doing",flag);
+            hashMap.put("date",date);
+            hashMap.put("startTime",strStartH+":"+strStartM);
+            hashMap.put("endTime",strEndH+":"+strEndM);
+            hashMap.put("schedule",strSchedule);
 
             doCommunication(hashMap);
         }
@@ -92,24 +94,33 @@ public class SInputPage extends AppCompatActivity {
 
     private void doCommunication(final HashMap hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
-        UserService userService = retrofit.create(UserService.class);
+        ScheduleService scheduleService = retrofit.create(ScheduleService.class);
 
-        Call<Integer> doService = userService.doService(hashMap);
+        Call<Integer> doService = scheduleService.doService(hashMap);
 
         doService.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
+                    processCode(response.body().intValue());
                 }
                 else{
-                    Log.d("INPUT_ERR","Input Schedule Retrofit Err");
+                    Log.d("SCHEDULES_ERR","Input Schedule Retrofit Err");
                 }
             }
 
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
-
             }
         });
+    }
+
+    public void processCode(int code){
+        if(code == SUCCESS){
+
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Error!!", Toast.LENGTH_LONG).show();
+        }
     }
 }

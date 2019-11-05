@@ -8,19 +8,33 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.scheduleapp.R;
 import com.example.scheduleapp.SViewPage;
+import com.example.scheduleapp.retro.RetroController;
+import com.example.scheduleapp.retro.ScheduleService;
+import com.example.scheduleapp.structure.ScheduleObject;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class AfterLoginFragment extends Fragment {
     MaterialCalendarView materialCalendarView;
@@ -33,6 +47,7 @@ public class AfterLoginFragment extends Fragment {
 
         materialCalendarView = rootView.findViewById(R.id.calendar);
         materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
+
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -44,6 +59,12 @@ public class AfterLoginFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","initSchedule");
+
+        getSchedules(hashMap);
+
         return rootView;
     }
 
@@ -78,5 +99,31 @@ public class AfterLoginFragment extends Fragment {
             view.addSpan(new ForegroundColorSpan(Color.BLUE));
         }
     }
+
+
+    private void getSchedules(HashMap hashMap){
+        Retrofit retrofit = RetroController.getInstance().getRetrofit();
+        ScheduleService scheduleService = retrofit.create(ScheduleService.class);
+
+        Call<List<ScheduleObject>> getSchedules = scheduleService.getSchedules(hashMap);
+
+        getSchedules.enqueue(new Callback<List<ScheduleObject>>() {
+            @Override
+            public void onResponse(Call<List<ScheduleObject>> call, Response<List<ScheduleObject>> response) {
+               if(response.isSuccessful())
+                    Log.d("CHKCHK",response.body().toString());
+
+               else
+                   Log.d("INPUT_SCH_ERR","Input Schedule Error");
+            }
+
+            @Override
+            public void onFailure(Call<List<ScheduleObject>> call, Throwable t) {
+
+                Log.d("ERRRR",t.getMessage());
+            }
+        });
+    }
+
 }
 
