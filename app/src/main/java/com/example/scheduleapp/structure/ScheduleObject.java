@@ -14,9 +14,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ScheduleObject {
-    @SerializedName("date")
-    LocalDate date;
+public class ScheduleObject extends JSONObject{
+    @SerializedName("scheduledate")
+    String scheduledate;
 
     @SerializedName("startTimes")
     ArrayList<String> startTimes;
@@ -29,15 +29,8 @@ public class ScheduleObject {
 
     public ScheduleObject(){}
 
-    public ScheduleObject(LocalDate date,  ArrayList<String> startTimes,  ArrayList<String> endTimes,  ArrayList<String> schedules) {
-        this.date = date;
-        this.startTimes = startTimes;
-        this.endTimes = endTimes;
-        this.schedules = schedules;
-    }
-
-    public LocalDate getDate() {
-        return date;
+    public String getDate() {
+        return scheduledate;
     }
 
     public  ArrayList<String> getStartTime() {
@@ -52,8 +45,8 @@ public class ScheduleObject {
         return schedules;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDate(String date) {
+        this.scheduledate = date;
     }
 
     public void setStartTime( ArrayList<String> startTime) {

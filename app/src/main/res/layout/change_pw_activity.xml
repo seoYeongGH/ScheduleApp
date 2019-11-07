@@ -148,7 +148,7 @@
             android:background="#000000"
             android:onClick="onBtnOkClicked"
             android:text="@android:string/ok"
-            android:textColor="#F1EFEF" />
+            android:textColor="#F1F0EF" />
     </LinearLayout>
 
 </LinearLayout>

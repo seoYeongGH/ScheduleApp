@@ -13,6 +13,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFFFFF"
         android:fillViewport="true">
 
         <LinearLayout
@@ -116,8 +117,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp">
-            </RelativeLayout>
+                android:paddingRight="5dp"></RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

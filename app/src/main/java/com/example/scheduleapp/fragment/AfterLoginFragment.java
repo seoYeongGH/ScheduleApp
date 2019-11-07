@@ -1,14 +1,20 @@
 package com.example.scheduleapp.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +29,19 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,8 +58,15 @@ public class AfterLoginFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_after_login, container, false);
 
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","initSchedule");
+
+        getSchedules(hashMap);
+
         materialCalendarView = rootView.findViewById(R.id.calendar);
-        materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
+        materialCalendarView.setSelectionColor(Color.parseColor("#00BCD4"));
+
+        materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator(), new OnDayDecorator());
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -59,11 +79,6 @@ public class AfterLoginFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        HashMap hashMap = new HashMap();
-        hashMap.put("doing","initSchedule");
-
-        getSchedules(hashMap);
 
         return rootView;
     }
@@ -100,6 +115,80 @@ public class AfterLoginFragment extends Fragment {
         }
     }
 
+    protected class OnDayDecorator implements DayViewDecorator{
+        private CalendarDay day;
+
+        public OnDayDecorator(){
+            day = CalendarDay.today();
+        }
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return day!=null && day.equals(this.day);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+           // view.addSpan(new ForegroundColorSpan(Color.parseColor("#2A7901")));
+           // view.addSpan(new StyleSpan(Typeface.BOLD));
+            view.addSpan(new TextAppearanceSpan(getContext(),R.style.onDayText));
+        }
+    }
+
+    protected class EventDecorator implements DayViewDecorator {
+
+        private final int color;
+        private final HashSet<CalendarDay> dates;
+
+        public EventDecorator(int color, Collection<CalendarDay> dates) {
+            this.color = color;
+            this.dates = new HashSet<>(dates);
+
+            Log.d("CHKCHK","DATES: "+dates.toString());
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return dates.contains(day);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new DotSpan(5, color));
+        }
+    }
+
+
+    protected class SelectDecorator implements DayViewDecorator{
+        private CalendarDay day;
+        public SelectDecorator(CalendarDay day){
+            this.day = day;
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return day.equals(this.day);
+        }
+
+        public void decorate(DayViewFacade view){
+            view.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.select_background));
+        }
+    }
+
+    private void setDecorators(List<ScheduleObject> listSchObj){
+        List<CalendarDay> dayList = new ArrayList<CalendarDay>();
+        Calendar calendar = Calendar.getInstance();
+        CalendarDay calendarDay;
+
+        for(int i=0; i<listSchObj.size(); i++){
+            String[] strSplits = listSchObj.get(i).getDate().split("-");
+            calendar.set(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1])-1,Integer.parseInt(strSplits[2]));
+            calendarDay = CalendarDay.from(calendar);
+
+            dayList.add(calendarDay);
+        }
+
+        materialCalendarView.addDecorator(new EventDecorator(Color.parseColor("#00BCD4"),dayList));
+    }
 
     private void getSchedules(HashMap hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
@@ -110,16 +199,17 @@ public class AfterLoginFragment extends Fragment {
         getSchedules.enqueue(new Callback<List<ScheduleObject>>() {
             @Override
             public void onResponse(Call<List<ScheduleObject>> call, Response<List<ScheduleObject>> response) {
-               if(response.isSuccessful())
-                    Log.d("CHKCHK",response.body().toString());
-
+               if(response.isSuccessful()) {
+                   List<ScheduleObject> listSchObj = response.body();
+                   if(listSchObj != null)
+                       setDecorators(listSchObj);
+               }
                else
-                   Log.d("INPUT_SCH_ERR","Input Schedule Error");
+                   Log.d("INPUT_SCH_ERR",response.errorBody().toString());
             }
 
             @Override
             public void onFailure(Call<List<ScheduleObject>> call, Throwable t) {
-
                 Log.d("ERRRR",t.getMessage());
             }
         });

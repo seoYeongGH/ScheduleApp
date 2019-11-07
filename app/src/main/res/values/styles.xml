@@ -17,4 +17,10 @@
         <item name="android:windowMinWidthMinor">90%</item>
     </style>
 
+    <style name="onDayText" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#2A7901</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

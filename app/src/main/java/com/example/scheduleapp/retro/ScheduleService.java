@@ -1,9 +1,12 @@
 package com.example.scheduleapp.retro;
 
 import com.example.scheduleapp.structure.ScheduleObject;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
