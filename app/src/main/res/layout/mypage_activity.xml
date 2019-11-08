@@ -32,21 +32,19 @@
         android:paddingRight="20dp"
         android:paddingBottom="15dp">
 
-        <ListView
-            android:id="@+id/lstMyMenu"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listMyMenu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </ListView>
-
-        <TextView
-            android:id="@+id/txtInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:textColor="#000000"
-            android:textSize="0sp" />
+            android:layout_height="match_parent" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:textColor="#000000"
+        android:textSize="0sp" />
 
     <TextView
         android:id="@+id/txtWithdraw"

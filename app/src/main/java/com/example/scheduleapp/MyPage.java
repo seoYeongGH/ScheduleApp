@@ -1,10 +1,16 @@
 package com.example.scheduleapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,9 +28,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MyPage extends AppCompatActivity {
+public class MyPage extends AppCompatActivity{
     TextView txtInfo;
     TextView txtWithdraw;
+    RecyclerView menuList;
 
     private String id;
     private boolean isShow;
@@ -46,15 +53,17 @@ public class MyPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        final String[] arrMenu = {"▶ 쪽지함","▶ 내가 작성한 글", "▶ 내 정보보기", "▶ 비밀번호 변경"};
-        isShow = false;
-
         HashMap hashMap = new HashMap();
         hashMap.put("doing","getInfo");
         hashMap.put("id",id);
 
         getCommunication(hashMap);
+
+        /*
+        final String[] arrMenu = {"▶ 쪽지함","▶ 내가 작성한 글", "▶ 내 정보보기", "▶ 비밀번호 변경"};
+
+        isShow = false;
+
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrMenu);
 
@@ -78,7 +87,43 @@ public class MyPage extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
+        });*/
+
+        menuList = findViewById(R.id.listMyMenu);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        menuList.setLayoutManager(layoutManager);
+        MenuAdapter menuAdapter = new MenuAdapter(getApplicationContext());
+        menuAdapter.addItem("▶ 쪽지함");
+        menuAdapter.addItem("▶ 내가 작성한 글");
+        menuAdapter.addItem("▶ 내 정보보기");
+        menuAdapter.addItem("▶ 비밀번호 변경");
+        menuList.setAdapter(menuAdapter);
+
+        isShow = false;
+        menuAdapter.setOnMenuItemClickedListener(new OnMenuItemClickedListener() {
+            @Override
+            public void onItemClick(MenuAdapter.ViewHolder holder, View view, int position) {
+                if(position == 2){
+                    if(isShow)
+                        txtInfo.setTextSize(0);
+                    else
+                        txtInfo.setTextSize(20);
+
+                    isShow = !isShow;
+                }
+                else if(position ==3){
+                    Intent intent = new Intent(getApplicationContext(),ChangePwPage.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                }
+            }
         });
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(menuList.getContext(),new LinearLayoutManager(this).getOrientation());
+        menuList.addItemDecoration(dividerItemDecoration);
+
+        RecyclerDecoration recyclerDecoration = new RecyclerDecoration(15);
+        menuList.addItemDecoration(recyclerDecoration);
     }
 
     private void getCommunication (HashMap hashMap){
@@ -105,5 +150,23 @@ public class MyPage extends AppCompatActivity {
                 Log.d("ERRRRR",t.getMessage());
             }
         });
+    }
+
+    public class RecyclerDecoration extends RecyclerView.ItemDecoration {
+
+        private final int divHeight;
+
+
+        public RecyclerDecoration(int divHeight) {
+            this.divHeight = divHeight;
+        }
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+                outRect.bottom = divHeight;
+                outRect.top = divHeight;
+
+        }
     }
 }
