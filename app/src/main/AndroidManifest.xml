@@ -15,9 +15,6 @@
         <activity android:name=".SInputPage"
                   android:theme="@style/noTitleDialog"></activity>
         <activity
-            android:name=".SViewPage"
-            android:theme="@style/noTitleDialog"></activity>
-        <activity
             android:name=".WithdrawPage"
             android:label="탈퇴하기"
             android:theme="@style/Theme.AppCompat.Dialog" />

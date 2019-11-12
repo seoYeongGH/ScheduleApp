@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".SInputPage">
@@ -26,10 +27,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btnBack"
+            android:id="@+id/btnExit"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/x"
+            android:onClick="btnExitClicked"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.98"
             app:layout_constraintStart_toEndOf="@+id/txtDate"
@@ -90,7 +92,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="number"
-            android:maxLength="2" />
+            android:maxLength="2"/>
 
         <TextView
             android:id="@+id/textView19"
@@ -159,6 +161,7 @@
             android:text="삭제"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.02"
@@ -189,6 +192,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/btn_black"
+            android:onClick="btnExitClicked"
             android:text="취소"
             android:textColor="#FFFFFF"
             android:textSize="15sp"

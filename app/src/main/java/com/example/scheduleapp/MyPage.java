@@ -44,6 +44,7 @@ public class MyPage extends AppCompatActivity{
         id = USession.getInstance().getId();
         txtInfo = findViewById(R.id.txtInfo);
         txtWithdraw = findViewById(R.id.txtWithdraw);
+        menuList = findViewById(R.id.listMyMenu);
 
         txtWithdraw.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,39 +60,9 @@ public class MyPage extends AppCompatActivity{
 
         getCommunication(hashMap);
 
-        /*
-        final String[] arrMenu = {"▶ 쪽지함","▶ 내가 작성한 글", "▶ 내 정보보기", "▶ 비밀번호 변경"};
-
-        isShow = false;
-
-
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrMenu);
-
-        ListView lstMenu = findViewById(R.id.lstMyMenu);
-        lstMenu.setAdapter(adapter);
-
-        lstMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i==2){
-                    if(isShow)
-                        txtInfo.setTextSize(0);
-                    else
-                        txtInfo.setTextSize(20);
-
-                    isShow = !isShow;
-                }
-                else if(i==3){
-                    Intent intent = new Intent(getApplicationContext(),ChangePwPage.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                }
-            }
-        });*/
-
-        menuList = findViewById(R.id.listMyMenu);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         menuList.setLayoutManager(layoutManager);
+
         MenuAdapter menuAdapter = new MenuAdapter(getApplicationContext());
         menuAdapter.addItem("▶ 쪽지함");
         menuAdapter.addItem("▶ 내가 작성한 글");
@@ -118,12 +89,7 @@ public class MyPage extends AppCompatActivity{
                 }
             }
         });
-        DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(menuList.getContext(),new LinearLayoutManager(this).getOrientation());
-        menuList.addItemDecoration(dividerItemDecoration);
 
-        RecyclerDecoration recyclerDecoration = new RecyclerDecoration(15);
-        menuList.addItemDecoration(recyclerDecoration);
     }
 
     private void getCommunication (HashMap hashMap){
@@ -150,23 +116,5 @@ public class MyPage extends AppCompatActivity{
                 Log.d("ERRRRR",t.getMessage());
             }
         });
-    }
-
-    public class RecyclerDecoration extends RecyclerView.ItemDecoration {
-
-        private final int divHeight;
-
-
-        public RecyclerDecoration(int divHeight) {
-            this.divHeight = divHeight;
-        }
-
-        @Override
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-                outRect.bottom = divHeight;
-                outRect.top = divHeight;
-
-        }
     }
 }

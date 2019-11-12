@@ -2,6 +2,7 @@ package com.example.scheduleapp.structure;
 
 import android.util.Log;
 
+import com.example.scheduleapp.fragment.AfterLoginFragment;
 import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONException;

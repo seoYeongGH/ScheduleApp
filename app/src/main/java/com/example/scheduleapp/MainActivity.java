@@ -2,11 +2,14 @@ package com.example.scheduleapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout txtBefore;
     LinearLayout txtAfter;
     TextView txtViewId;
+    Button btnSync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         txtAfter = findViewById(R.id.txtAfter);
 
         txtViewId = findViewById(R.id.txtViewId);
+        btnSync = findViewById(R.id.btnSync);
 
         View txtLayout = findViewById(R.id.txtBefore);
         onTxtClicked(txtLayout);
@@ -55,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             txtAfter.setVisibility(View.INVISIBLE);
 
             txtViewId.setText("로그인 후 이용하세요.");
+            btnSync.setVisibility(View.INVISIBLE);
         }
         else{
                 getSupportFragmentManager().beginTransaction().remove(beforeFragment).commit();
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             txtAfter.setVisibility(View.VISIBLE);
 
             txtViewId.setText(USession.getInstance().getId()+"님의 일정입니다.");
+            btnSync.setVisibility(View.VISIBLE);
         }
     }
 
@@ -110,6 +117,12 @@ public class MainActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+    }
+
+    public void onBtnSyncClicked(View view){
+        AfterLoginFragment afterFragment =  (AfterLoginFragment)getSupportFragmentManager().findFragmentById(R.id.container);
+        if(afterFragment != null)
+            afterFragment.refreshData();
     }
 
     private AlertDialog makeAlert(){

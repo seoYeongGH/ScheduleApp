@@ -28,7 +28,7 @@
         android:background="@drawable/borderlayout"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingTop="10dp"
+        android:paddingTop="5dp"
         android:paddingRight="20dp"
         android:paddingBottom="15dp">
 

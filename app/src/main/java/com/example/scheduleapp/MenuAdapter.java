@@ -13,10 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>implements OnMenuItemClickedListener{
-    public interface OnListItemSelectedInterfcae{
-        void onItemSelected(View v, int position);
-    }
-
     private OnMenuItemClickedListener selectListener;
     Context context;
 
@@ -25,6 +21,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>imp
     public MenuAdapter(Context context){
         this.context = context;
     }
+
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView textView;
 

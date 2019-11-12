@@ -101,21 +101,42 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <TextView
-                android:id="@+id/txtViewId"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="2dp"
-                android:text="로그인 후 이용하세요."
-                android:textColor="#272727" />
+                android:layout_marginTop="7dp">
+
+                <TextView
+                    android:id="@+id/txtViewId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="로그인 후 이용하세요."
+                    android:textColor="#272727"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.08"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btnSync"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/sync"
+                    android:onClick="onBtnSyncClicked"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.95"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <RelativeLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="5dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"></RelativeLayout>
 
