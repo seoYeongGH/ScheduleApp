@@ -20,6 +20,9 @@ public class AllSchedules {
         return allSchedules;
     }
 
+    public int getScheduleSize(int index){
+        return allSchedules.get(index).getSchedule().size();
+    }
     public void setAllSchedules(List<ScheduleObject> allSchedules) {
         this.allSchedules = allSchedules;
     }

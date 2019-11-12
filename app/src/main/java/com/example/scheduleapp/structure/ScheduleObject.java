@@ -30,6 +30,10 @@ public class ScheduleObject extends JSONObject{
 
     public ScheduleObject(){}
 
+    public int getScheduleSize(){
+        return schedules.size();
+    }
+
     public String getDate() {
         return scheduledate;
     }

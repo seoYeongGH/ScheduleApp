@@ -1,7 +1,9 @@
 package com.example.scheduleapp.fragment;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.style.ForegroundColorSpan;
+import android.text.style.LineBackgroundSpan;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +38,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -61,7 +65,6 @@ public class AfterLoginFragment extends Fragment {
 
     ScheduleAdapter scheduleAdapter;
     SelectDecorator selectDecorator;
-    EventDecorator eventDecorator;
     RecyclerView recSchList;
 
     TextView txtDate;
@@ -70,7 +73,7 @@ public class AfterLoginFragment extends Fragment {
     int currentIndex = 0;
     int value = 1;
     String strDate;
-
+    boolean needDecorate = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,7 +87,6 @@ public class AfterLoginFragment extends Fragment {
 
         materialCalendarView.setDateTextAppearance(R.style.calDateText);
         materialCalendarView.setSelectionColor(Color.WHITE);
-        materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator(), new OnDayDecorator());
 
         strDate = getStrDate(today);
 
@@ -106,11 +108,13 @@ public class AfterLoginFragment extends Fragment {
     }
 
     public void refreshData(){
-        materialCalendarView.removeDecorator(eventDecorator);
+        materialCalendarView.removeDecorators();
 
         HashMap hashMap = new HashMap();
         hashMap.put("doing","initSchedule");
         getSchedules(hashMap);
+
+        needDecorate = true;
     }
 
     public void setListeners(){
@@ -266,17 +270,21 @@ public class AfterLoginFragment extends Fragment {
         List<CalendarDay> dayList = new ArrayList<CalendarDay>();
         Calendar calendar = Calendar.getInstance();
         CalendarDay calendarDay;
+        ArrayList<DayViewDecorator> decorators = new ArrayList<DayViewDecorator>();
+
+        materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator(), new OnDayDecorator());
 
         for(int i=0; i<listSchObj.size(); i++){
-            String[] strSplits = listSchObj.get(i).getDate().split("-");
+            ScheduleObject schObj = listSchObj.get(i);
+            String[] strSplits = schObj.getDate().split("-");
             calendar.set(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1])-1,Integer.parseInt(strSplits[2]));
             calendarDay = CalendarDay.from(calendar);
 
-            dayList.add(calendarDay);
+            decorators.add(new EventDecorator(calendarDay,DOT_COLOR,"+"+schObj.getScheduleSize()));
         }
+        materialCalendarView.addDecorators(decorators);
 
-        eventDecorator = new EventDecorator(Color.parseColor(DOT_COLOR),dayList);
-        materialCalendarView.addDecorator(eventDecorator);
+        needDecorate = false;
     }
 
     protected class SundayDecorator implements DayViewDecorator{
@@ -291,7 +299,7 @@ public class AfterLoginFragment extends Fragment {
             return weekDay == Calendar.SUNDAY;
         }
         public void decorate(DayViewFacade view){
-            view.addSpan(new ForegroundColorSpan(Color.RED));
+                view.addSpan(new ForegroundColorSpan(Color.RED));
         }
     }
 
@@ -326,29 +334,38 @@ public class AfterLoginFragment extends Fragment {
     }
 
     protected class EventDecorator implements DayViewDecorator {
-        private final int color;
-        private final HashSet<CalendarDay> dates;
+        private String color;
+        private CalendarDay date;
+        private String text;
 
-        public EventDecorator(int color, Collection<CalendarDay> dates) {
+        public EventDecorator(CalendarDay date, String color, String text) {
             this.color = color;
-            this.dates = new HashSet<>(dates);
-
+            this.date = date;
+            this.text = text;
         }
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            return dates.contains(day);
+            return day.equals(date);
         }
 
         @Override
         public void decorate(DayViewFacade view) {
-            view.addSpan(new DotSpan(8, color));
-            /*view.addSpan(new LineBackgroundSpan() {
+            view.addSpan(new DotSpan(){
                 @Override
-                public void drawBackground(@NonNull Canvas canvas, @NonNull Paint paint, int i, int i1, int i2, int i3, int i4, @NonNull CharSequence charSequence, int i5, int i6, int i7) {
-                    canvas.drawText("Title",90,i4,paint);
+                public void drawBackground(Canvas canvas, Paint paint, int left, int right, int top, int baseline, int bottom, CharSequence charSequence, int start, int end, int lineNum) {
+                    paint.setColor(Color.parseColor(color));
+                    canvas.drawCircle(left+75,bottom+16,8,paint);
                 }
-            });*/
+            });
+                view.addSpan(new LineBackgroundSpan() {
+                    @Override
+                    public void drawBackground(@NonNull Canvas canvas, @NonNull Paint paint, int i, int i1, int i2, int i3, int i4, @NonNull CharSequence charSequence, int i5, int i6, int i7) {
+                        paint.setColor(Color.parseColor("#505050"));
+                        canvas.drawText(text, i+95, i4+33, paint);
+                    }
+                });
+
         }
     }
 
