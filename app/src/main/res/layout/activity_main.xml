@@ -63,48 +63,52 @@
                         android:textSize="15sp" />
                 </LinearLayout>
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/txtAfter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginRight="10dp"
-                    android:gravity="right"
-                    android:orientation="horizontal">
+                    android:gravity="right">
 
-                    <TextView
-                        android:id="@+id/txtMypage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:linksClickable="false"
-                        android:text="My Page"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="7dp"
-                        android:layout_marginRight="7dp"
-                        android:clickable="true"
-                        android:linksClickable="false"
-                        android:text="/" />
+                    <Button
+                        android:id="@+id/btnMenu"
+                        android:layout_width="74dp"
+                        android:layout_height="43dp"
+                        android:background="@drawable/black_border"
+                        android:onClick="onBtnMenuClicked"
+                        android:text="menu"
+                        android:textAllCaps="false"
+                        android:textColor="#424242"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/txtLogout"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
                         android:clickable="true"
                         android:linksClickable="false"
                         android:text="Logout"
-                        android:textSize="15sp" />
-                </LinearLayout>
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.05"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/txtViewId"
@@ -120,8 +124,8 @@
 
                 <Button
                     android:id="@+id/btnSync"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:background="@drawable/sync"
                     android:onClick="onBtnSyncClicked"
                     app:layout_constraintBottom_toBottomOf="parent"

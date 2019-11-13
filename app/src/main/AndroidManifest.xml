@@ -22,7 +22,7 @@
             android:name=".ChangePwPage"
             android:label="비밀번호 변경"
             android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity android:name=".MyPage" />
+        <activity android:name=".MenuPage" />
         <activity android:name=".FindPage" />
         <activity android:name=".LoginPage" />
         <activity android:name=".JoinPage" />

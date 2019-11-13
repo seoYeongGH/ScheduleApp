@@ -1,20 +1,13 @@
 package com.example.scheduleapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.scheduleapp.retro.RetroController;
@@ -28,7 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MyPage extends AppCompatActivity{
+public class MenuPage extends AppCompatActivity{
     TextView txtInfo;
     TextView txtWithdraw;
     RecyclerView menuList;
@@ -39,7 +32,7 @@ public class MyPage extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mypage_activity);
+        setContentView(R.layout.menu_activity);
 
         id = USession.getInstance().getId();
         txtInfo = findViewById(R.id.txtInfo);
@@ -64,7 +57,8 @@ public class MyPage extends AppCompatActivity{
         menuList.setLayoutManager(layoutManager);
 
         MenuAdapter menuAdapter = new MenuAdapter(getApplicationContext());
-        menuAdapter.addItem("▶ 쪽지함");
+        menuAdapter.addItem("▶ 친구관리");
+        menuAdapter.addItem("▶ 그룹관리");
         menuAdapter.addItem("▶ 내가 작성한 글");
         menuAdapter.addItem("▶ 내 정보보기");
         menuAdapter.addItem("▶ 비밀번호 변경");
@@ -74,7 +68,7 @@ public class MyPage extends AppCompatActivity{
         menuAdapter.setOnMenuItemClickedListener(new OnMenuItemClickedListener() {
             @Override
             public void onItemClick(MenuAdapter.ViewHolder holder, View view, int position) {
-                if(position == 2){
+                if(position == 3){
                     if(isShow)
                         txtInfo.setTextSize(0);
                     else
@@ -82,7 +76,7 @@ public class MyPage extends AppCompatActivity{
 
                     isShow = !isShow;
                 }
-                else if(position ==3){
+                else if(position == 4){
                     Intent intent = new Intent(getApplicationContext(),ChangePwPage.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);

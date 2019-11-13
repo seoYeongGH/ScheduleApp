@@ -73,7 +73,6 @@ public class AfterLoginFragment extends Fragment {
     int currentIndex = 0;
     int value = 1;
     String strDate;
-    boolean needDecorate = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,8 +112,6 @@ public class AfterLoginFragment extends Fragment {
         HashMap hashMap = new HashMap();
         hashMap.put("doing","initSchedule");
         getSchedules(hashMap);
-
-        needDecorate = true;
     }
 
     public void setListeners(){
@@ -284,7 +281,6 @@ public class AfterLoginFragment extends Fragment {
         }
         materialCalendarView.addDecorators(decorators);
 
-        needDecorate = false;
     }
 
     protected class SundayDecorator implements DayViewDecorator{
@@ -355,14 +351,17 @@ public class AfterLoginFragment extends Fragment {
                 @Override
                 public void drawBackground(Canvas canvas, Paint paint, int left, int right, int top, int baseline, int bottom, CharSequence charSequence, int start, int end, int lineNum) {
                     paint.setColor(Color.parseColor(color));
-                    canvas.drawCircle(left+75,bottom+16,8,paint);
+                    canvas.drawCircle((left+right)/2-15,bottom+16,8,paint);
                 }
             });
                 view.addSpan(new LineBackgroundSpan() {
                     @Override
                     public void drawBackground(@NonNull Canvas canvas, @NonNull Paint paint, int i, int i1, int i2, int i3, int i4, @NonNull CharSequence charSequence, int i5, int i6, int i7) {
+                        float originSize = paint.getTextSize();
                         paint.setColor(Color.parseColor("#505050"));
-                        canvas.drawText(text, i+95, i4+33, paint);
+                        paint.setTextSize(30);
+                        canvas.drawText(text, (i+i1)/2+5, i4+30, paint);
+                        paint.setTextSize(originSize);
                     }
                 });
 

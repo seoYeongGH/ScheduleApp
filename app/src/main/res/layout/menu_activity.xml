@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MyPage">
+    tools:context=".MenuPage">
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="#DA4A07"
+        android:background="#363636"
         android:gravity="center"
-        android:text="My Page"
+        android:text="Menu"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
         android:textStyle="bold" />

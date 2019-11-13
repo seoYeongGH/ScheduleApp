@@ -2,12 +2,11 @@ package com.example.scheduleapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     AfterLoginFragment afterFragment;
 
     LinearLayout txtBefore;
-    LinearLayout txtAfter;
+    ConstraintLayout txtAfter;
     TextView txtViewId;
     Button btnSync;
 
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
     public void onTxtClicked(View view){
        TextView txtLogin = findViewById(R.id.txtLogin);
        TextView txtJoin = findViewById(R.id.txtJoin);
-       TextView txtMypage = findViewById(R.id.txtMypage);
        TextView txtLogout = findViewById(R.id.txtLogout);
 
        txtLogin.setOnClickListener(new View.OnClickListener() {
@@ -100,16 +98,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        txtMypage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MyPage.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-
-                startActivity(intent);
-            }
-        });
-
         txtLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
         AfterLoginFragment afterFragment =  (AfterLoginFragment)getSupportFragmentManager().findFragmentById(R.id.container);
         if(afterFragment != null)
             afterFragment.refreshData();
+    }
+
+    public void onBtnMenuClicked(View view){
+        Intent intent = new Intent(getApplicationContext(), MenuPage.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+        startActivity(intent);
     }
 
     private AlertDialog makeAlert(){
