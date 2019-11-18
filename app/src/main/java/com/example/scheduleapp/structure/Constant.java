@@ -27,4 +27,11 @@ public class Constant {
     public static final int ADD_SUCCESS = 0;
     public static final int MOD_SUCCESS = 1;
     public static final int DELETE_SUCCESS = 2;
+
+    //social
+    public static final int TO_GROUP = 0;
+    public static final int TO_FRIEND = 1;
+
+    public static final int ADD = 0;
+    public static final int NO_ADD = 1;
 }

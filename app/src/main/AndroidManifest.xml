@@ -12,8 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SInputPage"
-                  android:theme="@style/noTitleDialog"></activity>
+        <activity android:name=".AddFriendActivity"
+                  android:theme="@style/noTitleDialog"
+                  android:label="친구 찾기"></activity>
+        <activity android:name=".SocialPage" />
+        <activity
+            android:name=".SInputPage"
+            android:theme="@style/noTitleDialog" />
         <activity
             android:name=".WithdrawPage"
             android:label="탈퇴하기"

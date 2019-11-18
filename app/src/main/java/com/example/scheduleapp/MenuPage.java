@@ -1,8 +1,6 @@
 package com.example.scheduleapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,9 +20,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MenuPage extends AppCompatActivity{
+    TextView txtSocial;
     TextView txtInfo;
+    TextView txtChangePw;
+    TextView txtInfos;
     TextView txtWithdraw;
-    RecyclerView menuList;
 
     private String id;
     private boolean isShow;
@@ -35,9 +35,50 @@ public class MenuPage extends AppCompatActivity{
         setContentView(R.layout.menu_activity);
 
         id = USession.getInstance().getId();
+        txtSocial = findViewById(R.id.txtSocial);
+        txtChangePw = findViewById(R.id.txtChangePw);
         txtInfo = findViewById(R.id.txtInfo);
+        txtInfos = findViewById(R.id.txtInfos);
         txtWithdraw = findViewById(R.id.txtWithdraw);
-        menuList = findViewById(R.id.listMyMenu);
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","getInfo");
+        hashMap.put("id",id);
+
+        getCommunication(hashMap);
+
+        isShow = false;
+        setTextEvent();
+    }
+
+    private void setTextEvent(){
+        txtSocial.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),SocialPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        });
+
+        txtInfo.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                if(isShow)
+                    txtInfos.setTextSize(0);
+                else
+                    txtInfos.setTextSize(20);
+
+                isShow = !isShow;
+            }
+        });
+        txtChangePw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),ChangePwPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        });
 
         txtWithdraw.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,42 +86,6 @@ public class MenuPage extends AppCompatActivity{
                 Intent intent = new Intent(getApplicationContext(),WithdrawPage.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
-            }
-        });
-        HashMap hashMap = new HashMap();
-        hashMap.put("doing","getInfo");
-        hashMap.put("id",id);
-
-        getCommunication(hashMap);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        menuList.setLayoutManager(layoutManager);
-
-        MenuAdapter menuAdapter = new MenuAdapter(getApplicationContext());
-        menuAdapter.addItem("▶ 친구관리");
-        menuAdapter.addItem("▶ 그룹관리");
-        menuAdapter.addItem("▶ 내가 작성한 글");
-        menuAdapter.addItem("▶ 내 정보보기");
-        menuAdapter.addItem("▶ 비밀번호 변경");
-        menuList.setAdapter(menuAdapter);
-
-        isShow = false;
-        menuAdapter.setOnMenuItemClickedListener(new OnMenuItemClickedListener() {
-            @Override
-            public void onItemClick(MenuAdapter.ViewHolder holder, View view, int position) {
-                if(position == 3){
-                    if(isShow)
-                        txtInfo.setTextSize(0);
-                    else
-                        txtInfo.setTextSize(20);
-
-                    isShow = !isShow;
-                }
-                else if(position == 4){
-                    Intent intent = new Intent(getApplicationContext(),ChangePwPage.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                }
             }
         });
 
@@ -98,7 +103,7 @@ public class MenuPage extends AppCompatActivity{
                 if(response.isSuccessful()){
                     Log.d("DODO","START");
                     HashMap hashInfo =  response.body();
-                    txtInfo.setText("My Info\n\nID: "+id+"\n이름: "+hashInfo.get("name")+"\nE-mail: "+hashInfo.get("email"));
+                    txtInfos.setText("My Info\n\nID: "+id+"\n이름: "+hashInfo.get("name")+"\nE-mail: "+hashInfo.get("email"));
                 }
                 else{
                     Log.d("INFO_ERR","Info Retrofit Err");

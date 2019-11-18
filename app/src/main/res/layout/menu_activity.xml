@@ -32,14 +32,49 @@
         android:paddingRight="20dp"
         android:paddingBottom="15dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listMyMenu"
+        <TextView
+            android:id="@+id/txtSocial"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:text="▶ 친구/그룹 관리"
+            android:textColor="#303030"
+            android:textSize="19sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:text="▶ 내가 작성한 글"
+            android:textColor="#303030"
+            android:textSize="19sp"/>
+
+        <TextView
+            android:id="@+id/txtInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:text="▶ 내 정보 보기"
+            android:textColor="#303030"
+            android:textSize="19sp"/>
+
+        <TextView
+            android:id="@+id/txtChangePw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:clickable="true"
+            android:text="▶ 비밀번호 변경"
+            android:textColor="#303030"
+            android:textSize="19sp" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/txtInfo"
+        android:id="@+id/txtInfos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
