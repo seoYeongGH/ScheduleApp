@@ -8,20 +8,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.webkit.HttpAuthHandler;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.scheduleapp.recyclerView.FriendAdapter;
+import com.example.scheduleapp.recyclerView.OnFriendBtnListener;
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.AllFriends;
 import com.example.scheduleapp.structure.FriendObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,13 +30,13 @@ import retrofit2.Retrofit;
 import static com.example.scheduleapp.structure.Constant.ERR;
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 import static com.example.scheduleapp.structure.Constant.TO_FRIEND;
-import static com.example.scheduleapp.structure.Constant.TO_GROUP;
 
 public class SocialPage extends AppCompatActivity {
     RecyclerView recFriend;
-    AlertDialog alertDialog;
-
     FriendAdapter adapter;
+
+    Button btnInvite;
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +44,7 @@ public class SocialPage extends AppCompatActivity {
         setContentView(R.layout.social_activity);
 
         recFriend = findViewById(R.id.recFriend);
-
-
-        Log.d("CHKCHK","CRERATE");
-
+        btnInvite = findViewById(R.id.btnInvite);
     }
 
     protected void onResume(){
@@ -67,12 +63,16 @@ public class SocialPage extends AppCompatActivity {
     }
 
     public void onBtnCreateFrdClicked(View view){
-        Intent intent = new Intent(getApplicationContext(),AddFriendActivity.class);
+        Intent intent = new Intent(getApplicationContext(), AddFriendPage.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivityForResult(intent,TO_FRIEND);
     }
 
-
+    public void onBtnCreateGpClicked(View view){
+        Intent intent = new Intent(getApplicationContext(),CreateGroupPage.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+    }
     private void setView(ArrayList<FriendObject> list){
         adapter = new FriendAdapter(getApplicationContext());
 
@@ -107,7 +107,7 @@ public class SocialPage extends AppCompatActivity {
                 hashMap.put("name",name);
                 hashMap.put("id",id);
 
-                deleteToDb(hashMap,position);
+                doService(hashMap,position);
             }
         });
 
@@ -126,7 +126,7 @@ public class SocialPage extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        Call<ArrayList<FriendObject>> getList = userService.getList(hashMap);
+        Call<ArrayList<FriendObject>> getList = userService.getFriends(hashMap);
         getList.enqueue(new Callback<ArrayList<FriendObject>>() {
             @Override
             public void onResponse(Call<ArrayList<FriendObject>> call, Response<ArrayList<FriendObject>> response) {
@@ -142,7 +142,7 @@ public class SocialPage extends AppCompatActivity {
     }
 
 
-    private void deleteToDb(HashMap hashMap,final int position){
+    private void doService(HashMap hashMap, final Integer position){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 

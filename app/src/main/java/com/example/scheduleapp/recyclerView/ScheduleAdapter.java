@@ -1,7 +1,6 @@
-package com.example.scheduleapp;
+package com.example.scheduleapp.recyclerView;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.scheduleapp.R;
 import com.example.scheduleapp.structure.ScheduleViewObject;
 
 import java.util.ArrayList;

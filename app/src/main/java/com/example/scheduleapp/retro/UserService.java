@@ -1,6 +1,8 @@
 package com.example.scheduleapp.retro;
 
 import com.example.scheduleapp.structure.FriendObject;
+import com.example.scheduleapp.structure.GroupObject;
+import com.example.scheduleapp.structure.InviteObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,5 +25,13 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
-    Call<ArrayList<FriendObject>> getList(@FieldMap HashMap<String,String> parameters);
+    Call<ArrayList<FriendObject>> getFriends(@FieldMap HashMap<String,String> parameters);
+
+    @FormUrlEncoded
+    @POST("/schedule/user.do")
+    Call<ArrayList<GroupObject>> getGroups(@FieldMap HashMap<String,String> parameters);
+
+    @FormUrlEncoded
+    @POST("/schedule/user.do")
+    Call<ArrayList<InviteObject>> getInvites(@FieldMap HashMap<String,String> parameters);
 }

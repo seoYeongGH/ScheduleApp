@@ -10,7 +10,7 @@
     android:paddingTop="17dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
-    tools:context=".AddFriendActivity">
+    tools:context=".AddFriendPage">
 
     <TextView
         android:id="@+id/textView26"
@@ -164,6 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:background="@drawable/btn_black"
+            android:onClick="onBtnCancelClicked"
             android:text="Cancel"
             android:textAllCaps="false"
             android:textColor="#FFFFFF" />

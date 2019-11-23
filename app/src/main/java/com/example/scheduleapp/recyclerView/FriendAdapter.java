@@ -1,34 +1,19 @@
-package com.example.scheduleapp;
+package com.example.scheduleapp.recyclerView;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.scheduleapp.retro.RetroController;
-import com.example.scheduleapp.retro.UserService;
-import com.example.scheduleapp.structure.AllFriends;
+import com.example.scheduleapp.R;
 import com.example.scheduleapp.structure.FriendObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
-import static com.example.scheduleapp.structure.Constant.ERR;
-import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder>{
     Context context;

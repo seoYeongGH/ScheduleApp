@@ -1,4 +1,4 @@
-package com.example.scheduleapp;
+package com.example.scheduleapp.recyclerView;
 
 import android.view.View;
 

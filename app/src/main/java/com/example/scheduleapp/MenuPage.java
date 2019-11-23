@@ -21,6 +21,7 @@ import retrofit2.Retrofit;
 
 public class MenuPage extends AppCompatActivity{
     TextView txtSocial;
+    TextView txtInvite;
     TextView txtInfo;
     TextView txtChangePw;
     TextView txtInfos;
@@ -36,6 +37,7 @@ public class MenuPage extends AppCompatActivity{
 
         id = USession.getInstance().getId();
         txtSocial = findViewById(R.id.txtSocial);
+        txtInvite = findViewById(R.id.txtInvite);
         txtChangePw = findViewById(R.id.txtChangePw);
         txtInfo = findViewById(R.id.txtInfo);
         txtInfos = findViewById(R.id.txtInfos);
@@ -51,6 +53,17 @@ public class MenuPage extends AppCompatActivity{
         setTextEvent();
     }
 
+    protected void onResume(){
+        super.onResume();
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","getInfo");
+        hashMap.put("id",id);
+
+        getCommunication(hashMap);
+
+    }
+
     private void setTextEvent(){
         txtSocial.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -61,6 +74,14 @@ public class MenuPage extends AppCompatActivity{
             }
         });
 
+        txtInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),InvitePage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        });
         txtInfo.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 if(isShow)
@@ -101,9 +122,13 @@ public class MenuPage extends AppCompatActivity{
             @Override
             public void onResponse(Call<HashMap> call, Response<HashMap> response) {
                 if(response.isSuccessful()){
-                    Log.d("DODO","START");
                     HashMap hashInfo =  response.body();
                     txtInfos.setText("My Info\n\nID: "+id+"\n이름: "+hashInfo.get("name")+"\nE-mail: "+hashInfo.get("email"));
+
+                    if("exist".equals(hashInfo.get("invite")))
+                        txtInvite.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.new_icon,0);
+                   else
+                       txtInvite.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                 }
                 else{
                     Log.d("INFO_ERR","Info Retrofit Err");

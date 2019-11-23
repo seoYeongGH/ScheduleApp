@@ -21,10 +21,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.scheduleapp.OnScheduleItemListener;
+import com.example.scheduleapp.recyclerView.OnScheduleItemListener;
 import com.example.scheduleapp.R;
 import com.example.scheduleapp.SInputPage;
-import com.example.scheduleapp.ScheduleAdapter;
+import com.example.scheduleapp.recyclerView.ScheduleAdapter;
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.ScheduleService;
 import com.example.scheduleapp.structure.AllSchedules;
@@ -38,12 +38,9 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import retrofit2.Call;

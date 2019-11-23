@@ -28,4 +28,5 @@ public class FriendObject extends JSONObject {
     public void setId(String id) {
         this.id = id;
     }
+
 }

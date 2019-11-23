@@ -29,7 +29,7 @@ import static com.example.scheduleapp.structure.Constant.ERR;
 import static com.example.scheduleapp.structure.Constant.NO_DATA;
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
-public class AddFriendActivity extends AppCompatActivity {
+public class AddFriendPage extends AppCompatActivity {
     EditText iptName;
     EditText iptId;
 
@@ -132,7 +132,6 @@ public class AddFriendActivity extends AppCompatActivity {
                               txtInfo.setText("(일차하는 친구가 없습니다.)");
                               txtInfo.setTextSize(15);
                               btnAdd.setVisibility(View.INVISIBLE);
-                              Log.d("RRR","RIGT");
                               break;
             }
         }
@@ -143,7 +142,6 @@ public class AddFriendActivity extends AppCompatActivity {
                 obj.setId(hashMap.get("id").toString());
 
                 AllFriends.getInstance().addFriend(obj);
-                Log.d("CHKCHK","ADDFINISH");
                 Toast.makeText(getApplicationContext(),"친구 추가 완료 :)",Toast.LENGTH_SHORT).show();
 
                 finish();

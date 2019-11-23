@@ -1,6 +1,5 @@
-package com.example.scheduleapp;
+package com.example.scheduleapp.recyclerView;
 
-import android.content.Context;
 import android.view.View;
 
 public interface OnScheduleItemListener {

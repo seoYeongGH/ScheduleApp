@@ -2,7 +2,7 @@ package com.example.scheduleapp.structure;
 
 public class Constant {
     public static final int SUCCESS = 200;
-    public static final int ERR = 999;
+    public static final int ERR = -1;
     public static final int ERR_NULL = 1;
 
     //join
@@ -32,6 +32,6 @@ public class Constant {
     public static final int TO_GROUP = 0;
     public static final int TO_FRIEND = 1;
 
-    public static final int ADD = 0;
-    public static final int NO_ADD = 1;
+    public static final int EXIST_INVITE = 0;
+    public static final int NO_EXIST_INVITE = 1;
 }
