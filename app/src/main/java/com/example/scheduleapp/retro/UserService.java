@@ -25,13 +25,22 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
-    Call<ArrayList<FriendObject>> getFriends(@FieldMap HashMap<String,String> parameters);
+    Call<ArrayList<FriendObject>> getFriend(@FieldMap HashMap<String,String> parameters);
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
-    Call<ArrayList<GroupObject>> getGroups(@FieldMap HashMap<String,String> parameters);
+    Call<HashMap<String,ArrayList<GroupObject>>> getGroup(@FieldMap HashMap<String,String> parameters);
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
     Call<ArrayList<InviteObject>> getInvites(@FieldMap HashMap<String,String> parameters);
+
+    @FormUrlEncoded
+    @POST("/schedule/user.do")
+    Call<ArrayList<Integer>> getGroupNums(@FieldMap HashMap<String,String> parameters);
+
+
+    @FormUrlEncoded
+    @POST("/schedule/user.do")
+    Call<ArrayList<String>> getStrings(@FieldMap HashMap<String,String> parameters);
 }

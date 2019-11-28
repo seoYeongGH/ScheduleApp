@@ -173,7 +173,6 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_black"
-            android:onClick="onBtnSaveClicked"
             android:text="저장"
             android:textColor="#FFFFFF"
             android:textSize="15sp"

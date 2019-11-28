@@ -51,7 +51,6 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@android:drawable/ic_menu_add"
-                android:onClick="onBtnAddClicked"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.95"

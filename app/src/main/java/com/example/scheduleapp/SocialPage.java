@@ -9,15 +9,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.scheduleapp.recyclerView.FriendAdapter;
+import com.example.scheduleapp.recyclerView.GroupAdapter;
 import com.example.scheduleapp.recyclerView.OnFriendBtnListener;
+import com.example.scheduleapp.recyclerView.OnGroupListener;
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.AllFriends;
+import com.example.scheduleapp.structure.AllGroups;
 import com.example.scheduleapp.structure.FriendObject;
+import com.example.scheduleapp.structure.GroupObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,9 +36,11 @@ import static com.example.scheduleapp.structure.Constant.TO_FRIEND;
 
 public class SocialPage extends AppCompatActivity {
     RecyclerView recFriend;
-    FriendAdapter adapter;
+    FriendAdapter friendAdapter;
 
-    Button btnInvite;
+    RecyclerView recGroup;
+    GroupAdapter groupAdapter;
+
     AlertDialog alertDialog;
 
     @Override
@@ -43,15 +48,22 @@ public class SocialPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.social_activity);
 
+        recGroup = findViewById(R.id.recGroup);
         recFriend = findViewById(R.id.recFriend);
-        btnInvite = findViewById(R.id.btnInvite);
+
+        groupAdapter = new GroupAdapter(getApplicationContext());
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","getGroups");
+        getGroups(hashMap);
+
     }
 
     protected void onResume(){
         super.onResume();
 
         if(AllFriends.getInstance().isInit()){
-            setView(AllFriends.getInstance().getFriends());
+            setFriendView(AllFriends.getInstance().getFriends());
         }
         else{
             HashMap hashMap = new HashMap();
@@ -73,40 +85,94 @@ public class SocialPage extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
-    private void setView(ArrayList<FriendObject> list){
-        adapter = new FriendAdapter(getApplicationContext());
+    private void setFriendView(ArrayList<FriendObject> list){
+        friendAdapter = new FriendAdapter(getApplicationContext());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recFriend.setLayoutManager(layoutManager);
 
-        adapter.setListener(new OnFriendBtnListener() {
+        friendAdapter.setListener(new OnFriendBtnListener() {
             @Override
             public void onBtnClicked(FriendAdapter.ViewHolder holder, View view, int position) {
-                FriendObject obj = adapter.getItem(position);
+                FriendObject obj = friendAdapter.getItem(position);
                 String name= obj.getName();
                 String id = obj.getId();
 
-                alertDialog = makeAlert(position, id, name);
+                HashMap hashMap = new HashMap();
+                hashMap.put("doing","deleteFriend");
+                hashMap.put("id",id);
+                hashMap.put("name",name);
+
+                alertDialog = makeAlert(position, hashMap);
                 alertDialog.setMessage("친구목록에서 사용자 "+name+"("+id+") 님을 삭제하시겠습니까?");
                 alertDialog.show();
             }
         });
-        adapter.setItems(list);
-        recFriend.setAdapter(adapter);
+        friendAdapter.setItems(list);
+        recFriend.setAdapter(friendAdapter);
+
     }
 
-    private AlertDialog makeAlert(final int position, final String id, final String name){
+    private void setGroupView(){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        recGroup.setLayoutManager(layoutManager);
+
+        groupAdapter.setListener(new OnGroupListener() {
+            @Override
+            public void onItemClicked(GroupAdapter.ViewHolder holder,  int position) { boolean isManager = false;
+                if(position<groupAdapter.getManagerSize())
+                    isManager = true;
+
+                Intent intent = new Intent(getApplicationContext(), GroupSchedulePage.class);
+                intent.putExtra("groupNum",groupAdapter.getItem(position).getGroupNum());
+                intent.putExtra("groupName",groupAdapter.getItem(position).getGroupName());
+                intent.putExtra("isManager",isManager);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onBtnDeleteClicked(GroupAdapter.ViewHolder holder, View view, int position) {
+                GroupObject obj = groupAdapter.getItem(position);
+                String name = obj.getGroupName();
+                int groupNum = obj.getGroupNum();
+
+                HashMap hashMap = new HashMap();
+                hashMap.put("doing","deleteGroup");
+                hashMap.put("name",name);
+                hashMap.put("groupNum",groupNum);
+
+                alertDialog = makeAlert(position,hashMap);
+                alertDialog.setMessage("그룹 "+name+"에서 탈퇴하시겠습니까?");
+                alertDialog.show();
+            }
+
+            @Override
+            public void onBtnMemberClicked(GroupAdapter.ViewHolder holder, View view, int position) {
+                boolean isManager = false;
+                if(position<groupAdapter.getManagerSize())
+                    isManager = true;
+
+                Intent intent = new Intent(getApplicationContext(),MemberActivity.class);
+                intent.putExtra("groupNum",groupAdapter.getItem(position).getGroupNum());
+                intent.putExtra("groupName",groupAdapter.getItem(position).getGroupName());
+                intent.putExtra("isManager",isManager);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        });
+
+        groupAdapter.setGroups(AllGroups.getInstance().getIsManagers(),AllGroups.getInstance().getNotManagers());
+        recGroup.setAdapter(groupAdapter);
+    }
+
+    private AlertDialog makeAlert(final int position, final HashMap hashMap){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Notice");
 
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                HashMap hashMap = new HashMap();
-                hashMap.put("doing","deleteFriend");
-                hashMap.put("name",name);
-                hashMap.put("id",id);
-
                 doService(hashMap,position);
             }
         });
@@ -126,12 +192,12 @@ public class SocialPage extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        Call<ArrayList<FriendObject>> getList = userService.getFriends(hashMap);
-        getList.enqueue(new Callback<ArrayList<FriendObject>>() {
+        Call<ArrayList<FriendObject>> getFriend = userService.getFriend(hashMap);
+        getFriend.enqueue(new Callback<ArrayList<FriendObject>>() {
             @Override
             public void onResponse(Call<ArrayList<FriendObject>> call, Response<ArrayList<FriendObject>> response) {
                 AllFriends.getInstance().setFriends(response.body());
-                setView(AllFriends.getInstance().getFriends());
+                setFriendView(AllFriends.getInstance().getFriends());
             }
 
             @Override
@@ -141,8 +207,29 @@ public class SocialPage extends AppCompatActivity {
         });
     }
 
+    private void getGroups(HashMap hashMap){
+        Retrofit retrofit = RetroController.getInstance().getRetrofit();
+        UserService userService = retrofit.create(UserService.class);
 
-    private void doService(HashMap hashMap, final Integer position){
+        Call<HashMap<String,ArrayList<GroupObject>>>  getGroup = userService.getGroup(hashMap);
+        getGroup.enqueue(new Callback<HashMap<String,ArrayList<GroupObject>>>() {
+            @Override
+            public void onResponse(Call<HashMap<String,ArrayList<GroupObject>>> call, Response<HashMap<String,ArrayList<GroupObject>>> response) {
+                HashMap getHash = response.body();
+
+                AllGroups.getInstance().setIsManagers((ArrayList<GroupObject>)getHash.get("isManager"));
+                AllGroups.getInstance().setNotManagers((ArrayList<GroupObject>)getHash.get("notManager"));
+
+                setGroupView();
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String,ArrayList<GroupObject>>> call, Throwable t) {
+
+            }
+        });
+    }
+    private void doService(final HashMap hashMap, final Integer position){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
@@ -151,7 +238,7 @@ public class SocialPage extends AppCompatActivity {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
-                    processCode(response.body(),position);
+                    processCode(response.body(),(String)hashMap.get("doing"),position);
                 }
                 else{
                 }
@@ -164,10 +251,16 @@ public class SocialPage extends AppCompatActivity {
         });
     }
 
-    private void processCode(int code, int position){
+    private void processCode(int code, String doing, int position){
         if(code == SUCCESS){
-            adapter.removeItem(position);
-            recFriend.setAdapter(adapter);
+            if("deleteFriend".equals(doing)) {
+                friendAdapter.removeItem(position);
+                recFriend.setAdapter(friendAdapter);
+            }
+            else if("deleteGroup".equals(doing)){
+                groupAdapter.removeItem(position);
+                recGroup.setAdapter(groupAdapter);
+            }
         }
         else if(code == ERR){
             Toast.makeText(getApplicationContext(),"ERR!",Toast.LENGTH_SHORT).show();

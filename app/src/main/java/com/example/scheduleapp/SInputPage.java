@@ -41,6 +41,7 @@ public class SInputPage extends AppCompatActivity {
 
     private String date;
     private String flag;
+    private int groupNum = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class SInputPage extends AppCompatActivity {
         final Intent getIntent = getIntent();
         date = getIntent.getStringExtra("date");
         flag = getIntent.getStringExtra("flag");
+        groupNum = getIntent.getIntExtra("groupNum",-1);
 
         Button btnDelete = findViewById(R.id.btnDelete);
         Button btnSave = findViewById(R.id.btnSave);
@@ -140,6 +142,7 @@ public class SInputPage extends AppCompatActivity {
                 HashMap hashMap = new HashMap();
                 hashMap.put("doing",flag);
                 hashMap.put("date",date);
+                hashMap.put("groupNum",groupNum);
 
                 if(FLAG_ADD.equals(flag)){
                     hashMap.put("startTime",strTimes[0]+":"+strTimes[1]);
@@ -173,54 +176,6 @@ public class SInputPage extends AppCompatActivity {
         iptEndM.setText(tmpTime[1]);
     }
 
-    public void onBtnSaveClicked(View view){
-        String strSchedule = iptSchedule.getText().toString();
-
-        String[] strTimes = new String[4];
-        strTimes[0] = iptStartH.getText().toString();
-        strTimes[1] = iptStartM.getText().toString();
-        strTimes[2] = iptEndH.getText().toString();
-        strTimes[3] = iptEndM.getText().toString();
-
-        if(strSchedule.length()==0) {
-            txtWarn.setTextSize(15);
-            return;
-        }
-
-        for(int i=0; i<4; i++){
-            int length = strTimes[i].length();
-
-            if(length==0){
-                txtWarn.setTextSize(15);
-                return;
-            }
-            if(Integer.parseInt(strTimes[i])<0)
-                strTimes[i] = "00";
-
-            if(i%2==1){
-                if(Integer.parseInt(strTimes[i])>59)
-                    strTimes[i] = "59";
-            }
-            else{
-                if(Integer.parseInt(strTimes[i])>23)
-                    strTimes[i] = "23";
-            }
-
-            if(length==1)
-                strTimes[i] = "0"+strTimes[i];
-        }
-
-        txtWarn.setTextSize(0);
-
-            HashMap hashMap = new HashMap();
-            hashMap.put("doing",flag);
-            hashMap.put("date",date);
-            hashMap.put("startTime",strTimes[0]+":"+strTimes[1]);
-            hashMap.put("endTime",strTimes[2]+":"+strTimes[3]);
-            hashMap.put("schedule",strSchedule);
-
-            doCommunication(hashMap);
-    }
 
     private void doCommunication(HashMap hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();

@@ -1,6 +1,7 @@
 package com.example.scheduleapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,12 +43,11 @@ public class InvitePage extends AppCompatActivity {
         getInvites(hashMap);
 
         recInvite.setAdapter(adapter);
+        recInvite.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 1));
     }
 
     protected void onResume(){
         super.onResume();
-
-
     }
 
     private void getInvites(final HashMap hashMap){

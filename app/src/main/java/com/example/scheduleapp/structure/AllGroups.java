@@ -5,10 +5,14 @@ import java.util.ArrayList;
 public class AllGroups {
     public static AllGroups instance;
 
-    public ArrayList<GroupObject> groups;
+    public ArrayList<GroupObject> isManagers;
+    public ArrayList<GroupObject> notManagers;
     public boolean isInit = false;
 
-    private AllGroups(){groups = new ArrayList<GroupObject>();}
+    private AllGroups(){
+        isManagers = new ArrayList<GroupObject>();
+        notManagers = new ArrayList<GroupObject>();
+    }
 
     public static AllGroups getInstance(){
         if(instance == null)
@@ -16,36 +20,47 @@ public class AllGroups {
         return instance;
     }
 
-    public void addGroup(GroupObject obj){
-        GroupObject gObj = obj;
-        String groupName = gObj.getGroupName();
-        int size = groups.size();
+    public void addManagerGroup(GroupObject obj){
+        String groupName = obj.getGroupName();
+        int size = isManagers.size();
         int i=0;
 
-        if(gObj.isManager){
             for(i=0; i<size; i++){
-                GroupObject tempObj = groups.get(i);
-                if(tempObj.groupName.compareTo(groupName)>0 || !tempObj.isManager())
+                GroupObject tempObj = isManagers.get(i);
+                if(tempObj.groupName.compareTo(groupName)>0)
                     break;
             }
-        }
-        else{
-            for(i=0; i<size; i++){
-                GroupObject tempObj = groups.get(i);
-                if(!tempObj.isManager() && tempObj.getGroupName().compareTo(groupName)>0)
-                    break;
-            }
-        }
-
-        groups.add(i,gObj);
+        isManagers.add(i,obj);
     }
 
-    public void setGroups(ArrayList<GroupObject> groups) {
-        this.groups = groups;
+
+    public void addMemberGroup(GroupObject obj){
+        String groupName = obj.getGroupName();
+        int size = notManagers.size();
+        int i=0;
+
+        for(i=0; i<size; i++){
+            GroupObject tempObj = notManagers.get(i);
+            if(tempObj.groupName.compareTo(groupName)>0)
+                break;
+        }
+        notManagers.add(i,obj);
     }
 
-    public ArrayList<GroupObject> getGroups(){
-        return groups;
+    public ArrayList<GroupObject> getIsManagers() {
+        return isManagers;
+    }
+
+    public void setIsManagers(ArrayList<GroupObject> isManagers) {
+        this.isManagers = isManagers;
+    }
+
+    public ArrayList<GroupObject> getNotManagers() {
+        return notManagers;
+    }
+
+    public void setNotManagers(ArrayList<GroupObject> notManagers) {
+        this.notManagers = notManagers;
     }
 
     public void setInit(boolean init){

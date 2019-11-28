@@ -13,27 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginBottom="10dp"
-        android:background="#E7DE4C"
+        android:background="#EBCC00"
         android:gravity="center"
         android:text="Social"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
         android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/btnInvite"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_gravity="right|left"
-        android:layout_marginLeft="12dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/dim_red_background"
-        android:drawableLeft="@drawable/new_icon"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:text=" 받은 신청"
-        android:textSize="16sp"
-        android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -77,8 +62,8 @@
         android:layout_marginRight="7dp"
         android:layout_weight="1"
         android:background="@drawable/borderlayout"
-        android:paddingLeft="5dp"
-        android:paddingTop="3dp" />
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

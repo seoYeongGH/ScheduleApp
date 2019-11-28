@@ -15,6 +15,7 @@ import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.USession;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -108,10 +109,32 @@ public class LoginPage extends AppCompatActivity {
         });
     }
 
+    private void getGroupNums(){
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","getGroupNums");
+
+        Retrofit retrofit = RetroController.getInstance().getRetrofit();
+        UserService userService = retrofit.create(UserService.class);
+
+        Call<ArrayList<Integer>> getService = userService.getGroupNums(hashMap);
+        getService.enqueue(new Callback<ArrayList<Integer>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Integer>> call, Response<ArrayList<Integer>> response) {
+                if(response.isSuccessful())
+                    USession.getInstance().setConnectGroups(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Integer>> call, Throwable t) {
+
+            }
+        });
+    }
     private void doLogin(String id, int code){
         switch(code){
             case SUCCESS: USession.getInstance().setId(id);
                           USession.getInstance().setIsLogin(true);
+                          getGroupNums();
 
                           Intent intent = new Intent(this, MainActivity.class);
                           intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);

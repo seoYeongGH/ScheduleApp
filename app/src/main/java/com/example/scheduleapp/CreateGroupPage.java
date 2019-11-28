@@ -62,7 +62,7 @@ public class CreateGroupPage extends AppCompatActivity {
         }
         txtWarn.setTextSize(0);
         HashMap hashMap = new HashMap();
-        hashMap.put("doing","sendInvite");
+        hashMap.put("doing","createGroup");
         hashMap.put("name",name);
         hashMap.put("ids",adapter.getIds());
 
@@ -78,7 +78,7 @@ public class CreateGroupPage extends AppCompatActivity {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.body() == SUCCESS)
-                    showAlert(adapter.getInvitNum());
+                    showAlert(adapter.getInviteNum());
                 else
                     Toast.makeText(getApplicationContext(),"Error!!",Toast.LENGTH_SHORT).show();
             }

@@ -23,6 +23,7 @@ public class Constant {
 
     public static final String FLAG_ADD = "addSchedule";
     public static final String FLAG_MODIFY = "modifySchedule";
+    public static final String FLAG_ADD_GROUP = "addGroupSch";
 
     public static final int ADD_SUCCESS = 0;
     public static final int MOD_SUCCESS = 1;
@@ -32,6 +33,7 @@ public class Constant {
     public static final int TO_GROUP = 0;
     public static final int TO_FRIEND = 1;
 
-    public static final int EXIST_INVITE = 0;
-    public static final int NO_EXIST_INVITE = 1;
+    public static final int USER_SCHEDULE = 0;
+    public static final int GROUP_SCHEDULE = 1;
+
 }

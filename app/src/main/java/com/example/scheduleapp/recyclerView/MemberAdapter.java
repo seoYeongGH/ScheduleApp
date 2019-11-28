@@ -106,7 +106,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         return strIds;
     }
 
-    public int getInvitNum(){
+    public int getInviteNum(){
         return selectIds.size();
     }
     public void setItem(int position,FriendObject obj){

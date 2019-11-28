@@ -1,11 +1,15 @@
 package com.example.scheduleapp.structure;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONObject;
 
 public class GroupObject extends JSONObject {
+    @SerializedName("groupNum")
     int groupNum;
+
+    @SerializedName("groupName")
     String groupName;
-    boolean isManager;
 
     public GroupObject(){ }
 
@@ -23,13 +27,5 @@ public class GroupObject extends JSONObject {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
-    }
-
-    public boolean isManager() {
-        return isManager;
-    }
-
-    public void setManager(boolean manager) {
-        isManager = manager;
     }
 }

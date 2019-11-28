@@ -159,13 +159,7 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
         gObj.setGroupNum(iObj.getGroupNum());
         gObj.setGroupName(iObj.getGroupName());
 
-        if(USession.getInstance().getId().equals(iObj.getManagerId()))
-            isManager = true;
-        else
-            isManager = false;
-        gObj.setManager(isManager);
-
-        AllGroups.getInstance().addGroup(gObj);
+        AllGroups.getInstance().addMemberGroup(gObj);
     }
 
 }
