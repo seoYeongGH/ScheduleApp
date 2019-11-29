@@ -18,13 +18,12 @@ import com.example.scheduleapp.fragment.BeforeLoginFragment;
 import com.example.scheduleapp.structure.USession;
 
 public class MainActivity extends AppCompatActivity {
-    USession session;
-
     BeforeLoginFragment beforeFragment;
     AfterLoginFragment afterFragment;
 
-    LinearLayout txtBefore;
-    ConstraintLayout txtAfter;
+    ConstraintLayout menuBefore;
+    ConstraintLayout menuAfter;
+
     TextView txtViewId;
     Button btnSync;
 
@@ -33,47 +32,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        session = USession.getInstance();
-
         beforeFragment = new BeforeLoginFragment();
         afterFragment = new AfterLoginFragment();
 
-        txtBefore = findViewById(R.id.txtBefore);
-        txtAfter = findViewById(R.id.txtAfter);
+        menuBefore = findViewById(R.id.menuBefore);
+        menuAfter = findViewById(R.id.menuAfter);
 
         txtViewId = findViewById(R.id.txtViewId);
         btnSync = findViewById(R.id.btnSync);
 
-        View txtLayout = findViewById(R.id.txtBefore);
-        onTxtClicked(txtLayout);
-
+        onTxtClicked();
         setDisplay();
     }
 
     private void setDisplay(){
-        if(!session.getIsLogin()){
+        if(!USession.getInstance().getIsLogin()){
                 getSupportFragmentManager().beginTransaction().remove(afterFragment).commit();
                 getSupportFragmentManager().beginTransaction().add(R.id.container,beforeFragment).commit();
 
-            txtBefore.setVisibility(View.VISIBLE);
-            txtAfter.setVisibility(View.INVISIBLE);
+            menuBefore.setVisibility(View.VISIBLE);
+            menuAfter.setVisibility(View.INVISIBLE);
 
             txtViewId.setText("로그인 후 이용하세요.");
             btnSync.setVisibility(View.INVISIBLE);
         }
         else{
-                getSupportFragmentManager().beginTransaction().remove(beforeFragment).commit();
-                getSupportFragmentManager().beginTransaction().add(R.id.container,afterFragment).commit();
+            getSupportFragmentManager().beginTransaction().remove(beforeFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.container,afterFragment).commit();
 
-            txtBefore.setVisibility(View.INVISIBLE);
-            txtAfter.setVisibility(View.VISIBLE);
+            menuBefore.setVisibility(View.INVISIBLE);
+            menuAfter.setVisibility(View.VISIBLE);
 
-            txtViewId.setText(USession.getInstance().getId()+"님의 일정입니다.");
+            String idText = USession.getInstance().getId()+"님의 일정입니다.";
+            txtViewId.setText(idText);
             btnSync.setVisibility(View.VISIBLE);
         }
     }
 
-    public void onTxtClicked(View view){
+    private void onTxtClicked(){
        TextView txtLogin = findViewById(R.id.txtLogin);
        TextView txtJoin = findViewById(R.id.txtJoin);
        TextView txtLogout = findViewById(R.id.txtLogout);
@@ -101,14 +97,12 @@ public class MainActivity extends AppCompatActivity {
         txtLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog alertDialog = makeAlert();
-                alertDialog.show();
+                showAlert();
             }
         });
     }
 
     public void onBtnSyncClicked(View view){
-        AfterLoginFragment afterFragment =  (AfterLoginFragment)getSupportFragmentManager().findFragmentById(R.id.container);
         if(afterFragment != null)
             afterFragment.refreshData();
     }
@@ -120,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private AlertDialog makeAlert(){
+    private void showAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("LOGOUT");
         builder.setMessage("로그아웃하시겠습니까?");
@@ -145,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        AlertDialog dialog = builder.create();
-        return dialog;
+        builder.create().show();
     }
 }

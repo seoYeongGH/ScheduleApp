@@ -54,8 +54,8 @@ import static com.example.scheduleapp.structure.Constant.FLAG_ADD;
 import static com.example.scheduleapp.structure.Constant.FLAG_MODIFY;
 
 public class AfterLoginFragment extends Fragment {
-    static int selectDateIndex = -1;
-    static int selectObjIndex = -1;
+    int selectDateIndex = -1;
+    int selectObjIndex = -1;
 
     MaterialCalendarView materialCalendarView;
     CalendarDay today;
@@ -101,6 +101,10 @@ public class AfterLoginFragment extends Fragment {
         setListeners();
 
         return rootView;
+    }
+
+    public void onResume(){
+        super.onResume();
     }
 
     public void refreshData(){

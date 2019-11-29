@@ -12,14 +12,10 @@ import com.example.scheduleapp.R;
 
 public class BeforeLoginFragment extends Fragment {
 
-    public BeforeLoginFragment() {
-        // Required empty public constructor
-    }
+    public BeforeLoginFragment() { }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_before_login, container, false);
     }
 

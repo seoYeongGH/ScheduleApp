@@ -26,45 +26,58 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/txtBefore"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/menuBefore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="10dp"
                     android:gravity="right"
-                    android:orientation="horizontal">
+                    app:layout_constraintBottom_toTopOf="@+id/textView28"
+                    app:layout_constraintTop_toTopOf="@+id/textView28">
 
                     <TextView
                         android:id="@+id/txtLogin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="44dp"
                         android:clickable="true"
                         android:linksClickable="false"
                         android:text="Login"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/textView28"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.96"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
+                        android:id="@+id/textView28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="7dp"
                         android:layout_marginLeft="7dp"
-                        android:layout_marginRight="7dp"
                         android:clickable="true"
                         android:linksClickable="false"
-                        android:text="/" />
+                        android:text="/"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/txtLogin" />
 
                     <TextView
                         android:id="@+id/txtJoin"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginLeft="7dp"
                         android:clickable="true"
                         android:linksClickable="false"
                         android:text="Join"
-                        android:textSize="15sp" />
-                </LinearLayout>
+                        android:textSize="15sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/textView28"
+                        app:layout_constraintStart_toEndOf="@+id/textView28" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/txtAfter"
+                    android:id="@+id/menuAfter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
