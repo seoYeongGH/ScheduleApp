@@ -19,6 +19,7 @@ public class Constant {
 
     //schedule
     public static final String DOT_COLOR = "#72AF01";
+    public static final String SELECT_DAY_COLOR = "#505050";
     public static final int CODE_MODIFY = 0;
 
     public static final String FLAG_ADD = "addSchedule";
@@ -33,7 +34,6 @@ public class Constant {
     public static final int TO_GROUP = 0;
     public static final int TO_FRIEND = 1;
 
-    public static final int USER_SCHEDULE = 0;
-    public static final int GROUP_SCHEDULE = 1;
+    public static final int FOR_USER = 0;
 
 }

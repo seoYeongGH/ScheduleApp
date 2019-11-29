@@ -26,5 +26,5 @@ public interface ScheduleService {
 
     @FormUrlEncoded
     @POST("/schedule/sch.do")
-    Call<List<ScheduleObject>> getSchedules(@FieldMap HashMap<String, String> parameters);
+    Call<List<ScheduleObject>> getSchedules(@FieldMap HashMap<String, Object> parameters);
 }

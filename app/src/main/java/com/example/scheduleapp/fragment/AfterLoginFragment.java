@@ -1,9 +1,11 @@
 package com.example.scheduleapp.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,7 +29,7 @@ import com.example.scheduleapp.SInputPage;
 import com.example.scheduleapp.recyclerView.ScheduleAdapter;
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.ScheduleService;
-import com.example.scheduleapp.structure.AllSchedules;
+import com.example.scheduleapp.structure.AllGroups;
 import com.example.scheduleapp.structure.ScheduleObject;
 import com.example.scheduleapp.structure.ScheduleViewObject;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -47,79 +49,94 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
-import static com.example.scheduleapp.structure.Constant.CODE_MODIFY;
 import static com.example.scheduleapp.structure.Constant.DOT_COLOR;
 import static com.example.scheduleapp.structure.Constant.FLAG_ADD;
 import static com.example.scheduleapp.structure.Constant.FLAG_MODIFY;
+import static com.example.scheduleapp.structure.Constant.FOR_USER;
+import static com.example.scheduleapp.structure.Constant.SELECT_DAY_COLOR;
 
 public class AfterLoginFragment extends Fragment {
-    int selectDateIndex = -1;
-    int selectObjIndex = -1;
+    private MaterialCalendarView materialCalendarView;
+    private final CalendarDay today = CalendarDay.today();
 
-    MaterialCalendarView materialCalendarView;
-    CalendarDay today;
+    private ScheduleAdapter scheduleAdapter;
+    private SelectDecorator selectDecorator;
+    private RecyclerView recSchList;
 
-    ScheduleAdapter scheduleAdapter;
-    SelectDecorator selectDecorator;
-    RecyclerView recSchList;
+    private TextView txtDate;
+    private Button btnAdd;
 
-    TextView txtDate;
-    Button btnAdd;
-
-    int currentIndex = 0;
-    int value = 1;
-    String strDate;
+    private List<ScheduleObject> schedules;
+    private int groupNum;
+    private int currentIndex = 0;
+    private int value = 1;
+    private String selectDate;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_after_login, container, false);
 
         materialCalendarView = rootView.findViewById(R.id.calendar);
         txtDate = rootView.findViewById(R.id.txtSelectDay);
-        today = CalendarDay.today();
+        recSchList = rootView.findViewById(R.id.recSelctSch);
+        btnAdd = rootView.findViewById(R.id.btnAdd);
 
         materialCalendarView.setDateTextAppearance(R.style.calDateText);
         materialCalendarView.setSelectionColor(Color.WHITE);
 
-        strDate = getStrDate(today);
-
-        HashMap hashMap = new HashMap();
-        hashMap.put("doing","initSchedule");
-        getSchedules(hashMap);
-
-        recSchList = rootView.findViewById(R.id.recSelctSch);
         scheduleAdapter = new ScheduleAdapter(getContext());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recSchList.setLayoutManager(layoutManager);
         recSchList.setAdapter(scheduleAdapter);
 
-        btnAdd = rootView.findViewById(R.id.btnAdd);
-        setListeners();
+        selectDate = getStrDate(today);
+
+        initSchedule(groupNum);
 
         return rootView;
     }
 
-    public void onResume(){
-        super.onResume();
+    public AfterLoginFragment(int groupNum){
+        this.groupNum = groupNum;
+    }
+
+    private void initSchedule(int groupNum){
+        boolean isManager = true;
+        HashMap<String,Object> hashMap = new HashMap<>();
+
+        if(groupNum == FOR_USER) {
+            hashMap.put("doing", "initSchedule");
+        }
+        else {
+            hashMap.put("doing", "getGroupSchedule");
+            hashMap.put("groupNum",groupNum);
+
+            isManager = AllGroups.getInstance().isManagerGroup(groupNum);
+            if(!isManager)
+                btnAdd.setVisibility(View.INVISIBLE);
+        }
+
+        setListeners(isManager);
+        getSchedules(hashMap);
     }
 
     public void refreshData(){
         materialCalendarView.removeDecorators();
+        selectDate = getStrDate(today);
 
-        HashMap hashMap = new HashMap();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("doing","initSchedule");
         getSchedules(hashMap);
     }
 
-    public void setListeners(){
+    private void setListeners(boolean isManager){
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                strDate = getStrDate(date);
+                selectDate = getStrDate(date);
 
                 if(selectDecorator != null)
                     materialCalendarView.removeDecorator(selectDecorator);
@@ -127,9 +144,7 @@ public class AfterLoginFragment extends Fragment {
                 selectDecorator = new SelectDecorator(date);
                 materialCalendarView.addDecorator(selectDecorator);
 
-                setSchList(scheduleAdapter,strDate);
-                recSchList.setAdapter(scheduleAdapter);
-
+                setScheduleList(selectDate);
             }
         });
         materialCalendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
@@ -142,47 +157,87 @@ public class AfterLoginFragment extends Fragment {
             }
         });
 
-        scheduleAdapter.setListener(new OnScheduleItemListener() {
-            @Override
-            public void onItemClick(ScheduleAdapter.ViewHolder holder, View view, int position) {
-                selectObjIndex = position;
-                ScheduleViewObject viewObject = scheduleAdapter.getItem(position);
+        if(isManager) {
+            scheduleAdapter.setListener(new OnScheduleItemListener() {
+                @Override
+                public void onItemClick(ScheduleAdapter.ViewHolder holder, View view, int position) {
+                    ScheduleViewObject viewObject = scheduleAdapter.getItem(position);
 
-                Intent intent = new Intent(getContext(), SInputPage.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                intent.putExtra("flag",FLAG_MODIFY);
-                intent.putExtra("date",strDate);
-                intent.putExtra("schedule",viewObject.getSchedule());
-                intent.putExtra("time",viewObject.getTime());
-                startActivityForResult(intent,CODE_MODIFY);
-            }
-        });
+                    Intent intent = new Intent(getContext(), SInputPage.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    intent.putExtra("flag", FLAG_MODIFY);
+                    intent.putExtra("groupNum", groupNum);
+                    intent.putExtra("date", selectDate);
+                    intent.putExtra("schedule", viewObject.getSchedule());
+                    intent.putExtra("time", viewObject.getTime());
+                    startActivity(intent);
+                }
+            });
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), SInputPage.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                intent.putExtra("flag",FLAG_ADD);
-                intent.putExtra("date",strDate);
-                startActivity(intent);
-            }
-        });
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), SInputPage.class);
 
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    intent.putExtra("groupNum", groupNum);
+                    intent.putExtra("flag", FLAG_ADD);
+                    intent.putExtra("date", selectDate);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
-    private int initIndex(){
-        String strToday = ""+today.getYear()+"-"+(today.getMonth()+1);
+    private int initIndex(String strDate){
+        String strToday = strDate.substring(0,7);
 
-        int i=0;
-        int end = AllSchedules.getInstance().getSize();
-        for(i=0;i<end;i++){
-            String compDate = AllSchedules.getInstance().getSchedule(i).getDate();
-            if(compDate.contains(strToday) || (compDate.compareTo(strDate)>0)) {
-                return i;
+        int i;
+        int end = schedules.size();
+        if(end == 0)
+            return 0;
+
+            for (i = 0; i < end; i++) {
+                String compDate = schedules.get(i).getDate();
+                if (compDate.contains(strToday) || compDate.compareTo(selectDate) > 0) {
+                    return i;
+                }
+            }
+
+        return end-1;
+    }
+
+    private void setScheduleList(String strDate){
+        txtDate.setText(strDate);
+
+        if(schedules!= null) {
+            scheduleAdapter.clearList();
+
+            ScheduleObject compObject;
+            int i=currentIndex;
+            int end = schedules.size();
+
+            while(i>=0 && i<end){
+                compObject = schedules.get(i);
+
+                if(compObject.getDate().equals(strDate)){
+                    ArrayList<String> schedules = compObject.getSchedule();
+
+                    for (int j = 0; j < schedules.size(); j++) {
+                        String startTime = compObject.getStartTime().get(j);
+                        String endTime = compObject.getEndTime().get(j);
+
+                        ScheduleViewObject schObj = new ScheduleViewObject(schedules.get(j), startTime + "~" + endTime);
+                        scheduleAdapter.addItem(schObj);
+                    }
+
+                    break;
+                }
+                i += value;
             }
         }
-        return i+1;
+
+        recSchList.setAdapter(scheduleAdapter);
     }
 
     private String getStrDate(CalendarDay day){
@@ -204,90 +259,59 @@ public class AfterLoginFragment extends Fragment {
         return day.getYear()+"-"+strMonth+"-"+strDay;
     }
 
-    public void setSchList(ScheduleAdapter adapter, String strDate){
-        txtDate.setText(strDate);
-
-        if(AllSchedules.getInstance().getAllSchedules()!= null) {
-            adapter.clearList();
-
-            ScheduleObject compObject = new ScheduleObject();
-            int i=currentIndex;
-            int end = AllSchedules.getInstance().getSize();
-
-            while(i>=0 && i<end){
-                compObject = AllSchedules.getInstance().getSchedule(i);
-                if(compObject.getDate().equals(strDate)){
-                    selectDateIndex = i;
-
-                    ArrayList<String> schedules = compObject.getSchedule();
-                    for (int j = 0; j < schedules.size(); j++) {
-                        String startTime = compObject.getStartTime().get(j);
-                        String endTime = compObject.getEndTime().get(j);
-
-                        ScheduleViewObject schObj = new ScheduleViewObject(schedules.get(j), startTime + "~" + endTime);
-                        adapter.addItem(schObj);
-                    }
-
-                    break;
-                }
-                i += value;
-            }
-        }
-    }
-
-    private void getSchedules(HashMap hashMap){
+    private void getSchedules(HashMap<String,Object> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         ScheduleService scheduleService = retrofit.create(ScheduleService.class);
 
         Call<List<ScheduleObject>> getSchedules = scheduleService.getSchedules(hashMap);
-
         getSchedules.enqueue(new Callback<List<ScheduleObject>>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<List<ScheduleObject>> call, Response<List<ScheduleObject>> response) {
                 if(response.isSuccessful()) {
                     if(response.body() != null) {
-                        AllSchedules.getInstance().setAllSchedules(response.body());
-                        setDecorators(AllSchedules.getInstance().getAllSchedules());
-                        currentIndex = initIndex();
-                        setSchList(scheduleAdapter,strDate);
+                        schedules = response.body();
+                        currentIndex = initIndex(selectDate);
+                        setDecorators();
+
+                        setScheduleList(selectDate);
                         recSchList.setAdapter(scheduleAdapter);
                     }
                 }
-                else
-                    Log.d("INPUT_SCH_ERR",response.errorBody().toString());
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<List<ScheduleObject>> call, Throwable t) {
-                Log.d("ERRRR",t.getMessage());
+                Log.d("ERRRR","GET_SCHEDULE_ERR");
             }
         });
     }
 
-    private void setDecorators(List<ScheduleObject> listSchObj){
-        List<CalendarDay> dayList = new ArrayList<CalendarDay>();
+    private void setDecorators(){
         Calendar calendar = Calendar.getInstance();
         CalendarDay calendarDay;
-        ArrayList<DayViewDecorator> decorators = new ArrayList<DayViewDecorator>();
+        ArrayList<DayViewDecorator> decorators = new ArrayList<>();
 
         materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator(), new OnDayDecorator());
 
-        for(int i=0; i<listSchObj.size(); i++){
-            ScheduleObject schObj = listSchObj.get(i);
+        int size = schedules.size();
+        for(int i=0; i<size; i++){
+            ScheduleObject schObj = schedules.get(i);
             String[] strSplits = schObj.getDate().split("-");
             calendar.set(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1])-1,Integer.parseInt(strSplits[2]));
             calendarDay = CalendarDay.from(calendar);
 
             decorators.add(new EventDecorator(calendarDay,DOT_COLOR,"+"+schObj.getScheduleSize()));
         }
-        materialCalendarView.addDecorators(decorators);
 
+        materialCalendarView.addDecorators(decorators);
     }
 
     protected class SundayDecorator implements DayViewDecorator{
         private final Calendar calendar = Calendar.getInstance();
 
-        public SundayDecorator(){}
+        private SundayDecorator(){}
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
@@ -303,7 +327,7 @@ public class AfterLoginFragment extends Fragment {
     protected class SaturdayDecorator implements DayViewDecorator{
         private final Calendar calendar = Calendar.getInstance();
 
-        public SaturdayDecorator(){}
+        private SaturdayDecorator(){}
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
@@ -317,7 +341,14 @@ public class AfterLoginFragment extends Fragment {
     }
 
     protected class OnDayDecorator implements DayViewDecorator{
-        public OnDayDecorator(){}
+        Context context;
+        Drawable background;
+
+        private OnDayDecorator(){
+            context = getContext();
+            if(context != null)
+                background = context.getDrawable(R.drawable.onday_background);
+        }
         @Override
         public boolean shouldDecorate(CalendarDay day) {
             return today.equals(day);
@@ -325,8 +356,10 @@ public class AfterLoginFragment extends Fragment {
 
         @Override
         public void decorate(DayViewFacade view) {
+            if(background != null)
+                view.setBackgroundDrawable(background);
+
             view.addSpan(new TextAppearanceSpan(getContext(),R.style.onDayText));
-            view.setBackgroundDrawable(getContext().getDrawable(R.drawable.onday_background));
         }
     }
 
@@ -335,7 +368,7 @@ public class AfterLoginFragment extends Fragment {
         private CalendarDay date;
         private String text;
 
-        public EventDecorator(CalendarDay date, String color, String text) {
+        private EventDecorator(CalendarDay date, String color, String text) {
             this.color = color;
             this.date = date;
             this.text = text;
@@ -359,9 +392,11 @@ public class AfterLoginFragment extends Fragment {
                     @Override
                     public void drawBackground(@NonNull Canvas canvas, @NonNull Paint paint, int i, int i1, int i2, int i3, int i4, @NonNull CharSequence charSequence, int i5, int i6, int i7) {
                         float originSize = paint.getTextSize();
-                        paint.setColor(Color.parseColor("#505050"));
+
+                        paint.setColor(Color.parseColor(SELECT_DAY_COLOR));
                         paint.setTextSize(30);
                         canvas.drawText(text, (i+i1)/2+5, i4+30, paint);
+
                         paint.setTextSize(originSize);
                     }
                 });
@@ -370,19 +405,25 @@ public class AfterLoginFragment extends Fragment {
     }
 
     protected class SelectDecorator implements DayViewDecorator{
+        Context context;
+        Drawable background;
+
         CalendarDay day;
 
-        public SelectDecorator(CalendarDay day){
+        private SelectDecorator(CalendarDay day){
+            context = getContext();
+            if(context != null)
+                background = context.getDrawable(R.drawable.select_background);
             this.day = day;
         }
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            return !(day.equals(today))&&day.equals(this.day);
+            return day.equals(this.day) &&(!day.equals(today));
         }
 
         public void decorate(DayViewFacade view){
-            view.setBackgroundDrawable(getContext().getDrawable(R.drawable.select_background));
+            view.setBackgroundDrawable(background);
             view.addSpan(new TextAppearanceSpan(getContext(),R.style.onDayText));
         }
     }

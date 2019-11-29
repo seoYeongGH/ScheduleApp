@@ -47,6 +47,16 @@ public class AllGroups {
         notManagers.add(i,obj);
     }
 
+    public boolean isManagerGroup(int groupNum){
+        int size = isManagers.size();
+        for(int i=0; i<size; i++){
+            if(groupNum == isManagers.get(i).getGroupNum())
+                return true;
+        }
+
+        return false;
+    }
+
     public ArrayList<GroupObject> getIsManagers() {
         return isManagers;
     }

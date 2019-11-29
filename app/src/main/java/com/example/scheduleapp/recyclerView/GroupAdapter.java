@@ -102,7 +102,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     }
 
     public void setGroups(ArrayList<GroupObject> isManagers, ArrayList<GroupObject> notManagers) {
-        this.groups = isManagers;
+        this.groups.addAll(isManagers);
         managerSize = isManagers.size();
 
         groups.addAll(notManagers);

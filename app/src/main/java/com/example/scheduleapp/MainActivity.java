@@ -9,13 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.scheduleapp.fragment.AfterLoginFragment;
 import com.example.scheduleapp.fragment.BeforeLoginFragment;
 import com.example.scheduleapp.structure.USession;
+
+import static com.example.scheduleapp.structure.Constant.FOR_USER;
 
 public class MainActivity extends AppCompatActivity {
     BeforeLoginFragment beforeFragment;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         beforeFragment = new BeforeLoginFragment();
-        afterFragment = new AfterLoginFragment();
+        afterFragment = new AfterLoginFragment(FOR_USER);
 
         menuBefore = findViewById(R.id.menuBefore);
         menuAfter = findViewById(R.id.menuAfter);
