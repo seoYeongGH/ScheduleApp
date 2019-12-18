@@ -24,6 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.ERR_CHK_ID;
 import static com.example.scheduleapp.structure.Constant.ERR_NULL;
@@ -32,13 +33,12 @@ import static com.example.scheduleapp.structure.Constant.DUP_ID;
 import static com.example.scheduleapp.structure.Constant.DUP_USER;
 
 public class JoinPage extends AppCompatActivity {
-
-    protected EditText iptName;
-    protected EditText iptId;
-    protected EditText iptPw;
-    protected EditText iptChkPw;
-    protected EditText iptEmail;
-    protected TextView warningPw;
+    private EditText iptName;
+    private EditText iptId;
+    private EditText iptPw;
+    private EditText iptChkPw;
+    private EditText iptEmail;
+    private TextView warningPw;
 
     private boolean chkId = false;
     private String strChkId;
@@ -58,51 +58,55 @@ public class JoinPage extends AppCompatActivity {
         iptEmail = findViewById(R.id.iptEmail);
         warningPw  =findViewById(R.id.txtWarnPw);
 
-        alertDialog = makeAlert();
-
         TextWatcher pwWatcher = getWatcher(iptChkPw);
         iptPw.addTextChangedListener(pwWatcher);
 
         TextWatcher chkWatcher = getWatcher(iptPw);
         iptChkPw.addTextChangedListener(chkWatcher);
 
-        return;
+        alertDialog = makeAlert();
     }
 
     public void onBtnChkIdClicked(View view){
         TextView warnId = findViewById(R.id.txtWarnId);
 
+        String strWarning;
         String id = iptId.getText().toString();
         int len = id.length();
 
         if(len == 0){
-            warnId.setText("ID를 입력하세요.");
-            warnId.setTextSize(15);
             strChkId = "";
+
+            strWarning = "ID를 입력하세요.";
+            warnId.setText(strWarning);
+            warnId.setTextSize(15);
 
             return;
         }
         if(chkRange(id,len)){
             chkId = true;
             strChkId = id;
+
             warnId.setTextSize(0);
         }
         else{
-            warnId.setText("ID는 영문자와 숫자만 사용가능합니다.");
-            warnId.setTextSize(15);
-            strChkId = "";
             chkId = false;
+            strChkId = "";
+
+            strWarning = "ID는 영문자와 숫자만 사용가능합니다.";
+            warnId.setText(strWarning);
+            warnId.setTextSize(15);
+
+            return ;
         }
 
         if(chkId){
-            HashMap hashMap = new HashMap();
+            HashMap<String,String> hashMap = new HashMap<>();
             hashMap.put("doing","chkId");
             hashMap.put("id",id);
 
-
             doCommunication(hashMap);
         }
-
     }
 
     public void onBtnJoinClicked(View view){
@@ -112,18 +116,18 @@ public class JoinPage extends AppCompatActivity {
         String chkPw = iptChkPw.getText().toString();
         String email = iptEmail.getText().toString();
 
-        if(name.length()==0|| pw.length()==0 || chkPw.length()==0|| email.length()==0) {
+        if(email.length()==0 || name.length()==0|| pw.length()==0 || chkPw.length()==0) {
             showAlert(ERR_NULL);
             return;
         }
 
-        if(chkId == false || !id.equals(strChkId)){
+        if( !chkId || !id.equals(strChkId)){
             showAlert(ERR_CHK_ID);
             return;
         }
 
         if(warnPwCode == 2){
-            HashMap hashMap = new HashMap();
+            HashMap<String,String> hashMap = new HashMap<>();
             hashMap.put("doing","join");
             hashMap.put("id",id);
             hashMap.put("password",pw);
@@ -132,7 +136,6 @@ public class JoinPage extends AppCompatActivity {
 
             doCommunication(hashMap);
         }
-        return;
     }
 
     private void showAlert(int code){
@@ -149,8 +152,6 @@ public class JoinPage extends AppCompatActivity {
 
         alertDialog.setMessage(msg);
         alertDialog.show();
-
-        return ;
     }
 
     private AlertDialog makeAlert(){
@@ -162,9 +163,7 @@ public class JoinPage extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
             }
         });
-
-        AlertDialog dialog = builder.create();
-        return dialog;
+        return builder.create();
     }
 
     private void doCommunication(HashMap hashMap){
@@ -176,22 +175,24 @@ public class JoinPage extends AppCompatActivity {
         Call<Integer> doService = userService.doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
-                    if("join".equals(strDoing))
-                        canJoin(response.body().intValue());
-                    else if("chkId".equals(strDoing))
-                        canUseId(response.body().intValue());
+                if(response.isSuccessful() && (response.body()!=null)){
+                    if("chkId".equals(strDoing))
+                        showAlert(response.body());
+                    else if("join".equals(strDoing))
+                        canJoin(response.body());
+
                 }
                 else{
                     Log.d("JOIN_ERR","Join Retrofit Err");
-                    Log.d("JOIN_ERR",response.errorBody().toString());
                 }
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
-
+                Log.d("ERRRR","JOIN_ERR");
             }
         });
     }
@@ -204,21 +205,13 @@ public class JoinPage extends AppCompatActivity {
                 startActivity(intent);
                 finish(); break;
             case DUP_ID: code = ERR_CHK_ID;
-            case DUP_USER: showAlert(code); break;
-            default: showAlert(code); break;
-        }
-    }
-
-    private void canUseId(int code){
-        switch (code){
-            case SUCCESS:
-            case DUP_ID: showAlert(code); break;
+            case DUP_USER:
             default: showAlert(code); break;
         }
     }
 
     private TextWatcher getWatcher(final EditText editText){
-        TextWatcher watcher = new TextWatcher() {
+        return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -249,14 +242,13 @@ public class JoinPage extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 String pw = editable.toString();
 
-                if(chkRange(pw,pw.length()) == false){
+                if(!chkRange(pw,pw.length())){
                     warningPw.setTextColor(Color.parseColor("#B90000"));
                     warningPw.setText("비밀번호는 영문자와 숫자만 사용가능합니다.");
                 }
             }
         };
 
-        return watcher;
     }
 
     private boolean chkRange(String str, int len){

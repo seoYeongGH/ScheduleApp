@@ -37,7 +37,7 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
-    Call<ArrayList<Integer>> getGroupNums(@FieldMap HashMap<String,String> parameters);
+    Call<ArrayList<Integer>> getLinkGroups(@FieldMap HashMap<String,String> parameters);
 
 
     @FormUrlEncoded

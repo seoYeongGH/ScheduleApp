@@ -66,7 +66,7 @@ public class FindPage extends AppCompatActivity {
 
         warnId.setTextSize(0);
 
-        HashMap hashMap = new HashMap();
+        HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("doing","findId");
         hashMap.put("name",name);
         hashMap.put("email",email);
@@ -87,7 +87,7 @@ public class FindPage extends AppCompatActivity {
 
         warnPw.setTextSize(0);
 
-        HashMap hashMap = new HashMap();
+        HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("doing","findPw");
         hashMap.put("name",name);
         hashMap.put("id",id);
