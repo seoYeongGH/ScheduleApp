@@ -37,7 +37,8 @@
             android:label="비밀번호 변경"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity android:name=".MenuPage" />
-        <activity android:name=".FindPage" />
+        <activity android:name=".FindPage"
+            android:theme="@style/noTitleDialogRound" />
         <activity android:name=".LoginPage" />
         <activity android:name=".JoinPage" />
         <activity android:name=".MainActivity">
@@ -47,6 +48,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

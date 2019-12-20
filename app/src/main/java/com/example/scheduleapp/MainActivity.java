@@ -1,5 +1,6 @@
 package com.example.scheduleapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -7,20 +8,39 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.scheduleapp.fragment.AfterLoginFragment;
 import com.example.scheduleapp.fragment.BeforeLoginFragment;
+import com.example.scheduleapp.fragment.MyPageFragment;
+import com.example.scheduleapp.fragment.SocialFragment;
 import com.example.scheduleapp.structure.USession;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static com.example.scheduleapp.structure.Constant.FOR_USER;
 
 public class MainActivity extends AppCompatActivity {
     BeforeLoginFragment beforeFragment;
+
     AfterLoginFragment afterFragment;
+    SocialFragment socialFragment;
+    MyPageFragment myPageFragment;
+
+    FrameLayout container;
+
+    ImageView imageView1;
+    ImageView imageView2;
+    ImageView imageView3;
+
+    BottomNavigationView navigationView;
 
     ConstraintLayout menuBefore;
     ConstraintLayout menuAfter;
@@ -34,42 +54,105 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         beforeFragment = new BeforeLoginFragment();
-        afterFragment = new AfterLoginFragment(FOR_USER);
 
-        menuBefore = findViewById(R.id.menuBefore);
+        afterFragment = new AfterLoginFragment(FOR_USER);
+        socialFragment = new SocialFragment();
+        myPageFragment = new MyPageFragment();
+
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
+
+        imageView1 = new ImageView(this);
+        imageView1.setImageResource(R.drawable.back_before1);
+        imageView1.setLayoutParams(layoutParams);
+
+        imageView2 = new ImageView(this);
+        imageView2.setImageResource(R.drawable.back_before2);
+        imageView2.setLayoutParams(layoutParams);
+
+        imageView3 = new ImageView(this);
+        imageView3.setImageResource(R.drawable.back_before3);
+        imageView3.setLayoutParams(layoutParams);
+
+        container = findViewById(R.id.container);
+
+        navigationView = findViewById(R.id.navigationView);
+
+        setDisplay();
+/*
         menuAfter = findViewById(R.id.menuAfter);
 
         txtViewId = findViewById(R.id.txtViewId);
         btnSync = findViewById(R.id.btnSync);
+        menuBefore = findViewById(R.id.menuBefore);
 
-        onTxtClicked();
-        setDisplay();
+        onTxtClicked();*/
     }
 
     private void setDisplay(){
         if(!USession.getInstance().getIsLogin()){
-                getSupportFragmentManager().beginTransaction().remove(afterFragment).commit();
-                getSupportFragmentManager().beginTransaction().add(R.id.container,beforeFragment).commit();
+            container.addView(imageView1,0);
+            container.addView(imageView2,1);
+            container.addView(imageView3,2);
 
-            menuBefore.setVisibility(View.VISIBLE);
-            menuAfter.setVisibility(View.INVISIBLE);
+            getSupportFragmentManager().beginTransaction().remove(afterFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.container,beforeFragment).commit();
 
-            txtViewId.setText("로그인 후 이용하세요.");
-            btnSync.setVisibility(View.INVISIBLE);
+            navigationView.setOnNavigationItemSelectedListener(
+                    new BottomNavigationView.OnNavigationItemSelectedListener() {
+                        @Override
+                        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                            switch(menuItem.getItemId()){
+                                case R.id.tabSch:
+                                    imageView1.setVisibility(View.VISIBLE);
+                                    imageView2.setVisibility(View.INVISIBLE);
+                                    imageView3.setVisibility(View.INVISIBLE);
+                                    return true;
+
+                                case R.id.tabSocial:
+                                    imageView1.setVisibility(View.INVISIBLE);
+                                    imageView2.setVisibility(View.VISIBLE);
+                                    imageView3.setVisibility(View.INVISIBLE);
+                                    return true;
+
+                                case R.id.tabMy:
+                                    imageView1.setVisibility(View.INVISIBLE);
+                                    imageView2.setVisibility(View.INVISIBLE);
+                                    imageView3.setVisibility(View.VISIBLE);
+                                    return true;
+                            }
+                            return false;
+                        }
+                    }
+            );
         }
         else{
-            getSupportFragmentManager().beginTransaction().remove(beforeFragment).commit();
-            getSupportFragmentManager().beginTransaction().add(R.id.container,afterFragment).commit();
+            container.removeAllViews();
 
-            menuBefore.setVisibility(View.INVISIBLE);
-            menuAfter.setVisibility(View.VISIBLE);
+            navigationView.setOnNavigationItemSelectedListener(
+                    new BottomNavigationView.OnNavigationItemSelectedListener() {
+                        @Override
+                        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                            switch(menuItem.getItemId()){
+                                case R.id.tabSch:
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.container,afterFragment).commit();
+                                    return true;
 
-            String idText = USession.getInstance().getId()+"님의 일정입니다.";
-            txtViewId.setText(idText);
-            btnSync.setVisibility(View.VISIBLE);
+                                case R.id.tabSocial:
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.container,socialFragment).commit();
+                                    return true;
+
+                                case R.id.tabMy:
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.container,myPageFragment).commit();
+                                    return true;
+                            }
+                            return false;
+                        }
+                    }
+            );
+            navigationView.setSelectedItemId(R.id.tabSch);
         }
     }
-
+/*
     private void onTxtClicked(){
        TextView txtLogin = findViewById(R.id.txtLogin);
        TextView txtJoin = findViewById(R.id.txtJoin);
@@ -141,5 +224,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
         builder.create().show();
-    }
+    }*/
 }

@@ -41,7 +41,7 @@
     <TextView
         android:id="@+id/txtWarnId"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="15dp"
         android:text="* 본인의 ID는 검색할 수 없습니다 :)"
         android:textColor="#B90000"
         android:textSize="0sp" />

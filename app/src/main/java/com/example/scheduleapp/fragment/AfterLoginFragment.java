@@ -83,6 +83,7 @@ public class AfterLoginFragment extends Fragment {
         recSchList = rootView.findViewById(R.id.recSelctSch);
         btnAdd = rootView.findViewById(R.id.btnAdd);
 
+        materialCalendarView.setClickable(false);
         materialCalendarView.setDateTextAppearance(R.style.calDateText);
         materialCalendarView.setSelectionColor(Color.WHITE);
 
@@ -133,7 +134,7 @@ public class AfterLoginFragment extends Fragment {
     }
 
     private void setListeners(boolean isManager){
-        materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+       materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 selectDate = getStrDate(date);
