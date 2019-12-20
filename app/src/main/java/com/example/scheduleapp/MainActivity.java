@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
             );
+            navigationView.setSelectedItemId(R.id.tabSch);
         }
         else{
             container.removeAllViews();

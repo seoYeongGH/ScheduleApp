@@ -8,7 +8,9 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
-        
+
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -24,4 +26,28 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext{
+    compileSdkVersion = 29
+
+    applicationId = "com.example.scheduleapp"
+    minSdkVersion = 26
+    targetSdkVersion = 29
+    versionCode = 1
+    versionName = "1.0"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+    threeTenAbp =  'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    supportV4 = 'androidx.legacy:legacy-support-v4:1.0.0'
+    supportAppCompat = 'androidx.appcompat:appcompat:1.0.0'
+    supportAnnotations = 'androidx.annotation:annotation:1.0.0'
+    testDep = [
+            testImplementation = 'junit:junit:4.12'
+    ]
+    androidTestDep = [
+            androidTestImplementation = 'androidx.test:runner:1.2.0',
+            androidTestImplementation = 'androidx.test.espresso:espresso-core:3.2.0'
+    ]
+
 }

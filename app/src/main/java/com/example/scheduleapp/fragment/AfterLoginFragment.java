@@ -301,7 +301,7 @@ public class AfterLoginFragment extends Fragment {
             ScheduleObject schObj = schedules.get(i);
             String[] strSplits = schObj.getDate().split("-");
             calendar.set(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1])-1,Integer.parseInt(strSplits[2]));
-            calendarDay = CalendarDay.from(calendar);
+            calendarDay = CalendarDay.from(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1])-1,Integer.parseInt(strSplits[2]));
 
             decorators.add(new EventDecorator(calendarDay,DOT_COLOR,"+"+schObj.getScheduleSize()));
         }
@@ -316,7 +316,8 @@ public class AfterLoginFragment extends Fragment {
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            day.copyTo(calendar);
+            //day.copyTo(calendar);
+            calendar.set(day.getYear(),day.getMonth()-1,day.getDay());
             int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
             return weekDay == Calendar.SUNDAY;
         }
@@ -332,7 +333,8 @@ public class AfterLoginFragment extends Fragment {
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            day.copyTo(calendar);
+            //day.copyTo(calendar);
+            calendar.set(day.getYear(),day.getMonth()-1,day.getDay());
             int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
             return weekDay == Calendar.SATURDAY;
         }
