@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.scheduleapp.SelectedDayPage;
 import com.example.scheduleapp.recyclerView.OnScheduleItemListener;
 import com.example.scheduleapp.R;
 import com.example.scheduleapp.SInputPage;
@@ -30,6 +31,7 @@ import com.example.scheduleapp.recyclerView.ScheduleAdapter;
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.ScheduleService;
 import com.example.scheduleapp.structure.AllGroups;
+import com.example.scheduleapp.structure.AllSchedules;
 import com.example.scheduleapp.structure.ScheduleObject;
 import com.example.scheduleapp.structure.ScheduleViewObject;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -52,26 +54,22 @@ import retrofit2.Retrofit;
 import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.DOT_COLOR;
+import static com.example.scheduleapp.structure.Constant.ERR;
 import static com.example.scheduleapp.structure.Constant.FLAG_ADD;
 import static com.example.scheduleapp.structure.Constant.FLAG_MODIFY;
 import static com.example.scheduleapp.structure.Constant.FOR_USER;
+import static com.example.scheduleapp.structure.Constant.FROM_USER_SCHEDULE;
 import static com.example.scheduleapp.structure.Constant.SELECT_DAY_COLOR;
 
 public class AfterLoginFragment extends Fragment {
     private MaterialCalendarView materialCalendarView;
     private final CalendarDay today = CalendarDay.today();
 
-    private ScheduleAdapter scheduleAdapter;
-    private SelectDecorator selectDecorator;
-    private RecyclerView recSchList;
-
-    private TextView txtDate;
-    private Button btnAdd;
-
     private List<ScheduleObject> schedules;
     private int groupNum;
     private int currentIndex = 0;
     private int value = 1;
+    private boolean haveSchedule;
     private String selectDate;
 
     @Override
@@ -79,19 +77,6 @@ public class AfterLoginFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_after_login, container, false);
 
         materialCalendarView = rootView.findViewById(R.id.calendar);
-        txtDate = rootView.findViewById(R.id.txtSelectDay);
-        recSchList = rootView.findViewById(R.id.recSelctSch);
-        btnAdd = rootView.findViewById(R.id.btnAdd);
-
-        materialCalendarView.setClickable(false);
-        materialCalendarView.setDateTextAppearance(R.style.calDateText);
-        materialCalendarView.setSelectionColor(Color.WHITE);
-
-        scheduleAdapter = new ScheduleAdapter(getContext());
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recSchList.setLayoutManager(layoutManager);
-        recSchList.setAdapter(scheduleAdapter);
 
         selectDate = getStrDate(today);
 
@@ -116,20 +101,9 @@ public class AfterLoginFragment extends Fragment {
             hashMap.put("groupNum",groupNum);
 
             isManager = AllGroups.getInstance().isManagerGroup(groupNum);
-            if(!isManager)
-                btnAdd.setVisibility(View.INVISIBLE);
         }
 
         setListeners(isManager);
-        getSchedules(hashMap);
-    }
-
-    public void refreshData(){
-        materialCalendarView.removeDecorators();
-        selectDate = getStrDate(today);
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("doing","initSchedule");
         getSchedules(hashMap);
     }
 
@@ -139,15 +113,20 @@ public class AfterLoginFragment extends Fragment {
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 selectDate = getStrDate(date);
 
-                if(selectDecorator != null)
-                    materialCalendarView.removeDecorator(selectDecorator);
+                int idx = setScheduleList(selectDate);
 
-                selectDecorator = new SelectDecorator(date);
-                materialCalendarView.addDecorator(selectDecorator);
+                Log.d("CHKCKH",""+haveSchedule);
 
-                setScheduleList(selectDate);
+                Intent intent = new Intent(getContext(), SelectedDayPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                intent.putExtra("date",selectDate);
+                intent.putExtra("haveSchedule",haveSchedule);
+                intent.putExtra("scheduleIdx",idx);
+                intent.putExtra("groupNum",groupNum);
+                startActivityForResult(intent,FROM_USER_SCHEDULE);
             }
         });
+
         materialCalendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
@@ -157,37 +136,6 @@ public class AfterLoginFragment extends Fragment {
                     value = 1;
             }
         });
-
-        if(isManager) {
-            scheduleAdapter.setListener(new OnScheduleItemListener() {
-                @Override
-                public void onItemClick(ScheduleAdapter.ViewHolder holder, View view, int position) {
-                    ScheduleViewObject viewObject = scheduleAdapter.getItem(position);
-
-                    Intent intent = new Intent(getContext(), SInputPage.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    intent.putExtra("flag", FLAG_MODIFY);
-                    intent.putExtra("groupNum", groupNum);
-                    intent.putExtra("date", selectDate);
-                    intent.putExtra("schedule", viewObject.getSchedule());
-                    intent.putExtra("time", viewObject.getTime());
-                    startActivity(intent);
-                }
-            });
-
-            btnAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getContext(), SInputPage.class);
-
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    intent.putExtra("groupNum", groupNum);
-                    intent.putExtra("flag", FLAG_ADD);
-                    intent.putExtra("date", selectDate);
-                    startActivity(intent);
-                }
-            });
-        }
     }
 
     private int initIndex(String strDate){
@@ -208,44 +156,56 @@ public class AfterLoginFragment extends Fragment {
         return end-1;
     }
 
-    private void setScheduleList(String strDate){
-        txtDate.setText(strDate);
-
+    private int setScheduleList(String strDate){
         if(schedules!= null) {
-            scheduleAdapter.clearList();
+            int schSize = schedules.size();
+            haveSchedule = false;
 
             ScheduleObject compObject;
-            int i=currentIndex;
-            int end = schedules.size();
+            compObject = schedules.get(0);
+            if(strDate.compareTo(compObject.getDate())<0) {
+                return 0;
+            }
 
-            while(i>=0 && i<end){
+            compObject = schedules.get(schSize-1);
+            if(strDate.compareTo(compObject.getDate())>0){
+                return schSize;
+            }
+
+            int i= currentIndex;
+            while(i>=0 && i<schSize){
                 compObject = schedules.get(i);
 
-                if(compObject.getDate().equals(strDate)){
-                    ArrayList<String> schedules = compObject.getSchedule();
-
-                    for (int j = 0; j < schedules.size(); j++) {
-                        String startTime = compObject.getStartTime().get(j);
-                        String endTime = compObject.getEndTime().get(j);
-
-                        ScheduleViewObject schObj = new ScheduleViewObject(schedules.get(j), startTime + "~" + endTime);
-                        scheduleAdapter.addItem(schObj);
-                    }
-
-                    break;
+                if(strDate.equals(compObject.getDate())){
+                    haveSchedule = true;
+                    return i;
                 }
+
+                haveSchedule = false;
+
+                if(value == 1) {
+                    if(strDate.compareTo(compObject.getDate())<0)
+                        return i;
+
+                }
+
+                else if(value == -1){
+                    if(strDate.compareTo(compObject.getDate())>0)
+                        return i+1;
+                }
+
                 i += value;
             }
         }
 
-        recSchList.setAdapter(scheduleAdapter);
+        return ERR;
     }
 
     private String getStrDate(CalendarDay day){
         String strMonth;
         String strDay;
 
-        int iDay = day.getMonth()+1;
+        int iDay = day.getMonth();
         if(iDay<10)
             strMonth = "0"+iDay;
         else
@@ -271,12 +231,10 @@ public class AfterLoginFragment extends Fragment {
             public void onResponse(Call<List<ScheduleObject>> call, Response<List<ScheduleObject>> response) {
                 if(response.isSuccessful()) {
                     if(response.body() != null) {
-                        schedules = response.body();
+                        AllSchedules.getInstance().setAllSchedules(response.body());
+                        schedules = AllSchedules.getInstance().getAllSchedules();
                         currentIndex = initIndex(selectDate);
                         setDecorators();
-
-                        setScheduleList(selectDate);
-                        recSchList.setAdapter(scheduleAdapter);
                     }
                 }
             }
@@ -300,8 +258,8 @@ public class AfterLoginFragment extends Fragment {
         for(int i=0; i<size; i++){
             ScheduleObject schObj = schedules.get(i);
             String[] strSplits = schObj.getDate().split("-");
-            calendar.set(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1])-1,Integer.parseInt(strSplits[2]));
-            calendarDay = CalendarDay.from(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1])-1,Integer.parseInt(strSplits[2]));
+            calendar.set(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1]),Integer.parseInt(strSplits[2]));
+            calendarDay = CalendarDay.from(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1]),Integer.parseInt(strSplits[2]));
 
             decorators.add(new EventDecorator(calendarDay,DOT_COLOR,"+"+schObj.getScheduleSize()));
         }
@@ -322,7 +280,7 @@ public class AfterLoginFragment extends Fragment {
             return weekDay == Calendar.SUNDAY;
         }
         public void decorate(DayViewFacade view){
-                view.addSpan(new ForegroundColorSpan(Color.RED));
+            view.addSpan(new ForegroundColorSpan(Color.RED));
         }
     }
 
@@ -361,7 +319,6 @@ public class AfterLoginFragment extends Fragment {
         public void decorate(DayViewFacade view) {
             if(background != null)
                 view.setBackgroundDrawable(background);
-
             view.addSpan(new TextAppearanceSpan(getContext(),R.style.onDayText));
         }
     }
@@ -387,7 +344,7 @@ public class AfterLoginFragment extends Fragment {
             view.addSpan(new DotSpan(){
                 @Override
                 public void drawBackground(Canvas canvas, Paint paint, int left, int right, int top, int baseline, int bottom, CharSequence charSequence, int start, int end, int lineNum) {
-                    paint.setColor(Color.parseColor(color));
+                   // paint.setColor(Color.parseColor(color));
                     canvas.drawCircle((left+right)/2-15,bottom+16,8,paint);
                 }
             });
@@ -396,7 +353,7 @@ public class AfterLoginFragment extends Fragment {
                     public void drawBackground(@NonNull Canvas canvas, @NonNull Paint paint, int i, int i1, int i2, int i3, int i4, @NonNull CharSequence charSequence, int i5, int i6, int i7) {
                         float originSize = paint.getTextSize();
 
-                        paint.setColor(Color.parseColor(SELECT_DAY_COLOR));
+                       // paint.setColor(Color.parseColor(SELECT_DAY_COLOR));
                         paint.setTextSize(30);
                         canvas.drawText(text, (i+i1)/2+5, i4+30, paint);
 
@@ -404,30 +361,6 @@ public class AfterLoginFragment extends Fragment {
                     }
                 });
 
-        }
-    }
-
-    protected class SelectDecorator implements DayViewDecorator{
-        Context context;
-        Drawable background;
-
-        CalendarDay day;
-
-        private SelectDecorator(CalendarDay day){
-            context = getContext();
-            if(context != null)
-                background = context.getDrawable(R.drawable.select_background);
-            this.day = day;
-        }
-
-        @Override
-        public boolean shouldDecorate(CalendarDay day) {
-            return day.equals(this.day) &&(!day.equals(today));
-        }
-
-        public void decorate(DayViewFacade view){
-            view.setBackgroundDrawable(background);
-            view.addSpan(new TextAppearanceSpan(getContext(),R.style.onDayText));
         }
     }
 

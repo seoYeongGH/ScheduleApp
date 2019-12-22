@@ -41,13 +41,6 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView3;
 
     BottomNavigationView navigationView;
-
-    ConstraintLayout menuBefore;
-    ConstraintLayout menuAfter;
-
-    TextView txtViewId;
-    Button btnSync;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
 
         imageView1 = new ImageView(this);
-        imageView1.setImageResource(R.drawable.back_before1);
+        imageView1.setImageResource(R.drawable.back_before3);
         imageView1.setLayoutParams(layoutParams);
 
         imageView2 = new ImageView(this);
@@ -70,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         imageView2.setLayoutParams(layoutParams);
 
         imageView3 = new ImageView(this);
-        imageView3.setImageResource(R.drawable.back_before3);
+        imageView3.setImageResource(R.drawable.back_before1);
         imageView3.setLayoutParams(layoutParams);
 
         container = findViewById(R.id.container);
@@ -78,18 +71,42 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
 
         setDisplay();
-/*
-        menuAfter = findViewById(R.id.menuAfter);
-
-        txtViewId = findViewById(R.id.txtViewId);
-        btnSync = findViewById(R.id.btnSync);
-        menuBefore = findViewById(R.id.menuBefore);
-
-        onTxtClicked();*/
     }
 
     private void setDisplay(){
-        if(!USession.getInstance().getIsLogin()){
+        if(USession.getInstance().getIsLogin()){
+            container.removeAllViews();
+
+            ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
+            mainLayout.setBackground(getDrawable(R.drawable.back_calendar));
+
+            navigationView.setBackground(getDrawable(R.drawable.back_calendar));
+
+            navigationView.setOnNavigationItemSelectedListener(
+                    new BottomNavigationView.OnNavigationItemSelectedListener() {
+                        @Override
+                        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                            switch(menuItem.getItemId()){
+                                case R.id.tabSch:
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.container,afterFragment).commit();
+                                    return true;
+
+                                case R.id.tabSocial:
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.container,socialFragment).commit();
+                                    return true;
+
+                                case R.id.tabMy:
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.container,myPageFragment).commit();
+                                    return true;
+                            }
+                            return false;
+                        }
+                    }
+            );
+            navigationView.setSelectedItemId(R.id.tabSch);
+
+        }
+        else{
             container.addView(imageView1,0);
             container.addView(imageView2,1);
             container.addView(imageView3,2);
@@ -118,32 +135,6 @@ public class MainActivity extends AppCompatActivity {
                                     imageView1.setVisibility(View.INVISIBLE);
                                     imageView2.setVisibility(View.INVISIBLE);
                                     imageView3.setVisibility(View.VISIBLE);
-                                    return true;
-                            }
-                            return false;
-                        }
-                    }
-            );
-            navigationView.setSelectedItemId(R.id.tabSch);
-        }
-        else{
-            container.removeAllViews();
-
-            navigationView.setOnNavigationItemSelectedListener(
-                    new BottomNavigationView.OnNavigationItemSelectedListener() {
-                        @Override
-                        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                            switch(menuItem.getItemId()){
-                                case R.id.tabSch:
-                                    getSupportFragmentManager().beginTransaction().replace(R.id.container,afterFragment).commit();
-                                    return true;
-
-                                case R.id.tabSocial:
-                                    getSupportFragmentManager().beginTransaction().replace(R.id.container,socialFragment).commit();
-                                    return true;
-
-                                case R.id.tabMy:
-                                    getSupportFragmentManager().beginTransaction().replace(R.id.container,myPageFragment).commit();
                                     return true;
                             }
                             return false;

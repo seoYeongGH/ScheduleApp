@@ -267,7 +267,12 @@ abstract class CalendarPagerView extends ViewGroup
           measureTileHeight,
           MeasureSpec.EXACTLY
       );
-
+      if (child instanceof WeekDayView) {
+        childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                80,
+                MeasureSpec.EXACTLY
+        );
+      }
       child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
     }
   }

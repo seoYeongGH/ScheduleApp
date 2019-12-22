@@ -29,7 +29,6 @@
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#FFFFFF"
         android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/navigationView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,13 +48,12 @@
         android:id="@+id/navigationView"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:background="#FFFFFF"
+        app:itemIconTint="@drawable/select_bottom_navigation"
+        app:itemTextColor="@drawable/select_bottom_navigation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:menu="@menu/bottom_menu"
-        app:itemIconTint="@drawable/select_bottom_navigation"
-        app:itemTextColor="@drawable/select_bottom_navigation"/>
+        app:menu="@menu/bottom_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

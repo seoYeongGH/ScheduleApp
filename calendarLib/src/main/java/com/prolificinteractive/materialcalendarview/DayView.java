@@ -4,14 +4,17 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -57,10 +60,10 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 
     setSelectionColor(this.selectionColor);
 
-    setGravity(Gravity.CENTER);
+    setGravity(Gravity.CENTER_HORIZONTAL|Gravity.LEFT);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      setTextAlignment(TEXT_ALIGNMENT_CENTER);
+      setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
     }
 
     setDay(day);
@@ -207,7 +210,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
     if (selectionDrawable != null) {
       setBackgroundDrawable(selectionDrawable);
     } else {
-      mCircleDrawable = generateBackground(selectionColor, fadeTime, circleDrawableRect);
+      mCircleDrawable = generateBackground(Color.parseColor("#37B6B6B6"), fadeTime, circleDrawableRect);
       setBackgroundDrawable(mCircleDrawable);
     }
   }
@@ -231,7 +234,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
   }
 
   private static Drawable generateCircleDrawable(final int color) {
-    ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+    ShapeDrawable drawable = new ShapeDrawable(new RectShape());
     drawable.getPaint().setColor(color);
     return drawable;
   }
@@ -289,19 +292,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
   }
 
   private void calculateBounds(int width, int height) {
-    final int radius = Math.min(height, width);
-    final int offset = Math.abs(height - width) / 2;
-
-    // Lollipop platform bug. Circle drawable offset needs to be half of normal offset
-    final int circleOffset =
-        Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? offset / 2 : offset;
-
-    if (width >= height) {
-      tempRect.set(offset, 0, radius + offset, height);
-      circleDrawableRect.set(circleOffset, 0, radius + circleOffset, height);
-    } else {
-      tempRect.set(0, offset, width, radius + offset);
-      circleDrawableRect.set(0, circleOffset, width, radius + circleOffset);
-    }
+      tempRect.set(0, 0, width, height);
+      circleDrawableRect.set(0, 0, width, height);
   }
 }

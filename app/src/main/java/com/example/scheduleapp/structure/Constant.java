@@ -30,10 +30,18 @@ public class Constant {
     public static final int MOD_SUCCESS = 1;
     public static final int DELETE_SUCCESS = 2;
 
+    public static final int FROM_USER_SCHEDULE = 0;
+
     //social
     public static final int TO_GROUP = 0;
     public static final int TO_FRIEND = 1;
 
     public static final int FOR_USER = 0;
 
+    //show_schedule
+    public static final int ID_MODIFY = 0;
+    public static final int ID_DELETE = 1;
+
+    public static final int CODE_ADD = 0;
+    public static final int CODE_ISCHANGED = 1;
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
   <declare-styleable name="MaterialCalendarView">
 
@@ -10,7 +10,6 @@
     <attr name="mcv_leftArrow" format="reference"/>
     <attr name="mcv_rightArrow" format="reference"/>
     <attr name="mcv_selectionColor" format="color"/>
-
     <attr name="mcv_showOtherDates" format="integer">
       <flag name="none" value="0"/>
       <flag name="other_months" value="1"/>

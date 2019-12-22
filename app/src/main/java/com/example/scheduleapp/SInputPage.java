@@ -17,6 +17,7 @@ import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.ScheduleService;
 import com.example.scheduleapp.structure.AllSchedules;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -25,6 +26,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static com.example.scheduleapp.structure.Constant.ADD_SUCCESS;
+import static com.example.scheduleapp.structure.Constant.CODE_ISCHANGED;
 import static com.example.scheduleapp.structure.Constant.DELETE_SUCCESS;
 import static com.example.scheduleapp.structure.Constant.FLAG_ADD;
 import static com.example.scheduleapp.structure.Constant.FLAG_MODIFY;
@@ -41,7 +43,10 @@ public class SInputPage extends AppCompatActivity {
 
     private String date;
     private String flag;
+    private boolean haveSchedule;
+    private int dateIdx;
     private int groupNum = -1;
+    private int scheduleIdx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +57,10 @@ public class SInputPage extends AppCompatActivity {
         date = getIntent.getStringExtra("date");
         flag = getIntent.getStringExtra("flag");
         groupNum = getIntent.getIntExtra("groupNum",-1);
+        haveSchedule = getIntent.getBooleanExtra("haveSchedule",false);
+        dateIdx = getIntent.getIntExtra("dateIdx",-1);
+        scheduleIdx = getIntent.getIntExtra("scheduleIdx",-1);
 
-        Button btnDelete = findViewById(R.id.btnDelete);
         Button btnSave = findViewById(R.id.btnSave);
 
         iptSchedule = findViewById(R.id.iptSchedule);
@@ -78,26 +85,8 @@ public class SInputPage extends AppCompatActivity {
         TextView txtDate = findViewById(R.id.txtDate);
         txtDate.setText(date);
 
-        if(FLAG_ADD.equals(flag)) {
-            btnDelete.setVisibility(View.INVISIBLE);
-        }
-        else if(FLAG_MODIFY.equals(flag)) {
-            btnDelete.setVisibility(View.VISIBLE);
+        if(FLAG_MODIFY.equals(flag))
             initModify(getIntent);
-        }
-
-        btnDelete.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                HashMap hashMap = new HashMap();
-                hashMap.put("doing","deleteSchedule");
-                hashMap.put("scheduleDate",date);
-                hashMap.put("schedule",getIntent.getStringExtra("schedule"));
-                hashMap.put("time",getIntent.getStringExtra("time"));
-
-                doCommunication(hashMap);
-            }
-        });
 
         btnSave.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -150,7 +139,8 @@ public class SInputPage extends AppCompatActivity {
                     hashMap.put("schedule",strSchedule);
                 }
                 else if(FLAG_MODIFY.equals(flag)){
-                    hashMap.put("time",getIntent.getStringExtra("time"));
+                    hashMap.put("startTime",getIntent.getStringExtra("startTime"));
+                    hashMap.put("endTime",getIntent.getStringExtra("endTime"));
                     hashMap.put("schedule",getIntent.getStringExtra("schedule"));
                     hashMap.put("aftStartTime",strTimes[0]+":"+strTimes[1]);
                     hashMap.put("aftEndTime",strTimes[2]+":"+strTimes[3]);
@@ -161,23 +151,19 @@ public class SInputPage extends AppCompatActivity {
             }
         });
     }
-
     private void initModify(Intent intent){
         iptSchedule.setText(intent.getStringExtra("schedule"));
 
-        String[] tmpTimes = intent.getStringExtra("time").split("~");
-
-        String tmpTime[] = tmpTimes[0].split(":");
+        String tmpTime[] = getIntent().getStringExtra("startTime").split(":");
         iptStartH.setText(tmpTime[0]);
         iptStartM.setText(tmpTime[1]);
 
-        tmpTime = tmpTimes[1].split(":");
+        tmpTime = getIntent().getStringExtra("endTime").split(":");
         iptEndH.setText(tmpTime[0]);
         iptEndM.setText(tmpTime[1]);
     }
 
-
-    private void doCommunication(HashMap hashMap){
+    private void doCommunication(final HashMap hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         ScheduleService scheduleService = retrofit.create(ScheduleService.class);
 
@@ -187,7 +173,7 @@ public class SInputPage extends AppCompatActivity {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
-                    processCode(response.body().intValue());
+                    processCode(response.body().intValue(),hashMap);
                 }
                 else{
                     Log.d("SCHEDULES_ERR","Input Schedule Retrofit Err");
@@ -200,16 +186,15 @@ public class SInputPage extends AppCompatActivity {
         });
     }
 
-    public void processCode(int code){
+    public void processCode(int code, HashMap hashMap){
         if(code == ADD_SUCCESS){
+            AllSchedules.getInstance().addSchedule(!haveSchedule,dateIdx,hashMap);
             Toast.makeText(getApplicationContext(), "Save!!", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        else if(code == DELETE_SUCCESS){
-            Toast.makeText(getApplicationContext(),"Delete!",Toast.LENGTH_SHORT).show();
+            setResult(CODE_ISCHANGED);
             finish();
         }
         else if(code == MOD_SUCCESS){
+            doModify(hashMap);
             Toast.makeText(getApplicationContext(),"Update!!",Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -220,6 +205,10 @@ public class SInputPage extends AppCompatActivity {
 
     public void btnExitClicked(View view){
         finish();
+    }
+
+    private void doModify(HashMap hashMap){
+        AllSchedules.getInstance().modifySchedule(dateIdx,scheduleIdx,hashMap);
     }
 
 }

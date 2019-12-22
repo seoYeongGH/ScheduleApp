@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GroupSchedulePage"></activity>
+        <activity android:name=".SelectedDayPage"
+            android:theme="@style/noTitleDialogRound"></activity>
+        <activity android:name=".GroupSchedulePage" />
         <activity
             android:name=".MemberActivity"
             android:theme="@style/noTitleDialog" />
@@ -27,7 +29,7 @@
         <activity android:name=".SocialPage" />
         <activity
             android:name=".SInputPage"
-            android:theme="@style/noTitleDialog" />
+            android:theme="@style/noTitleDialogRound" />
         <activity
             android:name=".WithdrawPage"
             android:label="탈퇴하기"
@@ -37,7 +39,8 @@
             android:label="비밀번호 변경"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity android:name=".MenuPage" />
-        <activity android:name=".FindPage"
+        <activity
+            android:name=".FindPage"
             android:theme="@style/noTitleDialogRound" />
         <activity android:name=".LoginPage" />
         <activity android:name=".JoinPage" />

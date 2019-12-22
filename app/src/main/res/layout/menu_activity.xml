@@ -59,7 +59,7 @@
             android:clickable="true"
             android:text="▶ 내가 작성한 글"
             android:textColor="#303030"
-            android:textSize="19sp"/>
+            android:textSize="19sp" />
 
         <TextView
             android:id="@+id/txtInfo"
@@ -69,7 +69,7 @@
             android:clickable="true"
             android:text="▶ 내 정보 보기"
             android:textColor="#303030"
-            android:textSize="19sp"/>
+            android:textSize="19sp" />
 
         <TextView
             android:id="@+id/txtChangePw"

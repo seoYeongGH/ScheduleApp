@@ -361,7 +361,7 @@ public class MaterialCalendarView extends ViewGroup {
 
       setSelectionColor(
           a.getColor(
-              R.styleable.MaterialCalendarView_mcv_selectionColor,
+              R.color.mcv_text_date_dark,
               getThemeAccentColor(context)
           )
       );
@@ -1560,7 +1560,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     final int weekCount = getWeekCountBasedOnMode();
 
-    final int viewTileHeight = getTopbarVisible() ? (weekCount + 1) : weekCount;
+    final int viewTileHeight = weekCount;
 
     //Calculate independent tile sizes for later
     int desiredTileWidth = desiredWidth / DEFAULT_DAYS_IN_WEEK;
@@ -1586,7 +1586,8 @@ public class MaterialCalendarView extends ViewGroup {
     } else if (specWidthMode == MeasureSpec.EXACTLY || specWidthMode == MeasureSpec.AT_MOST) {
       if (specHeightMode == MeasureSpec.EXACTLY) {
         //Pick the smaller of the two explicit sizes
-        measureTileSize = Math.min(desiredTileWidth, desiredTileHeight);
+        measureTileWidth = desiredTileWidth;
+        measureTileHeight = desiredTileHeight;
       } else {
         //Be the width size the user wants
         measureTileSize = desiredTileWidth;

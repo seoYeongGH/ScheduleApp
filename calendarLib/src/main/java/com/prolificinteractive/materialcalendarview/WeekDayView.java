@@ -22,10 +22,10 @@ import org.threeten.bp.DayOfWeek;
   public WeekDayView(final Context context, final DayOfWeek dayOfWeek) {
     super(context);
 
-    setGravity(Gravity.CENTER);
+    setGravity(Gravity.TOP|Gravity.LEFT);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      setTextAlignment(TEXT_ALIGNMENT_CENTER);
+      setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
     }
 
     setDayOfWeek(dayOfWeek);

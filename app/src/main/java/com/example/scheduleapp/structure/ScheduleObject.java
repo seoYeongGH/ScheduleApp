@@ -38,15 +38,15 @@ public class ScheduleObject extends JSONObject{
         return scheduledate;
     }
 
-    public  ArrayList<String> getStartTime() {
+    public  ArrayList<String> getStartTimes() {
         return startTimes;
     }
 
-    public  ArrayList<String> getEndTime() {
+    public  ArrayList<String> getEndTimes() {
         return endTimes;
     }
 
-    public  ArrayList<String> getSchedule() {
+    public  ArrayList<String> getSchedules() {
         return schedules;
     }
 
@@ -66,4 +66,9 @@ public class ScheduleObject extends JSONObject{
         this.schedules = schedule;
     }
 
+    public void deleteSchedule(int scheduleIdx){
+            startTimes.remove(scheduleIdx);
+            endTimes.remove(scheduleIdx);
+            schedules.remove(scheduleIdx);
+    }
 }
