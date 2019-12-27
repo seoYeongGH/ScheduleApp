@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back_calendar"
     android:orientation="vertical"
     tools:context=".JoinPage">
 
@@ -213,7 +214,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnJoinYes"
+            android:id="@+id/btnJoinCancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -221,13 +222,13 @@
             android:layout_marginRight="15dp"
             android:layout_weight="1"
             android:background="@drawable/btn_black"
-            android:onClick="onBtnJoinClicked"
-            android:text="Join"
+            android:onClick="onBtnCancelClicked"
+            android:text="Cancel"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnJoinCancel"
+            android:id="@+id/btnJoinYes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -235,8 +236,8 @@
             android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:background="@drawable/btn_black"
-            android:onClick="onBtnCancelClicked"
-            android:text="Cancel"
+            android:onClick="onBtnJoinClicked"
+            android:text="Join"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 

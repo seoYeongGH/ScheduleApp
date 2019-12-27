@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +18,8 @@ import com.example.scheduleapp.recyclerView.MemberAdapter;
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.AllFriends;
+import com.example.scheduleapp.structure.AllGroups;
+import com.example.scheduleapp.structure.GroupObject;
 
 import java.util.HashMap;
 
@@ -24,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class CreateGroupPage extends AppCompatActivity {
@@ -61,6 +66,7 @@ public class CreateGroupPage extends AppCompatActivity {
             return;
         }
         txtWarn.setTextSize(0);
+
         HashMap hashMap = new HashMap();
         hashMap.put("doing","createGroup");
         hashMap.put("name",name);
@@ -69,7 +75,7 @@ public class CreateGroupPage extends AppCompatActivity {
         SendInvite(hashMap);
     }
 
-    private void SendInvite(HashMap hashMap){
+    private void SendInvite(final HashMap hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
@@ -77,8 +83,15 @@ public class CreateGroupPage extends AppCompatActivity {
         doService.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.body() == SUCCESS)
+                if(response.isSuccessful()) {
+                    GroupObject newGroup = new GroupObject();
+                    newGroup.setGroupNum(response.body());
+                    newGroup.setGroupName(hashMap.get("name").toString());
+
+                    AllGroups.getInstance().addManagerGroup(newGroup);
+
                     showAlert(adapter.getInviteNum());
+                }
                 else
                     Toast.makeText(getApplicationContext(),"Error!!",Toast.LENGTH_SHORT).show();
             }
@@ -98,6 +111,8 @@ public class CreateGroupPage extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                setResult(CODE_ISADDED);
+
                 finish();
             }
         });

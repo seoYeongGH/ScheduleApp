@@ -12,8 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SelectedDayPage"
-            android:theme="@style/noTitleDialogRound"></activity>
+        <activity android:name=".ChangeEmailActivity"
+            android:theme="@style/noTitleDialog"></activity>
+        <activity
+            android:name=".CheckPwActivity"
+            android:theme="@style/noTitleDialogRound" />
+        <activity
+            android:name=".MyInfoActivity"
+            android:theme="@style/noTitleDialog" />
+        <activity
+            android:name=".SelectedDayPage"
+            android:theme="@style/noTitleDialogRound" />
         <activity android:name=".GroupSchedulePage" />
         <activity
             android:name=".MemberActivity"
@@ -24,24 +33,17 @@
             android:theme="@style/noTitleDialogRound" />
         <activity
             android:name=".AddFriendPage"
-            android:label="친구 찾기"
-            android:theme="@style/noTitleDialog" />
-        <activity android:name=".SocialPage" />
+            android:theme="@style/noTitleDialogRound" />
         <activity
             android:name=".SInputPage"
             android:theme="@style/noTitleDialogRound" />
         <activity
-            android:name=".WithdrawPage"
-            android:label="탈퇴하기"
-            android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity
-            android:name=".ChangePwPage"
-            android:label="비밀번호 변경"
-            android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity android:name=".MenuPage" />
-        <activity
             android:name=".FindPage"
             android:theme="@style/noTitleDialogRound" />
+        <activity
+            android:name=".ChangePwPage"
+            android:theme="@style/noTitleDialog" />
+        <activity android:name=".MenuPage" />
         <activity android:name=".LoginPage" />
         <activity android:name=".JoinPage" />
         <activity android:name=".MainActivity">

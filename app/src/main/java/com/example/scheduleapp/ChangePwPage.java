@@ -25,11 +25,9 @@ import static com.example.scheduleapp.structure.Constant.ERR_LOG_PW;
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class ChangePwPage extends AppCompatActivity {
-    EditText iptPw;
     EditText iptNewPw;
     EditText iptChkNew;
 
-    TextView txtChkPw;
     TextView txtWarnNew;
     TextView txtWarmNull;
 
@@ -39,11 +37,9 @@ public class ChangePwPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_pw_activity);
 
-        iptPw = findViewById(R.id.iptPw);
         iptNewPw = findViewById(R.id.iptNewPw);
         iptChkNew = findViewById(R.id.iptChkNew);
 
-        txtChkPw = findViewById(R.id.txtChkPw);
         txtWarnNew = findViewById(R.id.txtNewPw);
         txtWarmNull = findViewById(R.id.txtWarnNull);
 
@@ -52,6 +48,10 @@ public class ChangePwPage extends AppCompatActivity {
 
         TextWatcher newChkWatcher = getWatcher(iptNewPw);
         iptChkNew.addTextChangedListener(newChkWatcher);
+    }
+
+    public void onBtnExitClicked(View view){
+        finish();
     }
 
     public void onBtnOkClicked(View view){
@@ -64,12 +64,10 @@ public class ChangePwPage extends AppCompatActivity {
         }
 
         if(warnPwCode == 0){
-            String oldPw = iptPw.getText().toString();
             String newPw = iptNewPw.getText().toString();
 
             HashMap hashMap = new HashMap();
             hashMap.put("doing","changePw");
-            hashMap.put("oldPw",oldPw);
             hashMap.put("newPw",newPw);
 
             doCommunication(hashMap);
@@ -93,7 +91,7 @@ public class ChangePwPage extends AppCompatActivity {
                     processCode(response.body().intValue());
                 }
                 else{
-                    Log.d("Login_ERR","Login Retrofit Err");
+                    Log.d("CHANGE_PW_ERR","Change Pw Retrofit Err");
                 }
             }
 
@@ -105,13 +103,6 @@ public class ChangePwPage extends AppCompatActivity {
     }
 
     private void processCode(int code){
-        if(code == ERR_LOG_PW){
-            txtChkPw.setTextSize(15);
-            return;
-        }
-        else{
-            txtChkPw.setTextSize(0);
-
             if(code == SUCCESS){
                 Toast.makeText(this, "비밀번호가 변경되었습니다.",Toast.LENGTH_LONG).show();
                 finish();
@@ -120,7 +111,7 @@ public class ChangePwPage extends AppCompatActivity {
                 Toast.makeText(this, "Error!!",Toast.LENGTH_LONG).show();
 
             }
-        }
+
     }
 
     private TextWatcher getWatcher(final EditText editText){

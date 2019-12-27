@@ -4,24 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back_calendar"
     android:orientation="vertical"
     tools:context=".InvitePage">
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="#F0E0B4"
-        android:gravity="center"
-        android:text="Invitation"
-        android:textColor="@android:color/background_light"
+        android:id="@+id/textView28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/concert_one"
+        android:gravity="left|center_vertical"
+        android:text="SCHappy"
+        android:textColor="#000000"
+        android:textColorHighlight="#00FFFFFF"
         android:textSize="30sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="받은 초대 목록"
+        android:textColor="#2E2E2E"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recInvite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/border_dim" />
 
 </LinearLayout>

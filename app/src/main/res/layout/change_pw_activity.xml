@@ -3,59 +3,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="350dp"
+    android:background="@drawable/back_calendar"
     android:orientation="vertical"
     android:paddingTop="20dp"
     android:paddingBottom="3dp"
     tools:context=".ChangePwPage">
 
-    <TextView
-        android:id="@+id/textView13"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="현재 비밀번호"
-        android:textColor="#F1EFEF"
-        android:textSize="20sp" />
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/iptPw"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/whitelayout"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:textColor="#2E2E2E"
-        android:textSize="20sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/concert_one"
+            android:gravity="top|left"
+            android:text="SCHappy"
+            android:textColor="#000000"
+            android:textColorHighlight="#00FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="normal" />
 
-    <TextView
-        android:id="@+id/txtChkPw"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="22dp"
-        android:gravity="right"
-        android:text="비밀번호가 일치하지 않습니다."
-        android:textColor="#C70101"
-        android:textSize="0sp" />
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/exit"
+            android:onClick="onBtnExitClicked" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:text="새 비밀번호"
-        android:textColor="#F1EFEF"
-        android:textSize="20sp" />
+        android:textColor="#313131"
+        android:textSize="19sp" />
 
     <EditText
         android:id="@+id/iptNewPw"
@@ -64,25 +57,28 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/whitelayout"
+        android:backgroundTint="#2B2B2B"
         android:ems="10"
         android:inputType="textPassword"
         android:paddingLeft="5sp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="#2E2E2E"
+        android:textColorHighlight="#1B1B1B"
+        android:textColorHint="#2B2B2B"
+        android:textColorLink="#252525"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/textView17"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:text="새 비밀번호 확인"
-        android:textColor="#F1EFEF"
-        android:textSize="20sp" />
+        android:textColor="#313131"
+        android:textSize="19sp" />
 
     <EditText
         android:id="@+id/iptChkNew"
@@ -91,7 +87,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/whitelayout"
+        android:backgroundTint="#2B2B2B"
         android:ems="10"
         android:inputType="textPassword"
         android:paddingLeft="5sp"
@@ -110,6 +106,7 @@
         android:textColor="#C70101"
         android:textSize="0sp" />
 
+
     <TextView
         android:id="@+id/txtWarnNull"
         android:layout_width="match_parent"
@@ -121,34 +118,24 @@
         android:textSize="0sp" />
 
 
-    <LinearLayout
+    <Button
+        android:id="@+id/btnFind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="1dp"
-            android:layout_weight="1"
-            android:background="#000000"
-            android:clickable="false"
-            android:onClick="onBtnCancelClicked"
-            android:text="Cancel"
-            android:textColor="#F1EFEF" />
-
-        <Button
-            android:id="@+id/btnOk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="1"
-            android:background="#000000"
-            android:onClick="onBtnOkClicked"
-            android:text="@android:string/ok"
-            android:textColor="#F1F0EF" />
-    </LinearLayout>
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/transparent_black"
+        android:onClick="onBtnOkClicked"
+        android:text="입력"
+        android:textAllCaps="false"
+        android:textColor="#313131"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iptPw"
+        app:layout_constraintVertical_bias="0.0" />
 
 </LinearLayout>

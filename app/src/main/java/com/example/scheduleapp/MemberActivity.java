@@ -2,6 +2,7 @@ package com.example.scheduleapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,7 +61,9 @@ public class MemberActivity extends AppCompatActivity {
         afterClk = findViewById(R.id.layoutAfterClk);
 
         TextView txtName = findViewById(R.id.txtGpName);
+
         recMember = findViewById(R.id.recMember);
+        recMember.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
 
         String groupName = getIntent.getStringExtra("groupName");
         txtName.setText(groupName);
@@ -140,30 +143,35 @@ public class MemberActivity extends AppCompatActivity {
     }
 
     public void onBtnSaveClicked(View view){
-        btnHashMap.put("ids",memberAdapter.getIds());
+        if(memberAdapter.getInviteNum() != 0) {
+            btnHashMap.put("ids", memberAdapter.getIds());
 
-        Retrofit retrofit = RetroController.getInstance().getRetrofit();
-        UserService userService = retrofit.create(UserService.class);
+            Retrofit retrofit = RetroController.getInstance().getRetrofit();
+            UserService userService = retrofit.create(UserService.class);
 
-        Call<Integer> doService = userService.doService(btnHashMap);
-        doService.enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.body() == SUCCESS)
-                    showAlert();
-                else
-                    Toast.makeText(getApplicationContext(),"Error!!",Toast.LENGTH_SHORT).show();
-            }
+            Call<Integer> doService = userService.doService(btnHashMap);
+            doService.enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    if (response.isSuccessful())
+                        showAlert();
+                    else
+                        Toast.makeText(getApplicationContext(), "Error!!", Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
+        else{
+            btnHashMap.put("doing","selectedNull");
+            showAlert();
+        }
     }
 
     public void onBtnCancelClicked(View view){
-        members.add(managerPos,managerObj);
         recMember.setAdapter(adapter);
 
         beforeClk.setVisibility(View.VISIBLE);
@@ -204,6 +212,9 @@ public class MemberActivity extends AppCompatActivity {
         }
         else if("withdrawMember".equals(btnHashMap.get("doing"))){
             alertDialog.setMessage(btnHashMap.get("name")+"그룹에서 친구들을 삭제했습니다. :(");
+        }
+        else if("selectedNull".equals(btnHashMap.get("doing"))){
+            alertDialog.setMessage("아무에게도 신청을 보내지 않았습니다.");
         }
 
         alertDialog.show();

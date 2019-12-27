@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:layout_height="350dp"
+    android:background="@drawable/back_calendar"
     android:orientation="vertical"
     android:paddingLeft="15dp"
     android:paddingTop="17dp"
@@ -12,23 +12,27 @@
     android:paddingBottom="10dp"
     tools:context=".AddFriendPage">
 
+
     <TextView
-        android:id="@+id/textView26"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
-        android:text="친구 찾기"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/concert_one"
+        android:gravity="top|left"
+        android:text="SCHappy"
+        android:textColor="#000000"
+        android:textColorHighlight="#00FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/textView21"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="7dp"
-        android:text="찾으려는 친구의 이름과 ID를 입력해주세요."
-        android:textColor="#333333"
-        android:textSize="16sp" />
+        android:text="찾으려는 친구의 ID와 이름을 입력해주세요."
+        android:textColor="#313131"
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/txtWarn"
@@ -38,88 +42,79 @@
         android:textColor="#B90000"
         android:textSize="0sp" />
 
-    <TextView
-        android:id="@+id/txtWarnId"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:text="* 본인의 ID는 검색할 수 없습니다 :)"
-        android:textColor="#B90000"
-        android:textSize="0sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="이름"
-                android:textColor="#1F1F1F"
-                android:textSize="19sp" />
+                android:text="ID : "
+                android:textColor="#313131"
+                android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="right"
-                android:text="ID"
-                android:textColor="#1F1F1F"
-                android:textSize="19sp" />
+                android:text="이름 : "
+                android:textColor="#313131"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/iptName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/whitelayout"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:paddingLeft="7dp"
-                android:paddingTop="1dp"
-                android:paddingBottom="2dp"
-                android:textColor="#1F1F1F"
-                android:textSize="19sp" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:paddingRight="10dp">
 
             <EditText
                 android:id="@+id/iptId"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:background="@drawable/whitelayout"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:paddingLeft="7dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:textColor="#1F1F1F"
-                android:textSize="19sp" />
+                android:textColorHighlight="#313131" />
 
-
+            <EditText
+                android:id="@+id/iptName"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="text"
+                android:textColorHighlight="#313131" />
         </LinearLayout>
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/txtWarnExist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="47dp"
+        android:layout_marginLeft="35dp"
         android:text="이미 친구입니다 :)"
         android:textColor="#B90000"
         android:textSize="0sp" />
@@ -128,8 +123,9 @@
         android:id="@+id/layoutFind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="45dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:background="#B4E9E9E9"
         android:orientation="horizontal"
         android:padding="5dp"
         android:visibility="gone">
@@ -138,18 +134,22 @@
             android:id="@+id/txtInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
             android:layout_weight="1"
             android:text="TextView"
+            android:textColor="#313131"
             android:textSize="19sp" />
 
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="55dp"
             android:layout_height="40dp"
-            android:background="@drawable/black_border"
+            android:background="@drawable/btn_black"
             android:onClick="onBtnAddClicked"
             android:text="추가"
+            android:textColor="#FFFFFF"
             android:textStyle="bold" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -163,22 +163,25 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:background="@drawable/btn_black"
+            android:background="@drawable/transparent_black"
             android:onClick="onBtnCancelClicked"
             android:text="Cancel"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF" />
+            android:textColor="#313131"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnFind"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/btn_black"
+            android:background="@drawable/transparent_black"
             android:onClick="onBtnFindClicked"
             android:text="Find"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF" />
+            android:textColor="#313131"
+            android:textSize="15sp"
+            android:textStyle="bold" />
     </LinearLayout>
-
 </LinearLayout>

@@ -4,68 +4,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back_calendar"
     android:orientation="vertical"
     tools:context=".GroupSchedulePage">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/concert_one"
+            android:text="SCHappy"
+            android:textColor="#000000"
+            android:textColorHighlight="#00FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Group : "
+            android:textColor="#333333"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txtGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:text="TextView"
+            android:textColor="#333333"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnConnect"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/btn_connect"
+        android:onClick="onBtnConnect"
+        android:text="연동하기"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btnDisconnect"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/btn_disconnect"
+        android:onClick="onBtnDisconnect"
+        android:text="연동해제"
+        android:textColor="#E8427A00"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="5dp"
-        android:paddingTop="30dp"
-        android:paddingRight="5dp">
+        android:fillViewport="true">
 
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txtGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="bottom"
-                    android:text="TextView"
-                    android:textColor="#252525"
-                    android:textSize="17sp" />
-
-                <Button
-                    android:id="@+id/btnConnect"
-                    android:layout_width="70dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/blue_btn"
-                    android:onClick="onBtnConnect"
-                    android:text="연동하기"
-                    android:textColor="#F0F0F0" />
-
-                <Button
-                    android:id="@+id/btnDisconnect"
-                    android:layout_width="70dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/trans_blue_btn"
-                    android:onClick="onBtnDisconnect"
-                    android:text="연동해제"
-                    android:textColor="#485BC9"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-            <RelativeLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"></RelativeLayout>
-        </LinearLayout>
+        </FrameLayout>
     </ScrollView>
+
 </LinearLayout>

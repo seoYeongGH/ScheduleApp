@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment.MyPageFragment" >
+    tools:context=".fragment.MyPageFragment">
 
-    <TextView
-        android:id="@+id/textView6"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="#363636"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
-        android:text="Menu"
-        android:textColor="@android:color/background_light"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/smile" />
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="#313131"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=" 님"
+            android:textColor="#313131"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,71 +56,65 @@
         android:paddingBottom="15dp">
 
         <TextView
-            android:id="@+id/txtSocial"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:clickable="true"
-            android:text="▶ 친구/그룹 관리"
-            android:textColor="#303030"
-            android:textSize="19sp" />
-
-        <TextView
             android:id="@+id/txtInvite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:clickable="true"
-            android:text="▶ 받은 신청  "
+            android:text="▷ 받은 초대 신청 "
             android:textColor="#303030"
-            android:textSize="19sp" />
+            android:textSize="20sp" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/txtGetInfo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="30dp"
             android:clickable="true"
-            android:text="▶ 내가 작성한 글"
+            android:text="▷ 내 정보 보기"
             android:textColor="#303030"
-            android:textSize="19sp"/>
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/txtInfo"
-            android:layout_width="match_parent"
+            android:id="@+id/txtChangeEmail"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
             android:clickable="true"
-            android:text="▶ 내 정보 보기"
+            android:text="▷ 이메일 변경하기"
             android:textColor="#303030"
-            android:textSize="19sp"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/txtChangePw"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:clickable="true"
-            android:text="▶ 비밀번호 변경"
+            android:text="▷ 비밀번호 변경하기"
             android:textColor="#303030"
-            android:textSize="19sp" />
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:text="로그아웃"
+            android:textColor="#313131"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/txtWithdraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:text="탈퇴하기"
+            android:textColor="#D83F3F"
+            android:textSize="17sp" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/txtInfos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:textColor="#000000"
-        android:textSize="0sp" />
-
-    <TextView
-        android:id="@+id/txtWithdraw"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:clickable="true"
-        android:gravity="right"
-        android:text="탈퇴하기"
-        android:textSize="13sp" />
 </LinearLayout>

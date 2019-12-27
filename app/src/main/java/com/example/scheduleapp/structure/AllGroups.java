@@ -1,5 +1,6 @@
 package com.example.scheduleapp.structure;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 
 public class AllGroups {
@@ -20,7 +21,7 @@ public class AllGroups {
         return instance;
     }
 
-    public void addManagerGroup(GroupObject obj){
+    public int addManagerGroup(GroupObject obj){
         String groupName = obj.getGroupName();
         int size = isManagers.size();
         int i=0;
@@ -31,6 +32,8 @@ public class AllGroups {
                     break;
             }
         isManagers.add(i,obj);
+
+            return i;
     }
 
 
@@ -57,6 +60,9 @@ public class AllGroups {
         return false;
     }
 
+    public GroupObject getManagerObject(int idx){
+        return isManagers.get(idx);
+    }
     public ArrayList<GroupObject> getIsManagers() {
         return isManagers;
     }
@@ -75,5 +81,9 @@ public class AllGroups {
 
     public void setInit(boolean init){
         isInit = init;
+    }
+
+    public boolean getInit(){
+        return isInit;
     }
 }

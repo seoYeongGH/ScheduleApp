@@ -8,9 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,8 @@ import retrofit2.Retrofit;
 
 import static com.example.scheduleapp.structure.Constant.CODE_ADD;
 import static com.example.scheduleapp.structure.Constant.CODE_ISCHANGED;
+import static com.example.scheduleapp.structure.Constant.CODE_MODIFY;
+import static com.example.scheduleapp.structure.Constant.CODE_NOTCHANGED;
 import static com.example.scheduleapp.structure.Constant.DELETE_SUCCESS;
 import static com.example.scheduleapp.structure.Constant.ERR;
 import static com.example.scheduleapp.structure.Constant.FLAG_ADD;
@@ -46,6 +51,8 @@ public class SelectedDayPage extends AppCompatActivity {
     RecyclerView recSchedules;
     ScheduleAdapter scheduleAdapter;
 
+    boolean isChanged;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,18 +64,43 @@ public class SelectedDayPage extends AppCompatActivity {
 
         groupNum = getIntent.getIntExtra("groupNum",-1);
 
+        Button btnAdd = findViewById(R.id.btnAdd);
+        if(!getIntent.getBooleanExtra("isManager",true))
+            btnAdd.setVisibility(View.INVISIBLE);
+
         strDate = getIntent.getStringExtra("date");
         TextView txtDate = findViewById(R.id.txtDate);
         txtDate.setText(strDate);
 
         haveSchedule = getIntent.getBooleanExtra("haveSchedule",false);
         dateIdx = getIntent.getIntExtra("scheduleIdx", ERR);
+
+        isChanged = false;
     }
 
     public void onResume(){
         super.onResume();
 
         setView(false);
+    }
+
+    public boolean dispatchTouchEvent(MotionEvent me){
+        Rect dialogBounds = new Rect();
+        getWindow().getDecorView().getHitRect(dialogBounds);
+
+        if(!dialogBounds.contains((int)me.getX(),(int)me.getY()))
+            return false;
+
+        return super.dispatchTouchEvent(me);
+    }
+
+    public void onBackPressed() {
+        if(isChanged)
+            setResult(CODE_ISCHANGED);
+        else
+            setResult(CODE_NOTCHANGED);
+
+        finish();
     }
 
     private void setView(boolean isDeleted){
@@ -109,6 +141,11 @@ public class SelectedDayPage extends AppCompatActivity {
     }
 
     public void onBtnExitClicked(View view){
+        if(isChanged)
+            setResult(CODE_ISCHANGED);
+        else
+            setResult(CODE_NOTCHANGED);
+
         finish();
     }
 
@@ -127,8 +164,10 @@ public class SelectedDayPage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
 
-        if(resultCode == CODE_ISCHANGED)
+        if(resultCode == CODE_ISCHANGED) {
+            isChanged  = true;
             haveSchedule = true;
+        }
     }
 
 
@@ -144,7 +183,7 @@ public class SelectedDayPage extends AppCompatActivity {
         intent.putExtra("endTime",schedules.getEndTimes().get(position));
         intent.putExtra("dateIdx",dateIdx);
         intent.putExtra("scheduleIdx",position);
-        startActivity(intent);
+        startActivityForResult(intent,CODE_MODIFY);
     }
 
     private void confirmDelete(final int position){
@@ -175,6 +214,7 @@ public class SelectedDayPage extends AppCompatActivity {
         hashMap.put("schedule",schedules.getSchedules().get(position));
         hashMap.put("startTime",schedules.getStartTimes().get(position));
         hashMap.put("endTime",schedules.getEndTimes().get(position));
+        hashMap.put("groupNum",groupNum);
 
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         ScheduleService scheduleService = retrofit.create(ScheduleService.class);
@@ -189,6 +229,8 @@ public class SelectedDayPage extends AppCompatActivity {
                         AllSchedules.getInstance().deleteSchedule(dateIdx,position);
                         Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
 
+                        isChanged = true;
+                        Log.d("CHKCHK","DELTE:"+isChanged);
                         if(scheduleSize == 1) {
                             setView(true);
                             haveSchedule = false;

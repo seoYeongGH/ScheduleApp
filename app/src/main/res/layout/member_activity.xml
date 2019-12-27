@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="15dp"
-    android:layout_marginBottom="15dp"
+    android:background="@drawable/back_calendar"
     android:orientation="vertical"
     tools:context=".MemberActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="5dp"
         android:orientation="horizontal">
 
@@ -20,6 +20,7 @@
             android:id="@+id/txtGpName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:gravity="bottom"
             android:text="TextView"
             android:textColor="#3A3A3A"
@@ -29,6 +30,7 @@
             android:id="@+id/textView27"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="bottom"
             android:layout_weight="1"
             android:gravity="bottom"
             android:text=" Group"
@@ -37,25 +39,35 @@
 
         <Button
             android:id="@+id/btnExit"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/x"
+            android:background="@drawable/exit"
             android:onClick="onBtnExitClicked"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.98"
             app:layout_constraintStart_toEndOf="@+id/txtDate"
             app:layout_constraintTop_toTopOf="parent" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:text="member"
+        android:textColor="#3A3A3A"
+        android:textSize="18sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recMember"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="1dp"
-        android:background="@drawable/dim_background">
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/transparent_black">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -63,6 +75,7 @@
         android:id="@+id/frameBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:visibility="gone">
 
         <LinearLayout

@@ -69,7 +69,9 @@ public class GroupSchedulePage extends AppCompatActivity {
         setContentView(R.layout.group_schedule_activity);
 
         Intent getIntent = getIntent();
+
         TextView txtGroup = findViewById(R.id.txtGroup);
+        txtGroup.setPaintFlags(txtGroup.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
 
         groupNum = getIntent.getIntExtra("groupNum",-1);
 
@@ -87,7 +89,7 @@ public class GroupSchedulePage extends AppCompatActivity {
         }
         setBtnView(isConnect);
 
-        txtGroup.setText(getIntent.getStringExtra("groupName")+"그룹의 일정입니다.");
+        txtGroup.setText(getIntent.getStringExtra("groupName"));
 
         AfterLoginFragment fragment  = new AfterLoginFragment(groupNum);
         getSupportFragmentManager().beginTransaction().add(R.id.container,fragment).commit();

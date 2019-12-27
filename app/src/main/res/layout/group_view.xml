@@ -2,36 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
+    android:layout_marginLeft="15dp"
     android:layout_marginTop="5dp"
-    android:layout_marginEnd="5dp"
-    android:layout_marginRight="5dp">
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="5dp"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:text="TextView"
         android:textColor="#131313"
-        android:textSize="19sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btnDelete"
         android:layout_width="80dp"
         android:layout_height="45dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/trans_red"
-        android:text="delete"
+        android:background="@drawable/transparent_red"
+        android:text="Delete"
         android:textAllCaps="false"
-        android:textColor="#790101" />
+        android:textColor="#790101"
+        android:textSize="15sp" />
 
     <Button
         android:id="@+id/btnMember"
         android:layout_width="80dp"
         android:layout_height="45dp"
-        android:background="@drawable/whitelayout"
-        android:text="member"
+        android:background="@drawable/transparent_black"
+        android:text="Member"
         android:textAllCaps="false" />
 
 </LinearLayout>

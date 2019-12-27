@@ -210,7 +210,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
     if (selectionDrawable != null) {
       setBackgroundDrawable(selectionDrawable);
     } else {
-      mCircleDrawable = generateBackground(Color.parseColor("#37B6B6B6"), fadeTime, circleDrawableRect);
+      mCircleDrawable = generateBackground(Color.parseColor("#9F8A8989"), fadeTime, circleDrawableRect);
       setBackgroundDrawable(mCircleDrawable);
     }
   }
@@ -218,7 +218,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
   private static Drawable generateBackground(int color, int fadeTime, Rect bounds) {
     StateListDrawable drawable = new StateListDrawable();
     drawable.setExitFadeDuration(fadeTime);
-    drawable.addState(new int[] { android.R.attr.state_checked }, generateCircleDrawable(color));
+    //drawable.addState(new int[] { android.R.attr.state_checked }, generateCircleDrawable(color));
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       drawable.addState(
           new int[] { android.R.attr.state_pressed },

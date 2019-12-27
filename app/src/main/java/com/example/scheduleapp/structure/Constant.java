@@ -31,12 +31,19 @@ public class Constant {
     public static final int DELETE_SUCCESS = 2;
 
     public static final int FROM_USER_SCHEDULE = 0;
+    public static final int FROM_GROUP_SCHEDULE = 1;
 
     //social
     public static final int TO_GROUP = 0;
     public static final int TO_FRIEND = 1;
 
     public static final int FOR_USER = 0;
+    public static final int FOR_GROUP = 1;
+
+    public static final int ADD_GROUP = 0;
+
+    public static final int CODE_ISADDED = 0;
+    public static final int CODE_NOTADDED = 1;
 
     //show_schedule
     public static final int ID_MODIFY = 0;
@@ -44,4 +51,5 @@ public class Constant {
 
     public static final int CODE_ADD = 0;
     public static final int CODE_ISCHANGED = 1;
+    public static final int CODE_NOTCHANGED = 2;
 }

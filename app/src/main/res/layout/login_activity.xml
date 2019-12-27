@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back_calendar"
     android:orientation="vertical"
+    android:paddingBottom="10dp"
     tools:context=".LoginPage">
 
     <TextView
@@ -25,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="ID와 비밀번호를 입력하세요."
         android:textColor="#B90000"
         android:textSize="0sp" />
@@ -33,20 +35,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/black_rect"
         android:orientation="horizontal"
         android:paddingLeft="5dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:paddingLeft="5dp">
 
@@ -55,9 +54,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="ID"
+                android:text="ID : "
                 android:textColor="#313131"
-                android:textSize="25sp" />
+                android:textSize="23sp" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -66,9 +65,9 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="right"
-                android:text="P.W"
+                android:text="PW : "
                 android:textColor="#313131"
-                android:textSize="25sp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -108,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#131313"
+                android:background="@drawable/btn_black"
                 android:onClick="onBtnLoginClicked"
                 android:text="Login"
                 android:textAllCaps="false"
@@ -121,7 +120,8 @@
         android:id="@+id/layoutFind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="25dp"
         android:layout_marginRight="5dp"
         android:gravity="right"
         android:orientation="horizontal"

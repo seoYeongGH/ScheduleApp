@@ -8,9 +8,11 @@
         android:id="@+id/txtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:paddingLeft="12dp"
         android:paddingRight="10dp"
         android:text="TextView"
         android:textColor="#444444"
-        android:textSize="20sp" />
+        android:textSize="22sp" />
 </LinearLayout>

@@ -39,8 +39,15 @@ public interface UserService {
     @POST("/schedule/user.do")
     Call<ArrayList<Integer>> getLinkGroups(@FieldMap HashMap<String,String> parameters);
 
-
     @FormUrlEncoded
     @POST("/schedule/user.do")
     Call<ArrayList<String>> getStrings(@FieldMap HashMap<String,String> parameters);
+
+    @FormUrlEncoded
+    @POST("/schedule/user.do")
+    Call<String> getName(@FieldMap HashMap<String,String> parameters);
+
+    @FormUrlEncoded
+    @POST("/schedule/user.do")
+    Call<Boolean> getBoolean(@FieldMap HashMap<String,String> parameters);
 }

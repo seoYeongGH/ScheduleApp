@@ -53,11 +53,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.internal.EverythingIsNonNull;
 
+import static com.example.scheduleapp.structure.Constant.CODE_ISCHANGED;
 import static com.example.scheduleapp.structure.Constant.DOT_COLOR;
 import static com.example.scheduleapp.structure.Constant.ERR;
 import static com.example.scheduleapp.structure.Constant.FLAG_ADD;
 import static com.example.scheduleapp.structure.Constant.FLAG_MODIFY;
 import static com.example.scheduleapp.structure.Constant.FOR_USER;
+import static com.example.scheduleapp.structure.Constant.FROM_GROUP_SCHEDULE;
 import static com.example.scheduleapp.structure.Constant.FROM_USER_SCHEDULE;
 import static com.example.scheduleapp.structure.Constant.SELECT_DAY_COLOR;
 
@@ -72,10 +74,13 @@ public class AfterLoginFragment extends Fragment {
     private boolean haveSchedule;
     private String selectDate;
 
+    Drawable eventBackground;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_after_login, container, false);
 
+        eventBackground = getContext().getDrawable(R.drawable.back_event);
         materialCalendarView = rootView.findViewById(R.id.calendar);
 
         selectDate = getStrDate(today);
@@ -107,7 +112,7 @@ public class AfterLoginFragment extends Fragment {
         getSchedules(hashMap);
     }
 
-    private void setListeners(boolean isManager){
+    private void setListeners(final boolean isManager){
        materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -115,15 +120,20 @@ public class AfterLoginFragment extends Fragment {
 
                 int idx = setScheduleList(selectDate);
 
-                Log.d("CHKCKH",""+haveSchedule);
-
                 Intent intent = new Intent(getContext(), SelectedDayPage.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra("date",selectDate);
                 intent.putExtra("haveSchedule",haveSchedule);
                 intent.putExtra("scheduleIdx",idx);
                 intent.putExtra("groupNum",groupNum);
-                startActivityForResult(intent,FROM_USER_SCHEDULE);
+
+                if(groupNum == FOR_USER) {
+                    startActivityForResult(intent, FROM_USER_SCHEDULE);
+                }
+                else {
+                    intent.putExtra("isManager",isManager);
+                    startActivityForResult(intent, FROM_GROUP_SCHEDULE);
+                }
             }
         });
 
@@ -157,7 +167,7 @@ public class AfterLoginFragment extends Fragment {
     }
 
     private int setScheduleList(String strDate){
-        if(schedules!= null) {
+        if(schedules.size() != 0) {
             int schSize = schedules.size();
             haveSchedule = false;
 
@@ -198,6 +208,10 @@ public class AfterLoginFragment extends Fragment {
             }
         }
 
+        else {
+            return 0;
+        }
+
         return ERR;
     }
 
@@ -218,6 +232,16 @@ public class AfterLoginFragment extends Fragment {
             strDay = String.valueOf(iDay);
 
         return day.getYear()+"-"+strMonth+"-"+strDay;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+
+        if(resultCode == CODE_ISCHANGED) {
+            materialCalendarView.removeDecorators();
+            setDecorators();
+        }
+
     }
 
     private void getSchedules(HashMap<String,Object> hashMap){
@@ -252,8 +276,6 @@ public class AfterLoginFragment extends Fragment {
         CalendarDay calendarDay;
         ArrayList<DayViewDecorator> decorators = new ArrayList<>();
 
-        materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator(), new OnDayDecorator());
-
         int size = schedules.size();
         for(int i=0; i<size; i++){
             ScheduleObject schObj = schedules.get(i);
@@ -261,10 +283,11 @@ public class AfterLoginFragment extends Fragment {
             calendar.set(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1]),Integer.parseInt(strSplits[2]));
             calendarDay = CalendarDay.from(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1]),Integer.parseInt(strSplits[2]));
 
-            decorators.add(new EventDecorator(calendarDay,DOT_COLOR,"+"+schObj.getScheduleSize()));
+            decorators.add(new EventDecorator(calendarDay,schedules.get(i).getSchedules(),schedules.get(i).getSchedules().size()));
         }
 
         materialCalendarView.addDecorators(decorators);
+        materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator(), new OnDayDecorator());
     }
 
     protected class SundayDecorator implements DayViewDecorator{
@@ -274,7 +297,6 @@ public class AfterLoginFragment extends Fragment {
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            //day.copyTo(calendar);
             calendar.set(day.getYear(),day.getMonth()-1,day.getDay());
             int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
             return weekDay == Calendar.SUNDAY;
@@ -324,43 +346,42 @@ public class AfterLoginFragment extends Fragment {
     }
 
     protected class EventDecorator implements DayViewDecorator {
-        private String color;
+        Context context;
         private CalendarDay date;
-        private String text;
+        ArrayList<String> strSchedules;
+        int scheduleSize;
 
-        private EventDecorator(CalendarDay date, String color, String text) {
-            this.color = color;
+        private EventDecorator(CalendarDay date, ArrayList<String> strSchedules, int scheduleSize) {
+            context = getContext();
             this.date = date;
-            this.text = text;
+            this.strSchedules = strSchedules;
+            this.scheduleSize = scheduleSize;
         }
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            return day.equals(date);
+            return (day.equals(date));
         }
 
         @Override
         public void decorate(DayViewFacade view) {
-            view.addSpan(new DotSpan(){
-                @Override
-                public void drawBackground(Canvas canvas, Paint paint, int left, int right, int top, int baseline, int bottom, CharSequence charSequence, int start, int end, int lineNum) {
-                   // paint.setColor(Color.parseColor(color));
-                    canvas.drawCircle((left+right)/2-15,bottom+16,8,paint);
-                }
-            });
                 view.addSpan(new LineBackgroundSpan() {
                     @Override
                     public void drawBackground(@NonNull Canvas canvas, @NonNull Paint paint, int i, int i1, int i2, int i3, int i4, @NonNull CharSequence charSequence, int i5, int i6, int i7) {
                         float originSize = paint.getTextSize();
 
-                       // paint.setColor(Color.parseColor(SELECT_DAY_COLOR));
-                        paint.setTextSize(30);
-                        canvas.drawText(text, (i+i1)/2+5, i4+30, paint);
-
+                        paint.setTextSize(38);
+                        for(int j=0; j<scheduleSize; j++) {
+                            if(j!=4)
+                                canvas.drawText(strSchedules.get(j),i+10, i4+38*(j+1), paint);
+                            else
+                                canvas.drawText(" + more", i+5, i4+38*(j+1), paint);
+                        }
                         paint.setTextSize(originSize);
                     }
                 });
 
+                view.setBackgroundDrawable(eventBackground);
         }
     }
 

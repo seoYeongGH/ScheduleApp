@@ -4,13 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/back_calendar"
     android:orientation="vertical"
     android:paddingLeft="15dp"
-    android:paddingTop="25dp"
     android:paddingRight="15dp"
     android:paddingBottom="25dp"
     tools:context=".CreateGroupPage">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/concert_one"
+        android:gravity="top|left"
+        android:text="SCHappy"
+        android:textColor="#000000"
+        android:textColorHighlight="#00FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="normal" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,15 +33,15 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:paddingRight="10dp"
-            android:text="그룹 이름"
-            android:textColor="#2C2C2C"
+            android:text="그룹 이름 : "
+            android:textColor="#313131"
+            android:textColorHighlight="#313131"
             android:textSize="19sp" />
 
         <EditText
             android:id="@+id/iptGpName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/whitelayout"
             android:ems="10"
             android:inputType="textPersonName"
             android:paddingLeft="7dp"
@@ -52,8 +62,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:paddingLeft="10dp"
-        android:text="멤버"
+        android:paddingLeft="5dp"
+        android:text="초대할 친구"
         android:textColor="#303030"
         android:textSize="18sp" />
 
@@ -61,7 +71,7 @@
         android:id="@+id/recMember"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="@drawable/borderlayout"
+        android:background="@drawable/transparent_black"
         android:paddingLeft="5dp"
         android:paddingTop="10dp" />
 
@@ -78,7 +88,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/btn_black"
             android:onClick="onBtnCancelClicked"
-            android:text="Cancel"
+            android:text="취소"
             android:textAllCaps="false"
             android:textColor="#FFFFFF" />
 
@@ -89,7 +99,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/btn_black"
             android:onClick="onBtnCreateClicked"
-            android:text="Create"
+            android:text="만들기"
             android:textAllCaps="false"
             android:textColor="#FFFFFF" />
     </LinearLayout>

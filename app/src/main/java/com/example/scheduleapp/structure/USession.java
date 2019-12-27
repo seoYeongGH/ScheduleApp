@@ -5,8 +5,10 @@ import java.util.ArrayList;
 public class USession {
     private static USession instance;
 
-    private boolean isLogin;
     private String id;
+    private String name;
+
+    private boolean isLogin;
     private ArrayList<Integer> connectGroups;
 
     private USession(){
@@ -49,6 +51,14 @@ public class USession {
 
     public String getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ArrayList<Integer> getConnectGroups() {

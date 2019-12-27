@@ -13,6 +13,10 @@ import android.widget.TextView;
 
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.UserService;
+import com.example.scheduleapp.structure.AllFriends;
+import com.example.scheduleapp.structure.AllGroups;
+import com.example.scheduleapp.structure.FriendObject;
+import com.example.scheduleapp.structure.GroupObject;
 import com.example.scheduleapp.structure.USession;
 
 import java.util.ArrayList;
@@ -102,17 +106,16 @@ public class LoginPage extends AppCompatActivity {
             @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
                 Log.d("ERRRR","LOGIN_RETRO_ERR");
-                Log.d("ERRRR",t.getMessage().toString());
             }
         });
     }
 
     private void getGroupNums(){
-        HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put("doing","getLinkGroups");
-
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","getLinkGroups");
 
         Call<ArrayList<Integer>> getGroups = userService.getLinkGroups(hashMap);
         getGroups.enqueue(new Callback<ArrayList<Integer>>() {
@@ -131,13 +134,80 @@ public class LoginPage extends AppCompatActivity {
         });
     }
 
+    private void getGroups(){
+        Retrofit retrofit = RetroController.getInstance().getRetrofit();
+        UserService userService = retrofit.create(UserService.class);
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","getGroups");
+
+        Call<HashMap<String, ArrayList<GroupObject>>> getGroup = userService.getGroup(hashMap);
+        getGroup.enqueue(new Callback<HashMap<String,ArrayList<GroupObject>>>() {
+            @Override
+            public void onResponse(Call<HashMap<String,ArrayList<GroupObject>>> call, Response<HashMap<String,ArrayList<GroupObject>>> response) {
+                HashMap getHash = response.body();
+
+                AllGroups.getInstance().setIsManagers((ArrayList<GroupObject>)getHash.get("isManager"));
+                AllGroups.getInstance().setNotManagers((ArrayList<GroupObject>)getHash.get("notManager"));
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String,ArrayList<GroupObject>>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    private void getFriends(){
+        Retrofit retrofit = RetroController.getInstance().getRetrofit();
+        UserService userService = retrofit.create(UserService.class);
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","getFriends");
+
+        Call<ArrayList<FriendObject>> getFriend = userService.getFriend(hashMap);
+        getFriend.enqueue(new Callback<ArrayList<FriendObject>>() {
+            @Override
+            public void onResponse(Call<ArrayList<FriendObject>> call, Response<ArrayList<FriendObject>> response) {
+                AllFriends.getInstance().setFriends(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<FriendObject>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    private void getName(){
+        Retrofit retrofit = RetroController.getInstance().getRetrofit();
+        UserService userService = retrofit.create(UserService.class);
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("doing","getName");
+
+        Call<String> getName = userService.getName(hashMap);
+        getName.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful())
+                    USession.getInstance().setName(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("GET_NAME_ERR","GET_NAME_EXCEPTION");
+            }
+        });
+    }
+
     private void doLogin(String id, int code){
         AlertDialog alertDialog = makeAlert();
 
         switch(code){
-            case SUCCESS: USession.getInstance().setId(id);
-                          USession.getInstance().setIsLogin(true);
-                          getGroupNums();
+            case SUCCESS: getDatas(id);
 
                           Intent intent = new Intent(this, MainActivity.class);
                           intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -147,6 +217,16 @@ public class LoginPage extends AppCompatActivity {
             case ERR_LOG_PW: showAlert(alertDialog,code); break;
             default: showAlert(alertDialog,0); break;
         }
+    }
+
+    public void getDatas(String id){
+        USession.getInstance().setId(id);
+        USession.getInstance().setIsLogin(true);
+
+        getName();
+        getGroupNums();
+        getGroups();
+        getFriends();
     }
 
     private AlertDialog makeAlert(){

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.FriendFragment" >
+
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="#31E6E6E6"
+        android:drawableLeft="@drawable/plus"
+        android:paddingLeft="50dp"
+        android:paddingTop="5dp"
+        android:paddingRight="50dp"
+        android:paddingBottom="5dp"
+        android:text="새로운 친구 추가"
+        android:textColor="#313131"
+        android:textSize="17sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recFriend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

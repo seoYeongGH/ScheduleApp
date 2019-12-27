@@ -34,7 +34,7 @@ public class MenuPage extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity);
-
+/*
         id = USession.getInstance().getId();
         txtSocial = findViewById(R.id.txtSocial);
         txtInvite = findViewById(R.id.txtInvite);
@@ -50,9 +50,9 @@ public class MenuPage extends AppCompatActivity{
         getCommunication(hashMap);
 
         isShow = false;
-        setTextEvent();
+        setTextEvent();*/
     }
-
+/*
     protected void onResume(){
         super.onResume();
 
@@ -140,5 +140,5 @@ public class MenuPage extends AppCompatActivity{
                 Log.d("ERRRRR",t.getMessage());
             }
         });
-    }
+    }*/
 }

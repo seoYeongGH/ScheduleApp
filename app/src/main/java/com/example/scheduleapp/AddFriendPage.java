@@ -34,7 +34,6 @@ public class AddFriendPage extends AppCompatActivity {
     EditText iptId;
 
     TextView txtWarn;
-    TextView txtWarnId;
     TextView txtWarnExist;
     TextView txtInfo;
 
@@ -52,7 +51,6 @@ public class AddFriendPage extends AppCompatActivity {
         iptId = findViewById(R.id.iptId);
 
         txtWarn = findViewById(R.id.txtWarn);
-        txtWarnId = findViewById(R.id.txtWarnId);
         txtWarnExist = findViewById(R.id.txtWarnExist);
         txtInfo = findViewById(R.id.txtInfo);
 
@@ -66,16 +64,18 @@ public class AddFriendPage extends AppCompatActivity {
 
         txtWarnExist.setTextSize(0);
         if(strName.length()==0 || strId.length()==0) {
-            txtWarn.setTextSize(14);
+            txtWarn.setText("* 모든 항목을 입력해주세요.");
+            txtWarn.setTextSize(16);
             return ;
         }
-        txtWarn.setTextSize(0);
 
         if(strId.equals(USession.getInstance().getId())){
-            txtWarnId.setTextSize(14);
+            txtWarn.setText("* 본인의 ID는 검색할 수 없습니다 :)");
+            txtWarn.setTextSize(16);
             return ;
         }
-        txtWarnId.setTextSize(0);
+
+        txtWarn.setTextSize(0);
 
         hashMap.put("name",strName);
         hashMap.put("id",strId);
@@ -89,7 +89,7 @@ public class AddFriendPage extends AppCompatActivity {
         obj.setName(hashMap.get("name").toString());
 
         if(AllFriends.getInstance().getExist(obj.getId())) {
-            txtWarnExist.setTextSize(14);
+            txtWarnExist.setTextSize(15);
             return;
         }
         txtWarnExist.setTextSize(0);
@@ -129,8 +129,8 @@ public class AddFriendPage extends AppCompatActivity {
                               layoutFInd.setVisibility(View.VISIBLE);
                               break;
                 case NO_DATA: layoutFInd.setVisibility(View.VISIBLE);
-                              txtInfo.setText("(일차하는 친구가 없습니다.)");
-                              txtInfo.setTextSize(15);
+                              txtInfo.setText("(일치하는 친구가 없습니다.)");
+                              txtInfo.setTextSize(16);
                               btnAdd.setVisibility(View.INVISIBLE);
                               break;
             }

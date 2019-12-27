@@ -77,11 +77,6 @@ public class MainActivity extends AppCompatActivity {
         if(USession.getInstance().getIsLogin()){
             container.removeAllViews();
 
-            ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
-            mainLayout.setBackground(getDrawable(R.drawable.back_calendar));
-
-            navigationView.setBackground(getDrawable(R.drawable.back_calendar));
-
             navigationView.setOnNavigationItemSelectedListener(
                     new BottomNavigationView.OnNavigationItemSelectedListener() {
                         @Override

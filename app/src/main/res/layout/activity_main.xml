@@ -5,6 +5,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back_calendar"
     tools:context=".MainActivity">
 
     <TextView
@@ -48,6 +49,7 @@
         android:id="@+id/navigationView"
         android:layout_width="0dp"
         android:layout_height="45dp"
+        android:background="@drawable/back_calendar"
         app:itemIconTint="@drawable/select_bottom_navigation"
         app:itemTextColor="@drawable/select_bottom_navigation"
         app:layout_constraintBottom_toBottomOf="parent"

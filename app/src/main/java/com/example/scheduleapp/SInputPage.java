@@ -196,6 +196,7 @@ public class SInputPage extends AppCompatActivity {
         else if(code == MOD_SUCCESS){
             doModify(hashMap);
             Toast.makeText(getApplicationContext(),"Update!!",Toast.LENGTH_SHORT).show();
+            setResult(CODE_ISCHANGED);
             finish();
         }
         else{

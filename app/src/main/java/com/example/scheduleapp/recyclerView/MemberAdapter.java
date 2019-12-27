@@ -1,10 +1,12 @@
 package com.example.scheduleapp.recyclerView;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,13 +22,19 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
 
     boolean isView;
     ArrayList<FriendObject> members;
-    ArrayList<String> selectIds;
+    Boolean[] selectList;
+    int selectSize = 0;
 
     public MemberAdapter(Context context, boolean isView, ArrayList<FriendObject> friendList){
         this.context = context;
         this.isView = isView;
         members = friendList;
-        selectIds = new ArrayList<String>();
+
+        int size = members.size();
+        selectList = new Boolean[size];
+        for(int i=0; i<size; i++){
+            selectList[i] = false;
+        }
     }
 
     @NonNull
@@ -35,17 +43,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View memberView = inflater.inflate(R.layout.select_member_view,parent,false);
 
-        return new ViewHolder(memberView, isView, selectIds);
+        return new ViewHolder(memberView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FriendObject obj = members.get(position);
-
-        if(isView)
-            holder.setViewItem(obj);
-        else
-            holder.setItem(obj);
+        holder.setItem(obj);
     }
 
     @Override
@@ -54,60 +58,69 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        CheckBox chkMember;
         TextView txtName;
         TextView txtId;
+        CheckBox checkView;
 
-        public ViewHolder(View itemView, final boolean isView, final ArrayList<String> ids){
+        public ViewHolder(final View itemView){
             super(itemView);
 
-            chkMember = itemView.findViewById(R.id.chkMember);
             txtName = itemView.findViewById(R.id.txtName);
             txtId = itemView.findViewById(R.id.txtId);
+            checkView = itemView.findViewById(R.id.chkMember);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-                    if(!isView) {
-                        if(chkMember.isChecked()){
-                            ids.remove(txtId.getText().toString());
-                            chkMember.setChecked(false);
-                        }
-                        else{
-                            ids.add(txtId.getText().toString());
-                            chkMember.setChecked(true);
-                        }
+                    int position = getAdapterPosition();
+                        if(!selectList[position])
+                            checkView.setChecked(true);
+                        else
+                            checkView.setChecked(false);
+
+                }
+            });
+
+            checkView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b) {
+                        selectList[getAdapterPosition()] = true;
+                        selectSize++;
+                    }
+                    else {
+                        selectList[getAdapterPosition()] = false;
+                        selectSize--;
                     }
                 }
             });
         }
 
         public void setItem(FriendObject obj){
-            chkMember.setVisibility(View.VISIBLE);
             txtName.setText(obj.getName());
             txtId.setText("("+obj.getId()+")");
         }
 
-        public void setViewItem(FriendObject obj){
-            chkMember.setVisibility(View.GONE);
-            txtName.setText(obj.getName());
-            txtId.setText("("+obj.getId()+")");
-        }
     }
 
     public String getIds(){
-        int idSize = selectIds.size();
+        int selectSize = selectList.length;
         String strIds = "";
 
-        for(int i=0; i<idSize; i++){
-                strIds += selectIds.get(i);
+        for(int i=0; i<selectSize; i++){
+            if(selectList[i]) {
+                strIds = strIds+members.get(i).getId()+",";
+                Log.d("CHKCHK","i: "+i);
+                Log.d("CHKCHK","ID: "+strIds);
+            }
         }
 
         return strIds;
     }
 
     public int getInviteNum(){
-        return selectIds.size();
+        return selectSize;
     }
     public void setItem(int position,FriendObject obj){
         members.set(position,obj);

@@ -2,6 +2,7 @@ package com.example.scheduleapp.recyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scheduleapp.GroupSchedulePage;
 import com.example.scheduleapp.R;
+import com.example.scheduleapp.structure.AllGroups;
 import com.example.scheduleapp.structure.GroupObject;
 
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             if(isManager)
                 txtName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.manager,0,0,0);
             else
-                txtName.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                txtName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.member,0,0,0);
         }
 
     }
@@ -111,8 +113,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     public int getManagerSize(){
         return managerSize;
     }
-    public void addManagerGroup(int index, GroupObject obj){
-        groups.add(index,obj);
+
+    public void addManagerGroup(int index){
+        groups.add(index, AllGroups.getInstance().getManagerObject(index));
         managerSize++;
     }
 
@@ -132,5 +135,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         if(position<managerSize)
             managerSize--;
         groups.remove(position);
+    }
+
+    public void clearList(){
+        groups.clear();
     }
 }
