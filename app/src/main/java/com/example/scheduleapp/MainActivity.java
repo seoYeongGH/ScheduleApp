@@ -76,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
         setDisplay();
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        BackButton.getInstance().onBtnPressed(getApplicationContext(),this);
+    }
+
     private void setDisplay(){
         if(USession.getInstance().getIsLogin()){
             container.removeAllViews();
