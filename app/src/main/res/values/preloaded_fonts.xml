@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
-        <item>@font/aldrich</item>
-        <item>@font/amiko_bold</item>
-        <item>@font/anton</item>
-        <item>@font/bowlby_one</item>
         <item>@font/concert_one</item>
-        <item>@font/convergence</item>
-        <item>@font/doppio_one</item>
     </array>
 </resources>
