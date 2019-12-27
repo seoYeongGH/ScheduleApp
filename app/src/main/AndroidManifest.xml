@@ -43,7 +43,6 @@
         <activity
             android:name=".ChangePwPage"
             android:theme="@style/noTitleDialog" />
-        <activity android:name=".MenuPage" />
         <activity android:name=".LoginPage" />
         <activity android:name=".JoinPage" />
         <activity android:name=".MainActivity">
