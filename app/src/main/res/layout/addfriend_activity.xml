@@ -125,7 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="#B4E9E9E9"
+        android:background="#37E9E9E9"
         android:orientation="horizontal"
         android:padding="5dp"
         android:visibility="gone">

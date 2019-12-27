@@ -23,9 +23,16 @@ public class AllGroups {
 
     public int addManagerGroup(GroupObject obj){
         String groupName = obj.getGroupName();
-        int size = isManagers.size();
-        int i=0;
+        int size;
+        if(isManagers != null) {
+            size = isManagers.size();
+        }
+        else {
+            size = 0;
+            isManagers = new ArrayList<>();
+        }
 
+        int i=0;
             for(i=0; i<size; i++){
                 GroupObject tempObj = isManagers.get(i);
                 if(tempObj.groupName.compareTo(groupName)>0)
@@ -39,9 +46,16 @@ public class AllGroups {
 
     public void addMemberGroup(GroupObject obj){
         String groupName = obj.getGroupName();
-        int size = notManagers.size();
-        int i=0;
+        int size;
+        if(notManagers != null) {
+            size = notManagers.size();
+        }
+        else {
+            size = 0;
+            notManagers = new ArrayList<>();
+        }
 
+        int i=0;
         for(i=0; i<size; i++){
             GroupObject tempObj = notManagers.get(i);
             if(tempObj.groupName.compareTo(groupName)>0)
