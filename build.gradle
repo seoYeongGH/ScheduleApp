@@ -32,7 +32,7 @@ ext{
     compileSdkVersion = 29
 
     applicationId = "com.example.scheduleapp"
-    minSdkVersion = 26
+    minSdkVersion = 22
     targetSdkVersion = 29
     versionCode = 1
     versionName = "1.0"

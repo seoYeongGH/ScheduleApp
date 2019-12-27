@@ -56,14 +56,17 @@ public class MainActivity extends AppCompatActivity {
 
         imageView1 = new ImageView(this);
         imageView1.setImageResource(R.drawable.back_before3);
+        imageView1.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView1.setLayoutParams(layoutParams);
 
         imageView2 = new ImageView(this);
         imageView2.setImageResource(R.drawable.back_before2);
+        imageView2.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView2.setLayoutParams(layoutParams);
 
         imageView3 = new ImageView(this);
         imageView3.setImageResource(R.drawable.back_before1);
+        imageView3.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView3.setLayoutParams(layoutParams);
 
         container = findViewById(R.id.container);
@@ -139,77 +142,4 @@ public class MainActivity extends AppCompatActivity {
             navigationView.setSelectedItemId(R.id.tabSch);
         }
     }
-/*
-    private void onTxtClicked(){
-       TextView txtLogin = findViewById(R.id.txtLogin);
-       TextView txtJoin = findViewById(R.id.txtJoin);
-       TextView txtLogout = findViewById(R.id.txtLogout);
-
-       txtLogin.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               Intent intent = new Intent(getApplicationContext(),LoginPage.class);
-               intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-
-               startActivity(intent);
-           }
-       });
-
-        txtJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),JoinPage.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-
-                startActivity(intent);
-            }
-        });
-
-        txtLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAlert();
-            }
-        });
-    }
-
-    public void onBtnSyncClicked(View view){
-        if(afterFragment != null)
-            afterFragment.refreshData();
-    }
-
-    public void onBtnMenuClicked(View view){
-        Intent intent = new Intent(getApplicationContext(), MenuPage.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-
-        startActivity(intent);
-    }
-
-    private void showAlert(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("LOGOUT");
-        builder.setMessage("로그아웃하시겠습니까?");
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {USession.getInstance().setId(null);
-                USession.getInstance().setIsLogin(false);
-
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(),"LOGOUT",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        builder.create().show();
-    }*/
 }
