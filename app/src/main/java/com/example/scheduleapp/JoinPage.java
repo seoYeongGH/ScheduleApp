@@ -105,7 +105,7 @@ public class JoinPage extends AppCompatActivity {
             hashMap.put("doing","chkId");
             hashMap.put("id",id);
 
-            doCommunication(hashMap);
+            doChkId(hashMap);
         }
     }
 
@@ -166,11 +166,34 @@ public class JoinPage extends AppCompatActivity {
         return builder.create();
     }
 
-    private void doCommunication(HashMap hashMap){
+    private void doChkId(HashMap hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        final String strDoing = (String)hashMap.get("doing");
+        Call<Integer> doService = userService.get_doService(hashMap);
+        doService.enqueue(new Callback<Integer>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if(response.isSuccessful() && (response.body()!=null)){
+                        showAlert(response.body());
+                }
+                else{
+                    Log.d("JOIN_ERR","Join Retrofit Err");
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Log.d("ERRRR","JOIN_ERR");
+            }
+        });
+    }
+
+    private void doCommunication(HashMap hashMap){
+        Retrofit retrofit = RetroController.getInstance().getRetrofit();
+        UserService userService = retrofit.create(UserService.class);
 
         Call<Integer> doService = userService.doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
@@ -178,9 +201,6 @@ public class JoinPage extends AppCompatActivity {
             @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful() && (response.body()!=null)){
-                    if("chkId".equals(strDoing))
-                        showAlert(response.body());
-                    else if("join".equals(strDoing))
                         canJoin(response.body());
 
                 }

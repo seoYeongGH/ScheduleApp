@@ -126,7 +126,7 @@ public class GroupSchedulePage extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        Call<Integer> doService = userService.doService(hashMap);
+        Call<Integer> doService = userService.get_doService(hashMap);
 
         doService.enqueue(new Callback<Integer>() {
             @Override

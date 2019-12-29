@@ -76,7 +76,7 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
         }
 
         public void setItem(InviteObject obj){
-            txtInvite.setText(obj.getManagerId()+"님이 "+obj.getGroupName()+"그룹으로 초대하고 싶어합니다.");
+            txtInvite.setText(obj.getManagerName()+"님이 "+obj.getGroupName()+"그룹으로 초대하고 싶어합니다.");
         }
     }
 
@@ -130,7 +130,7 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        Call<Integer> doService = userService.doService(hashMap);
+        Call<Integer> doService = userService.get_doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {

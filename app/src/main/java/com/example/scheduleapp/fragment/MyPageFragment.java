@@ -157,7 +157,7 @@ public class MyPageFragment extends Fragment {
         HashMap hashMap = new HashMap();
         hashMap.put("doing", "getInviteExist");
 
-        Call<Boolean> getBoolean = userService.getBoolean(hashMap);
+        Call<Boolean> getBoolean = userService.get_getBoolean(hashMap);
         getBoolean.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {

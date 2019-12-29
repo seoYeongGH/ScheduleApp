@@ -42,6 +42,11 @@ public class AllFriends {
 
         friends.add(i,obj);
     }
+
+    public void removeFriend(int position){
+        friends.remove(position);
+    }
+
     public ArrayList<FriendObject> getFriends() {
         return friends;
     }

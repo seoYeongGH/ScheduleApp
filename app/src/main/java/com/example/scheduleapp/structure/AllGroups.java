@@ -64,6 +64,13 @@ public class AllGroups {
         notManagers.add(i,obj);
     }
 
+    public void removeGroup(int position){
+        if(position<isManagers.size())
+            isManagers.remove(position);
+        else
+            notManagers.remove(position);
+    }
+
     public boolean isManagerGroup(int groupNum){
         int size = isManagers.size();
         for(int i=0; i<size; i++){

@@ -25,6 +25,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.example.scheduleapp.structure.Constant.CODE_ADD;
+import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
 import static com.example.scheduleapp.structure.Constant.ERR;
 import static com.example.scheduleapp.structure.Constant.NO_DATA;
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
@@ -144,6 +146,7 @@ public class AddFriendPage extends AppCompatActivity {
                 AllFriends.getInstance().addFriend(obj);
                 Toast.makeText(getApplicationContext(),"친구 추가 완료 :)",Toast.LENGTH_SHORT).show();
 
+                setResult(CODE_ISADDED);
                 finish();
             }
         }

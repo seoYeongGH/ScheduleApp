@@ -85,6 +85,11 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         return friendObjects.size();
     }
 
+    public void clearList(){
+        if(friendObjects != null)
+            friendObjects.clear();
+    }
+
     public void setItem(int position,FriendObject obj){
         friendObjects.set(position,obj);
     }

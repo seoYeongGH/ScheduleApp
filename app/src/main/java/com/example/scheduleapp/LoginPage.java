@@ -117,7 +117,7 @@ public class LoginPage extends AppCompatActivity {
         HashMap hashMap = new HashMap();
         hashMap.put("doing","getLinkGroups");
 
-        Call<ArrayList<Integer>> getGroups = userService.getLinkGroups(hashMap);
+        Call<ArrayList<Integer>> getGroups = userService.get_getLinkGroups(hashMap);
         getGroups.enqueue(new Callback<ArrayList<Integer>>() {
             @Override
             @EverythingIsNonNull
@@ -141,7 +141,7 @@ public class LoginPage extends AppCompatActivity {
         HashMap hashMap = new HashMap();
         hashMap.put("doing","getGroups");
 
-        Call<HashMap<String, ArrayList<GroupObject>>> getGroup = userService.getGroup(hashMap);
+        Call<HashMap<String, ArrayList<GroupObject>>> getGroup = userService.get_getGroup(hashMap);
         getGroup.enqueue(new Callback<HashMap<String,ArrayList<GroupObject>>>() {
             @Override
             public void onResponse(Call<HashMap<String,ArrayList<GroupObject>>> call, Response<HashMap<String,ArrayList<GroupObject>>> response) {

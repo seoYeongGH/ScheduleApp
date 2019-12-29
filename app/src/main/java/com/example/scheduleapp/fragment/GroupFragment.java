@@ -170,13 +170,13 @@ public class GroupFragment extends Fragment {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        Call<Integer> doService = userService.doService(hashMap);
+        Call<Integer> doService = userService.get_doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
-                    groupAdapter.removeItem(position);
-                    recGroup.setAdapter(groupAdapter);
+                    AllGroups.getInstance().removeGroup(position);
+                    setGroupView();
                 }
                 else{
                 }

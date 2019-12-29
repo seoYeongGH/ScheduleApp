@@ -54,7 +54,7 @@ public class InvitePage extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        Call<ArrayList<InviteObject>> getInvites = userService.getInvites(hashMap);
+        Call<ArrayList<InviteObject>> getInvites = userService.get_getInvites(hashMap);
         getInvites.enqueue(new Callback<ArrayList<InviteObject>>() {
             @Override
             public void onResponse(Call<ArrayList<InviteObject>> call, Response<ArrayList<InviteObject>> response) {

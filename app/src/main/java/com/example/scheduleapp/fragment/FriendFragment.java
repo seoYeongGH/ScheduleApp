@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
 import static com.example.scheduleapp.structure.Constant.TO_FRIEND;
 
 public class FriendFragment extends Fragment {
@@ -54,9 +56,10 @@ public class FriendFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_friend, container, false);
         recFriend = rootView.findViewById(R.id.recFriend);
 
-        setFriendView(AllFriends.getInstance().getFriends());
-
         recFriend.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+        friendAdapter = new FriendAdapter(getContext());
+
+        setFriendView();
 
         Button btnAdd = rootView.findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener(){
@@ -72,9 +75,13 @@ public class FriendFragment extends Fragment {
         return rootView;
     }
 
-    private void setFriendView(ArrayList<FriendObject> list){
-        friendAdapter = new FriendAdapter(getContext());
+    public void onActivityResult(int requestCOde, int resultCode, Intent data){
+        if(resultCode == CODE_ISADDED){
+            setFriendView();
+        }
+    }
 
+    private void setFriendView(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recFriend.setLayoutManager(layoutManager);
 
@@ -94,7 +101,10 @@ public class FriendFragment extends Fragment {
             }
         });
 
-        friendAdapter.setItems(list);
+        friendAdapter.setItems(AllFriends.getInstance().getFriends());
+        Log.d("CHKCHK",""+AllFriends.getInstance().getFriends().size());
+        Log.d("CHKCHK",AllFriends.getInstance().getFriends().get(0).getName());
+
         recFriend.setAdapter(friendAdapter);
     }
 
