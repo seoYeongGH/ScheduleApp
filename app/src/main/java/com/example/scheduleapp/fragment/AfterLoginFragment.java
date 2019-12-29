@@ -10,8 +10,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.style.ForegroundColorSpan;
 import android.text.style.LineBackgroundSpan;
@@ -20,27 +18,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.scheduleapp.SelectedDayPage;
-import com.example.scheduleapp.recyclerView.OnScheduleItemListener;
 import com.example.scheduleapp.R;
-import com.example.scheduleapp.SInputPage;
-import com.example.scheduleapp.recyclerView.ScheduleAdapter;
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.ScheduleService;
 import com.example.scheduleapp.structure.AllGroups;
 import com.example.scheduleapp.structure.AllSchedules;
 import com.example.scheduleapp.structure.ScheduleObject;
-import com.example.scheduleapp.structure.ScheduleViewObject;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
-import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,15 +44,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.internal.EverythingIsNonNull;
 
+import static androidx.core.content.ContextCompat.getDrawable;
 import static com.example.scheduleapp.structure.Constant.CODE_ISCHANGED;
-import static com.example.scheduleapp.structure.Constant.DOT_COLOR;
 import static com.example.scheduleapp.structure.Constant.ERR;
-import static com.example.scheduleapp.structure.Constant.FLAG_ADD;
-import static com.example.scheduleapp.structure.Constant.FLAG_MODIFY;
 import static com.example.scheduleapp.structure.Constant.FOR_USER;
 import static com.example.scheduleapp.structure.Constant.FROM_GROUP_SCHEDULE;
 import static com.example.scheduleapp.structure.Constant.FROM_USER_SCHEDULE;
-import static com.example.scheduleapp.structure.Constant.SELECT_DAY_COLOR;
 
 public class AfterLoginFragment extends Fragment {
     private MaterialCalendarView materialCalendarView;
@@ -74,17 +62,18 @@ public class AfterLoginFragment extends Fragment {
     private boolean haveSchedule;
     private String selectDate;
 
-    Drawable eventBackground;
+    private Drawable eventBackground;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_after_login, container, false);
 
-        eventBackground = getContext().getDrawable(R.drawable.back_event);
         materialCalendarView = rootView.findViewById(R.id.calendar);
 
-        selectDate = getStrDate(today);
+        if(getContext() != null)
+            eventBackground = getDrawable(getContext(),R.drawable.back_event);
 
+        selectDate = getStrDate(today);
         initSchedule(groupNum);
 
         return rootView;
@@ -169,6 +158,7 @@ public class AfterLoginFragment extends Fragment {
     private int setScheduleList(String strDate){
         if(schedules.size() != 0) {
             int schSize = schedules.size();
+
             haveSchedule = false;
 
             ScheduleObject compObject;

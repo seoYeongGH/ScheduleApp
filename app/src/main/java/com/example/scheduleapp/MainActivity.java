@@ -1,22 +1,13 @@
 package com.example.scheduleapp;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.scheduleapp.fragment.AfterLoginFragment;
 import com.example.scheduleapp.fragment.BeforeLoginFragment;
@@ -41,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView3;
 
     BottomNavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-
         BackButton.getInstance().onBtnPressed(getApplicationContext(),this);
     }
 
@@ -109,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
                     }
             );
             navigationView.setSelectedItemId(R.id.tabSch);
-
         }
         else{
             container.addView(imageView1,0);

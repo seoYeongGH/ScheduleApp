@@ -61,6 +61,5 @@ public class BeforeLoginFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
     }
 }
