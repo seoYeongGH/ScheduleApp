@@ -55,6 +55,8 @@ public class AfterLoginFragment extends Fragment {
     private MaterialCalendarView materialCalendarView;
     private final CalendarDay today = CalendarDay.today();
 
+    private Drawable eventBackground;
+
     private List<ScheduleObject> schedules;
     private int groupNum;
     private int currentIndex = 0;
@@ -62,7 +64,6 @@ public class AfterLoginFragment extends Fragment {
     private boolean haveSchedule;
     private String selectDate;
 
-    private Drawable eventBackground;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,13 +102,31 @@ public class AfterLoginFragment extends Fragment {
         getSchedules(hashMap);
     }
 
+    private int initIndex(String strDate){
+        String strToday = strDate.substring(0,7);
+
+        int i;
+        int end = schedules.size();
+        if(end == 0)
+            return 0;
+
+        for (i = 0; i < end; i++) {
+            String compDate = schedules.get(i).getDate();
+            if (compDate.contains(strToday) || compDate.compareTo(selectDate) > 0) {
+                return i;
+            }
+        }
+
+        return end-1;
+    }
+
     private void setListeners(final boolean isManager){
        materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 selectDate = getStrDate(date);
 
-                int idx = setScheduleList(selectDate);
+                int idx = getSelectIndex(selectDate);
 
                 Intent intent = new Intent(getContext(), SelectedDayPage.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -137,25 +156,25 @@ public class AfterLoginFragment extends Fragment {
         });
     }
 
-    private int initIndex(String strDate){
-        String strToday = strDate.substring(0,7);
+    private void setDecorators(){
+        CalendarDay calendarDay;
+        ArrayList<DayViewDecorator> decorators = new ArrayList<>();
 
-        int i;
-        int end = schedules.size();
-        if(end == 0)
-            return 0;
+        int size = schedules.size();
+        for(int i=0; i<size; i++){
+            ScheduleObject schObj = schedules.get(i);
+            String[] strSplits = schObj.getDate().split("-");
+            calendarDay = CalendarDay.from(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1]),Integer.parseInt(strSplits[2]));
 
-            for (i = 0; i < end; i++) {
-                String compDate = schedules.get(i).getDate();
-                if (compDate.contains(strToday) || compDate.compareTo(selectDate) > 0) {
-                    return i;
-                }
-            }
+            decorators.add(new EventDecorator(calendarDay,schedules.get(i).getSchedules(),schedules.get(i).getSchedules().size()));
+        }
 
-        return end-1;
+        materialCalendarView.addDecorators(decorators);
+        materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator(), new OnDayDecorator());
     }
 
-    private int setScheduleList(String strDate){
+
+    private int getSelectIndex(String strDate){
         if(schedules.size() != 0) {
             int schSize = schedules.size();
 
@@ -224,16 +243,6 @@ public class AfterLoginFragment extends Fragment {
         return day.getYear()+"-"+strMonth+"-"+strDay;
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-
-        if(resultCode == CODE_ISCHANGED) {
-            materialCalendarView.removeDecorators();
-            setDecorators();
-        }
-
-    }
-
     private void getSchedules(HashMap<String,Object> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         ScheduleService scheduleService = retrofit.create(ScheduleService.class);
@@ -261,24 +270,16 @@ public class AfterLoginFragment extends Fragment {
         });
     }
 
-    private void setDecorators(){
-        Calendar calendar = Calendar.getInstance();
-        CalendarDay calendarDay;
-        ArrayList<DayViewDecorator> decorators = new ArrayList<>();
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
 
-        int size = schedules.size();
-        for(int i=0; i<size; i++){
-            ScheduleObject schObj = schedules.get(i);
-            String[] strSplits = schObj.getDate().split("-");
-            calendar.set(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1]),Integer.parseInt(strSplits[2]));
-            calendarDay = CalendarDay.from(Integer.parseInt(strSplits[0]),Integer.parseInt(strSplits[1]),Integer.parseInt(strSplits[2]));
-
-            decorators.add(new EventDecorator(calendarDay,schedules.get(i).getSchedules(),schedules.get(i).getSchedules().size()));
+        if(resultCode == CODE_ISCHANGED) {
+            materialCalendarView.removeDecorators();
+            setDecorators();
         }
 
-        materialCalendarView.addDecorators(decorators);
-        materialCalendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator(), new OnDayDecorator());
     }
+
 
     protected class SundayDecorator implements DayViewDecorator{
         private final Calendar calendar = Calendar.getInstance();
@@ -303,7 +304,6 @@ public class AfterLoginFragment extends Fragment {
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            //day.copyTo(calendar);
             calendar.set(day.getYear(),day.getMonth()-1,day.getDay());
             int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
             return weekDay == Calendar.SATURDAY;
@@ -322,6 +322,7 @@ public class AfterLoginFragment extends Fragment {
             if(context != null)
                 background = context.getDrawable(R.drawable.onday_background);
         }
+
         @Override
         public boolean shouldDecorate(CalendarDay day) {
             return today.equals(day);
