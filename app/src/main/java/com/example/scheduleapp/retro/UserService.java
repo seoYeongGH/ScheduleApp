@@ -19,7 +19,7 @@ import retrofit2.http.QueryMap;
 
 public interface UserService {
     @GET("/schedule/user.do")
-    Call<Integer> get_doService(@QueryMap() HashMap<String,String> parameters);
+    Call<Integer> get_doService(@QueryMap() HashMap<String,Object> parameters);
 
     @GET("/schedule/user.do")
     Call<Boolean> get_getBoolean(@QueryMap() HashMap<String,String> parameters);

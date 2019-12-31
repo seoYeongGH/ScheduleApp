@@ -1,31 +1,25 @@
 package com.example.scheduleapp.fragment;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.example.scheduleapp.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class SocialFragment extends Fragment {
-    Fragment fragmentGroup;
-    Fragment fragmentFriend;
+    private Fragment fragmentGroup;
+    private Fragment fragmentFriend;
 
-    TabLayout tabLayout;
+    private TabLayout tabLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -53,8 +47,6 @@ public class SocialFragment extends Fragment {
                 }
                 else if(pos == 1)
                     getChildFragmentManager().beginTransaction().replace(R.id.subContainer, fragmentFriend).commit();
-
-
             }
 
             @Override

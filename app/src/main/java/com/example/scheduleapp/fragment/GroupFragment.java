@@ -1,10 +1,8 @@
 package com.example.scheduleapp.fragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,29 +26,23 @@ import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.AllGroups;
 import com.example.scheduleapp.structure.GroupObject;
-import com.google.android.material.tabs.TabLayout;
 
-import java.security.acl.Group;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.ADD_GROUP;
 import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
 
 public class GroupFragment extends Fragment {
-    RecyclerView recGroup;
-    GroupAdapter groupAdapter;
+    private RecyclerView recGroup;
+    private GroupAdapter groupAdapter;
 
-    Button btnCreateGroup;
-
-    public GroupFragment() {
-        // Required empty public constructor
-    }
+    public GroupFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +53,8 @@ public class GroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView =  (ViewGroup)inflater.inflate(R.layout.fragment_group, container, false);
+        Button btnCreateGroup = rootView.findViewById(R.id.btnAdd);
 
-        btnCreateGroup = rootView.findViewById(R.id.btnAdd);
         btnCreateGroup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -75,7 +68,8 @@ public class GroupFragment extends Fragment {
         groupAdapter = new GroupAdapter(getContext());
 
         setGroupView();
-        recGroup.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+        if(getContext() != null)
+            recGroup.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
         return rootView;
     }
@@ -108,7 +102,7 @@ public class GroupFragment extends Fragment {
                 String name = obj.getGroupName();
                 int groupNum = obj.getGroupNum();
 
-                HashMap hashMap = new HashMap();
+                HashMap<String,Object> hashMap = new HashMap<>();
                 hashMap.put("doing","deleteGroup");
                 hashMap.put("name",name);
                 hashMap.put("groupNum",groupNum);
@@ -143,7 +137,7 @@ public class GroupFragment extends Fragment {
         }
     }
 
-    private void showAlert(final HashMap hashMap, final int position){
+    private void showAlert(final HashMap<String,Object> hashMap, final int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle("Notice");
@@ -166,23 +160,26 @@ public class GroupFragment extends Fragment {
         builder.create().show();
     }
 
-    private void doService(final HashMap hashMap, final Integer position){
+    private void doService(final HashMap<String,Object> hashMap, final Integer position){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
         Call<Integer> doService = userService.get_doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
                     AllGroups.getInstance().removeGroup(position);
                     setGroupView();
                 }
                 else{
+                    Log.d("ERRRR","Response_Error");
                 }
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }
