@@ -1,6 +1,7 @@
 package com.example.scheduleapp.fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,14 +48,14 @@ public class GroupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView =  (ViewGroup)inflater.inflate(R.layout.fragment_group, container, false);
-        Button btnCreateGroup = rootView.findViewById(R.id.btnAdd);
+        recGroup = rootView.findViewById(R.id.recGroup);
 
+        Button btnCreateGroup = rootView.findViewById(R.id.btnAdd);
         btnCreateGroup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -64,12 +65,16 @@ public class GroupFragment extends Fragment {
             }
         });
 
-        recGroup = rootView.findViewById(R.id.recGroup);
-        groupAdapter = new GroupAdapter(getContext());
+        Context context = getContext();
+        if(context != null) {
+            groupAdapter = new GroupAdapter(context);
+            recGroup.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        }
+        else{
+            Log.d("ERRRR","Group Context Null");
+        }
 
         setGroupView();
-        if(getContext() != null)
-            recGroup.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
         return rootView;
     }
@@ -132,9 +137,8 @@ public class GroupFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent dataIntent){
         super.onActivityResult(requestCode, resultCode, dataIntent);
 
-        if(resultCode == CODE_ISADDED) {
+        if(resultCode == CODE_ISADDED)
             setGroupView();
-        }
     }
 
     private void showAlert(final HashMap<String,Object> hashMap, final int position){
