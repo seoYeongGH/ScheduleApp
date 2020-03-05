@@ -73,7 +73,7 @@ public class GroupFragment extends Fragment {
         else{
             Log.d("ERRRR","Group Context Null");
         }
-
+        
         setGroupView();
 
         return rootView;

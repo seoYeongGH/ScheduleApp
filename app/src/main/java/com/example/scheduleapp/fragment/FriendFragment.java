@@ -102,9 +102,6 @@ public class FriendFragment extends Fragment {
         });
 
         friendAdapter.setItems(AllFriends.getInstance().getFriends());
-        Log.d("CHKCHK",""+AllFriends.getInstance().getFriends().size());
-        Log.d("CHKCHK",AllFriends.getInstance().getFriends().get(0).getName());
-
         recFriend.setAdapter(friendAdapter);
     }
 
