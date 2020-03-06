@@ -220,9 +220,6 @@ public class JoinPage extends AppCompatActivity {
     private void canJoin(int code){
         switch(code){
             case SUCCESS: Toast.makeText(this, "JOIN SUCCESS!!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(this, LoginPage.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
                 finish(); break;
             case DUP_ID: code = ERR_CHK_ID;
             case DUP_USER:

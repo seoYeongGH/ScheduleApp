@@ -12,8 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChangeEmailActivity"
-            android:theme="@style/noTitleDialog"></activity>
+        <activity android:name=".AfterLoginActivity"></activity>
+        <activity
+            android:name=".ChangeEmailActivity"
+            android:theme="@style/noTitleDialog" />
         <activity
             android:name=".CheckPwActivity"
             android:theme="@style/noTitleDialogRound" />
@@ -43,7 +45,6 @@
         <activity
             android:name=".ChangePwPage"
             android:theme="@style/noTitleDialog" />
-        <activity android:name=".LoginPage" />
         <activity android:name=".JoinPage" />
         <activity android:name=".MainActivity">
             <intent-filter>

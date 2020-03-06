@@ -118,11 +118,6 @@ public class FindPage extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 if(code == SUCCESS) {
                     finish();
-
-                    Intent intent = new Intent(getApplicationContext(), LoginPage.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-
-                    startActivity(intent);
                 }
             }
         });
