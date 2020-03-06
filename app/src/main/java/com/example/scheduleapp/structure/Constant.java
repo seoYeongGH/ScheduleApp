@@ -1,6 +1,9 @@
 package com.example.scheduleapp.structure;
 
 public class Constant {
+    public static final String SHARED_PREF_ISLOGIN = "isLogin";
+    public static final String SHARED_PREF_USER_CODE = "userCode";
+
     public static final int SUCCESS = 200;
     public static final int ERR = -1;
     public static final int ERR_NULL = 1;
@@ -19,7 +22,6 @@ public class Constant {
 
     //schedule
     public static final String DOT_COLOR = "#72AF01";
-    public static final String SELECT_DAY_COLOR = "#505050";
     public static final int CODE_MODIFY = 0;
 
     public static final String FLAG_ADD = "addSchedule";

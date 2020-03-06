@@ -3,8 +3,10 @@ package com.example.scheduleapp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +32,8 @@ import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.ERR_LOG_ID;
 import static com.example.scheduleapp.structure.Constant.ERR_LOG_PW;
+import static com.example.scheduleapp.structure.Constant.SHARED_PREF_ISLOGIN;
+import static com.example.scheduleapp.structure.Constant.SHARED_PREF_USER_CODE;
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class LoginPage extends AppCompatActivity {
@@ -181,24 +185,35 @@ public class LoginPage extends AppCompatActivity {
     }
 
 
-    private void getName(){
+    private void getInfo(){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
         HashMap hashMap = new HashMap();
-        hashMap.put("doing","getName");
+        hashMap.put("doing","getLoginInfo");
 
-        Call<String> getName = userService.getName(hashMap);
-        getName.enqueue(new Callback<String>() {
+        Call<HashMap> getService = userService.getService(hashMap);
+        getService.enqueue(new Callback<HashMap>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if(response.isSuccessful())
-                    USession.getInstance().setName(response.body());
+            public void onResponse(Call<HashMap> call, Response<HashMap> response) {
+                if(response.isSuccessful()){
+                    USession.getInstance().setName(response.body().get("name").toString());
+
+                    SharedPreferences preferences = getSharedPreferences("schPref",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+
+                    Log.d("CHKCHK", ""+response.body().get("userCode"));
+
+                    double tmpCode = (double)response.body().get("userCode");
+                    editor.putBoolean(SHARED_PREF_ISLOGIN,true);
+                    editor.putInt(SHARED_PREF_USER_CODE, (int)tmpCode);
+                    editor.commit();
+                }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.d("GET_NAME_ERR","GET_NAME_EXCEPTION");
+            public void onFailure(Call<HashMap> call, Throwable t) {
+
             }
         });
     }
@@ -223,7 +238,8 @@ public class LoginPage extends AppCompatActivity {
         USession.getInstance().setId(id);
         USession.getInstance().setIsLogin(true);
 
-        getName();
+        Log.d("CHkCHK",USession.getInstance().getId());
+        getInfo();
         getGroupNums();
         getGroups();
         getFriends();
