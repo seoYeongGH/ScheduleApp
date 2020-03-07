@@ -17,7 +17,6 @@ import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.ScheduleService;
 import com.example.scheduleapp.structure.AllSchedules;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -27,11 +26,9 @@ import retrofit2.Retrofit;
 
 import static com.example.scheduleapp.structure.Constant.ADD_SUCCESS;
 import static com.example.scheduleapp.structure.Constant.CODE_ISCHANGED;
-import static com.example.scheduleapp.structure.Constant.DELETE_SUCCESS;
 import static com.example.scheduleapp.structure.Constant.FLAG_ADD;
 import static com.example.scheduleapp.structure.Constant.FLAG_MODIFY;
 import static com.example.scheduleapp.structure.Constant.MOD_SUCCESS;
-import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class SInputPage extends AppCompatActivity {
     EditText iptSchedule;
@@ -152,15 +149,31 @@ public class SInputPage extends AppCompatActivity {
         });
     }
     private void initModify(Intent intent){
+        Toast toast = Toast.makeText(getApplicationContext(),"수정하는 중 오류가 발생하였습니다.",Toast.LENGTH_SHORT);
+
         iptSchedule.setText(intent.getStringExtra("schedule"));
 
-        String tmpTime[] = getIntent().getStringExtra("startTime").split(":");
-        iptStartH.setText(tmpTime[0]);
-        iptStartM.setText(tmpTime[1]);
+        String time = getIntent().getStringExtra("startTime");
+        String[] tmpTime;
 
-        tmpTime = getIntent().getStringExtra("endTime").split(":");
-        iptEndH.setText(tmpTime[0]);
-        iptEndM.setText(tmpTime[1]);
+        if(time != null) {
+            tmpTime = time.split(":");
+            iptStartH.setText(tmpTime[0]);
+            iptStartM.setText(tmpTime[1]);
+        }
+        else{
+            toast.show();
+        }
+
+        time = getIntent().getStringExtra("endTime");
+        if(time != null) {
+            tmpTime = time.split(":");
+            iptEndH.setText(tmpTime[0]);
+            iptEndM.setText(tmpTime[1]);
+        }
+        else{
+            toast.show();
+        }
     }
 
     private void doCommunication(final HashMap hashMap){

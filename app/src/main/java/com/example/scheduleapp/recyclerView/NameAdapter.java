@@ -38,8 +38,8 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.ViewHolder> {
         }
 
         public void setItem(FriendObject obj){
-            txtId.setText(obj.getId());
-            txtName.setText("("+obj.getName()+")");
+            txtName.setText(obj.getName());
+            txtId.setText("("+obj.getId()+")");
         }
     }
 

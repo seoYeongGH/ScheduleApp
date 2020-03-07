@@ -1,59 +1,27 @@
 package com.example.scheduleapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.LineBackgroundSpan;
-import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.scheduleapp.fragment.AfterLoginFragment;
-import com.example.scheduleapp.recyclerView.OnScheduleItemListener;
-import com.example.scheduleapp.recyclerView.ScheduleAdapter;
 import com.example.scheduleapp.retro.RetroController;
-import com.example.scheduleapp.retro.ScheduleService;
 import com.example.scheduleapp.retro.UserService;
-import com.example.scheduleapp.structure.AllSchedules;
-import com.example.scheduleapp.structure.ScheduleObject;
-import com.example.scheduleapp.structure.ScheduleViewObject;
 import com.example.scheduleapp.structure.USession;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.DayViewDecorator;
-import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
-import com.prolificinteractive.materialcalendarview.spans.DotSpan;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.example.scheduleapp.structure.Constant.CODE_MODIFY;
-import static com.example.scheduleapp.structure.Constant.DOT_COLOR;
-import static com.example.scheduleapp.structure.Constant.FLAG_ADD;
-import static com.example.scheduleapp.structure.Constant.FLAG_ADD_GROUP;
-import static com.example.scheduleapp.structure.Constant.FLAG_MODIFY;
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class GroupSchedulePage extends AppCompatActivity {

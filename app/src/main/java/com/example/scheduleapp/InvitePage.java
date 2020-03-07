@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.LinearLayout;
 
 import com.example.scheduleapp.recyclerView.InviteAdapter;
 import com.example.scheduleapp.retro.RetroController;

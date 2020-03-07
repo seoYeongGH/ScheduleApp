@@ -97,12 +97,17 @@ public class MemberActivity extends AppCompatActivity {
     public void onBtnAddClicked(View view){
         ArrayList<FriendObject> friends = AllFriends.getInstance().getFriends();
         ArrayList<FriendObject> notMembers = new ArrayList<>();
-        int j=0;
+        int j=0, memberSize = members.size();
 
         for(int i=0; i<friends.size(); i++){
-            if(!friends.get(i).getId().equals(members.get(j).getId())) {
+            if(j<memberSize) {
+                if(!friends.get(i).getId().equals(members.get(j).getId())) {
+                    notMembers.add(friends.get(i));
+                    j++;
+                }
+            }
+            else{
                 notMembers.add(friends.get(i));
-                j++;
             }
         }
         memberAdapter = new MemberAdapter(getApplicationContext(),false,notMembers);
@@ -226,8 +231,7 @@ public class MemberActivity extends AppCompatActivity {
             }
         });
 
-        AlertDialog dialog = builder.create();
-        return dialog;
+        return  builder.create();
     }
 
 }

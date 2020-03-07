@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 double tmpCode = (double)hashMap.get("userCode");
                 editor.putBoolean(SHARED_PREF_ISLOGIN,true);
                 editor.putInt(SHARED_PREF_USER_CODE, (int)tmpCode);
-                editor.commit();
+                editor.apply();
 
             case AUTO_LOG_SUCCESS: if(id.equals("")) id = hashMap.get("id").toString();
                 getDatas(id);
@@ -226,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
         getGroupNums();
         getGroups();
         getFriends();
-        //Log.d("CHKCHK",""+AllFriends.getInstance().getFriends().size());
     }
     private AlertDialog makeAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

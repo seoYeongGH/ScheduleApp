@@ -19,7 +19,7 @@ public class BackButton {
 
     private BackButton(){}
 
-    protected void onBtnPressed(Context context, Activity activity){
+    void onBtnPressed(Context context, Activity activity){
         if(pressedTime == 0){
             Toast.makeText(context,"한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
             pressedTime = System.currentTimeMillis();

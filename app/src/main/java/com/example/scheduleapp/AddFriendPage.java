@@ -64,15 +64,20 @@ public class AddFriendPage extends AppCompatActivity {
         String strName = iptName.getText().toString();
         String strId = iptId.getText().toString();
 
+        String msg;
         txtWarnExist.setTextSize(0);
         if(strName.length()==0 || strId.length()==0) {
-            txtWarn.setText("* 모든 항목을 입력해주세요.");
+            msg = "* 모든 항목을 입력해주세요.";
+
+            txtWarn.setText(msg);
             txtWarn.setTextSize(16);
             return ;
         }
 
         if(strId.equals(USession.getInstance().getId())){
-            txtWarn.setText("* 본인의 ID는 검색할 수 없습니다 :)");
+            msg = "* 본인의 ID는 검색할 수 없습니다 :)";
+
+            txtWarn.setText(msg);
             txtWarn.setTextSize(16);
             return ;
         }

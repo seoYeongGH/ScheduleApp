@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,7 +28,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
-import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class CreateGroupPage extends AppCompatActivity {
     EditText iptGpName;

@@ -21,7 +21,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.example.scheduleapp.structure.Constant.ERR_LOG_PW;
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class ChangePwPage extends AppCompatActivity {

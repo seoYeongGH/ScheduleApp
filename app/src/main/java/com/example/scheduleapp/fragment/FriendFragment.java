@@ -1,10 +1,8 @@
 package com.example.scheduleapp.fragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,7 +10,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +24,6 @@ import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.AllFriends;
 import com.example.scheduleapp.structure.FriendObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -39,8 +35,8 @@ import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
 import static com.example.scheduleapp.structure.Constant.TO_FRIEND;
 
 public class FriendFragment extends Fragment {
-    RecyclerView recFriend;
-    FriendAdapter friendAdapter;
+    private RecyclerView recFriend;
+    private FriendAdapter friendAdapter;
 
     public FriendFragment() {
         // Required empty public constructor

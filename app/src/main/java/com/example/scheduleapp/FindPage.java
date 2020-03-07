@@ -122,7 +122,6 @@ public class FindPage extends AppCompatActivity {
             }
         });
 
-        AlertDialog dialog = builder.create();
-        return dialog;
+        return builder.create();
     }
 }
