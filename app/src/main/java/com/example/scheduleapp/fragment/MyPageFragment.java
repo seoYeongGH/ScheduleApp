@@ -174,9 +174,9 @@ public class MyPageFragment extends Fragment {
                     isInviteExist = response.body();
 
                     if (isInviteExist)
-                        txtInvite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.new_icon, 0);
+                        txtInvite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.small_check, 0, R.drawable.new_icon, 0);
                     else
-                        txtInvite.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                        txtInvite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.small_check, 0, 0, 0);
                 }
             }
 

@@ -61,7 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:clickable="true"
-            android:text="▷ 받은 초대 신청 "
+            android:drawableLeft="@drawable/small_check"
+            android:text=" 받은 초대 신청 "
             android:textColor="#303030"
             android:textSize="20sp" />
 
@@ -71,7 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:clickable="true"
-            android:text="▷ 내 정보 보기"
+            android:drawableLeft="@drawable/small_check"
+            android:text=" 내 정보 보기"
             android:textColor="#303030"
             android:textSize="20sp" />
 
@@ -82,9 +84,10 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:clickable="true"
-            android:text="▷ 이메일 변경하기"
+            android:drawableLeft="@drawable/small_check"
+            android:text=" 이메일 변경하기"
             android:textColor="#303030"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txtChangePw"
@@ -93,7 +96,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:clickable="true"
-            android:text="▷ 비밀번호 변경하기"
+            android:drawableLeft="@drawable/small_check"
+            android:text=" 비밀번호 변경하기"
             android:textColor="#303030"
             android:textSize="20sp" />
 
