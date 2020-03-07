@@ -29,7 +29,7 @@
         android:id="@+id/txtWarnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="25dp"
         android:text="ID와 비밀번호를 입력하세요."
         android:textColor="#B90000"

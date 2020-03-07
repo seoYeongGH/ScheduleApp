@@ -71,7 +71,6 @@
         android:id="@+id/recMember"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="@drawable/transparent_black"
         android:paddingLeft="5dp"
         android:paddingTop="10dp" />
 

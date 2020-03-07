@@ -24,20 +24,22 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.ViewHolder> {
 
     public NameAdapter(Context context){
         this.context = context;
-        friends = new ArrayList<FriendObject>();
+        friends = new ArrayList<>();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txtName;
+        TextView txtId;
 
         public ViewHolder(View itemView){
             super(itemView);
             txtName = itemView.findViewById(R.id.txtName);
-
+            txtId = itemView.findViewById(R.id.txtId);
         }
 
-        public void setItem(String name){
-            txtName.setText(name);
+        public void setItem(FriendObject obj){
+            txtId.setText(obj.getId());
+            txtName.setText("("+obj.getName()+")");
         }
     }
 
@@ -52,8 +54,8 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String name = friends.get(position).getName();
-        holder.setItem(name);
+        FriendObject obj = friends.get(position);
+        holder.setItem(obj);
     }
 
     @Override

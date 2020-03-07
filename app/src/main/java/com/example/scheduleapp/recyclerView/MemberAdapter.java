@@ -98,8 +98,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         }
 
         public void setItem(FriendObject obj){
-            txtName.setText(obj.getName());
-            txtId.setText("("+obj.getId()+")");
+            txtId.setText(obj.getId());
+            txtName.setText("("+obj.getName()+")");
         }
 
     }
@@ -111,8 +111,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         for(int i=0; i<selectSize; i++){
             if(selectList[i]) {
                 strIds = strIds+members.get(i).getId()+",";
-                Log.d("CHKCHK","i: "+i);
-                Log.d("CHKCHK","ID: "+strIds);
             }
         }
 

@@ -2,6 +2,7 @@ package com.example.scheduleapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,9 @@ public class CreateGroupPage extends AppCompatActivity {
         adapter = new MemberAdapter(getApplicationContext(),false, AllFriends.getInstance().getFriends());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
         recMember.setLayoutManager(layoutManager);
+        recMember.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
 
         recMember.setAdapter(adapter);
     }

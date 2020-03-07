@@ -81,7 +81,7 @@ public class MemberActivity extends AppCompatActivity {
         else{
             frameBtn.setVisibility(View.GONE);
         }
-        members = new ArrayList<FriendObject>();
+        members = new ArrayList<>();
 
         HashMap hashMap = new HashMap();
         hashMap.put("doing","getMembers");
@@ -96,21 +96,16 @@ public class MemberActivity extends AppCompatActivity {
 
     public void onBtnAddClicked(View view){
         ArrayList<FriendObject> friends = AllFriends.getInstance().getFriends();
-        int memberSize = members.size();
+        ArrayList<FriendObject> notMembers = new ArrayList<>();
         int j=0;
-        int temp = 0;
 
-        for(int i=0;i< memberSize; i++){
-            for(j = temp; j< friends.size(); j++){
-                if(members.get(i).getId().equals(friends.get(j).getId())){
-                    temp = j;
-                    friends.remove(j);
-                    i--;
-                    break;
-                }
+        for(int i=0; i<friends.size(); i++){
+            if(!friends.get(i).getId().equals(members.get(j).getId())) {
+                notMembers.add(friends.get(i));
+                j++;
             }
         }
-        memberAdapter = new MemberAdapter(getApplicationContext(),false,friends);
+        memberAdapter = new MemberAdapter(getApplicationContext(),false,notMembers);
         recMember.setAdapter(memberAdapter);
 
         btnHashMap.put("doing","sendInvite");

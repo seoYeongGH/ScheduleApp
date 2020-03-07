@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<FriendObject>> call, Response<ArrayList<FriendObject>> response) {
                 AllFriends.getInstance().setFriends(response.body());
+                Log.d("CHKCHK",""+AllFriends.getInstance().getSize());
             }
 
             @Override
@@ -225,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
         getGroupNums();
         getGroups();
         getFriends();
+        //Log.d("CHKCHK",""+AllFriends.getInstance().getFriends().size());
     }
     private AlertDialog makeAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
