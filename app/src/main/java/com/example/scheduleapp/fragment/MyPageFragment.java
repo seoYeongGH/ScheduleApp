@@ -22,8 +22,11 @@ import com.example.scheduleapp.CheckPwActivity;
 import com.example.scheduleapp.R;
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.UserService;
+import com.example.scheduleapp.structure.AllInvites;
+import com.example.scheduleapp.structure.InviteObject;
 import com.example.scheduleapp.structure.USession;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -40,8 +43,6 @@ public class MyPageFragment extends Fragment {
     TextView txtChangePw;
     TextView txtLogout;
     TextView txtWithdraw;
-
-    boolean isInviteExist;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,20 +63,25 @@ public class MyPageFragment extends Fragment {
         txtLogout = rootView.findViewById(R.id.txtLogout);
         txtWithdraw = rootView.findViewById(R.id.txtWithdraw);
 
-        getCommunication();
+        getInvites();
 
         setTextClick();
 
         return rootView;
     }
 
+    public void onResume(){
+        super.onResume();
+
+        setNewIcon(AllInvites.getInstance().isEmpty());
+    }
     private void setTextClick(){
         txtInvite.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), InvitePage.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+                startActivityForResult(intent,100);
             }
         });
 
@@ -159,31 +165,35 @@ public class MyPageFragment extends Fragment {
         builder.create().show();
     }
 
-    private void getCommunication (){
+    private void getInvites(){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        HashMap hashMap = new HashMap();
-        hashMap.put("doing", "getInviteExist");
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("doing","getInvites");
 
-        Call<Boolean> getBoolean = userService.get_getBoolean(hashMap);
-        getBoolean.enqueue(new Callback<Boolean>() {
+        Call<ArrayList<InviteObject>> getInvites = userService.get_getInvites(hashMap);
+        getInvites.enqueue(new Callback<ArrayList<InviteObject>>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if(response.isSuccessful()) {
-                    isInviteExist = response.body();
+            public void onResponse(Call<ArrayList<InviteObject>> call, Response<ArrayList<InviteObject>> response) {
+                if (response.isSuccessful()) {
+                    AllInvites.getInstance().setInvites(response.body());
 
-                    if (isInviteExist)
-                        txtInvite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.small_check, 0, R.drawable.new_icon, 0);
-                    else
-                        txtInvite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.small_check, 0, 0, 0);
+                    setNewIcon(AllInvites.getInstance().isEmpty());
                 }
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(Call<ArrayList<InviteObject>> call, Throwable t) {
 
             }
         });
+    }
+
+    private void setNewIcon(boolean isEmpty){
+        if (!isEmpty)
+            txtInvite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.small_check, 0, R.drawable.new_icon, 0);
+        else
+            txtInvite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.small_check, 0, 0, 0);
     }
 }

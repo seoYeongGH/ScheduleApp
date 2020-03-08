@@ -32,7 +32,7 @@ public class AllFriends {
         return false;
     }
     public void addFriend(FriendObject obj){
-        int i=0;
+        int i;
         int size = friends.size();
 
         for(i=0; i<size; i++){
