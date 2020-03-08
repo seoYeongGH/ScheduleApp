@@ -101,7 +101,12 @@ public class MemberActivity extends AppCompatActivity {
 
         for(int i=0; i<friends.size(); i++){
             if(j<memberSize) {
-                if(!friends.get(i).getId().equals(members.get(j).getId()))
+                if(members.get(j).getId().equals(USession.getInstance().getId()))
+                    j++;
+
+                if(j<memberSize && !friends.get(i).getId().equals(members.get(j).getId()))
+                    notMembers.add(friends.get(i));
+                else if(j>=memberSize)
                     notMembers.add(friends.get(i));
                 else
                     j++;
