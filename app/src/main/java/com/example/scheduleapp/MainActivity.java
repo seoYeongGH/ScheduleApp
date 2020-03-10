@@ -1,5 +1,6 @@
 package com.example.scheduleapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +22,10 @@ import com.example.scheduleapp.structure.AllGroups;
 import com.example.scheduleapp.structure.FriendObject;
 import com.example.scheduleapp.structure.GroupObject;
 import com.example.scheduleapp.structure.USession;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +60,25 @@ public class MainActivity extends AppCompatActivity {
         warnLogin = findViewById(R.id.txtWarnLogin);
 
         alertDialog = makeAlert();
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (task.isSuccessful()) {
+                            String token = task.getResult().getToken();
+                            Log.d("CHKCHK",""+token.length());
+                            SharedPreferences preferences = getSharedPreferences("schPref", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            editor.putString(SHARED_PREF_USER_CODE, token);
+                            editor.apply();
+                        }
+                        else{
+                            Log.d("CHKCHK", "getInstanceId failed", task.getException());
+                        }
+
+                    }
+                });
     }
 
     public void onResume(){
@@ -65,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             if (preferences != null && preferences.getBoolean(SHARED_PREF_ISLOGIN, false)) {
                 HashMap<String,Object> hashMap = new HashMap<>();
                 hashMap.put("doing", "autoLogin");
-                hashMap.put("userCode", preferences.getInt(SHARED_PREF_USER_CODE, -1));
+                hashMap.put("userCode", preferences.getString(SHARED_PREF_USER_CODE, ""));
 
                 loginCommunication(hashMap);
             }
@@ -106,9 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences preferences = getSharedPreferences("schPref",Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
 
-                double tmpCode = (double)hashMap.get("userCode");
                 editor.putBoolean(SHARED_PREF_ISLOGIN,true);
-                editor.putInt(SHARED_PREF_USER_CODE, (int)tmpCode);
                 editor.apply();
 
             case AUTO_LOG_SUCCESS: if(id.equals("")) id = hashMap.get("id").toString();
@@ -261,10 +283,14 @@ public class MainActivity extends AppCompatActivity {
         else {
             warnLogin.setTextSize(0);
 
+
             HashMap hashMap = new HashMap();
             hashMap.put("doing","login");
             hashMap.put("id",id);
             hashMap.put("password",pw);
+
+            SharedPreferences preferences = getSharedPreferences("schPref",Context.MODE_PRIVATE);
+            hashMap.put("userCode", preferences.getString(SHARED_PREF_USER_CODE,""));
 
             loginCommunication(hashMap);
         }

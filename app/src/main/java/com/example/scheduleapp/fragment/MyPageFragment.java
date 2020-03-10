@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static com.example.scheduleapp.structure.Constant.ERR;
+import static com.example.scheduleapp.structure.Constant.SHARED_PREF_USER_CODE;
+import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class MyPageFragment extends Fragment {
     TextView txtName;
@@ -137,21 +142,8 @@ public class MyPageFragment extends Fragment {
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {USession.getInstance().setId(null);
-                Context context = getContext();
-                USession.getInstance().setIsLogin(false);
-
-                SharedPreferences preferences = context.getSharedPreferences("schPref",context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-
-                editor.clear();
-                editor.commit();
-
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                startActivity(intent);
-                Toast.makeText(getContext(),"LOGOUT",Toast.LENGTH_SHORT).show();
+            public void onClick(DialogInterface dialogInterface, int i) {
+                doLogout();
             }
         });
 
@@ -186,6 +178,49 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onFailure(Call<ArrayList<InviteObject>> call, Throwable t) {
 
+            }
+        });
+    }
+
+    private void doLogout(){
+        Retrofit retrofit = RetroController.getInstance().getRetrofit();
+        UserService userService = retrofit.create(UserService.class);
+
+        Context context = getContext();
+        SharedPreferences preferences = context.getSharedPreferences("schPref",context.MODE_PRIVATE);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("doing","logout");
+        hashMap.put("userCode",preferences.getString(SHARED_PREF_USER_CODE,""));
+
+        Call<Integer> doService = userService.get_doService(hashMap);
+        doService.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if(response.isSuccessful() && response.body()==SUCCESS){
+                    USession.getInstance().setId(null);
+                    USession.getInstance().setIsLogin(false);
+
+                    Context context = getContext();
+
+                    SharedPreferences preferences = context.getSharedPreferences("schPref",context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+
+                    editor.clear();
+                    editor.commit();
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    startActivity(intent);
+                    Toast.makeText(getContext(),"LOGOUT",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Log.d("LOG_OUT_ERR",t.getMessage());
             }
         });
     }

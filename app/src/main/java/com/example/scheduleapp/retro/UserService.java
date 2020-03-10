@@ -22,9 +22,6 @@ public interface UserService {
     Call<Integer> get_doService(@QueryMap() HashMap<String,Object> parameters);
 
     @GET("/schedule/user.do")
-    Call<Boolean> get_getBoolean(@QueryMap() HashMap<String,String> parameters);
-
-    @GET("/schedule/user.do")
     Call<HashMap<String,ArrayList<GroupObject>>> get_getGroup(@QueryMap HashMap<String,String> parameters);
 
     @GET("/schedule/user.do")

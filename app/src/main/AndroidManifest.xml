@@ -12,7 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AfterLoginActivity"></activity>
+        <service
+            android:name=".firebase.FirebaseService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".AfterLoginActivity" />
         <activity
             android:name=".ChangeEmailActivity"
             android:theme="@style/noTitleDialog" />
