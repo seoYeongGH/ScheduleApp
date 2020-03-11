@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && task.getResult()!=null) {
                             String token = task.getResult().getToken();
-                            Log.d("CHKCHK",""+token.length());
+
                             SharedPreferences preferences = getSharedPreferences("schPref", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
 
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                             editor.apply();
                         }
                         else{
-                            Log.d("CHKCHK", "getInstanceId failed", task.getException());
+                            Log.d("CHKCHK", "getInstanceId failed: "+task.getException());
                         }
 
                     }
@@ -100,13 +100,14 @@ public class MainActivity extends AppCompatActivity {
         BackButton.getInstance().onBtnPressed(getApplicationContext(),this);
     }
 
-    private void loginCommunication(HashMap hashMap) {
+    private void loginCommunication(HashMap<String, Object> hashMap) {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
         Call<HashMap> getService = userService.getService(hashMap);
         getService.enqueue(new Callback<HashMap>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<HashMap> call, Response<HashMap> response) {
                 if(response.isSuccessful()){
                     double tmpCode = (double)response.body().get("code");
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<HashMap> call, Throwable t) {
 
             }
@@ -133,7 +135,10 @@ public class MainActivity extends AppCompatActivity {
                 editor.putBoolean(SHARED_PREF_ISLOGIN,true);
                 editor.apply();
 
-            case AUTO_LOG_SUCCESS: if(id.equals("")) id = hashMap.get("id").toString();
+            case AUTO_LOG_SUCCESS: Object tmpId = hashMap.get("id");
+                if(id.equals("") && tmpId!=null)
+                    id = tmpId.toString();
+
                 getDatas(id);
                 Intent intent = new Intent(this, AfterLoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -150,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        HashMap hashMap = new HashMap();
+        HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("doing","getLinkGroups");
 
         Call<ArrayList<Integer>> getGroups = userService.get_getLinkGroups(hashMap);
@@ -174,20 +179,24 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        HashMap hashMap = new HashMap();
+        HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("doing","getGroups");
 
         Call<HashMap<String, ArrayList<GroupObject>>> getGroup = userService.get_getGroup(hashMap);
         getGroup.enqueue(new Callback<HashMap<String,ArrayList<GroupObject>>>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<HashMap<String,ArrayList<GroupObject>>> call, Response<HashMap<String,ArrayList<GroupObject>>> response) {
-                HashMap getHash = response.body();
+                HashMap<String, ArrayList<GroupObject>> getHash = response.body();
 
-                AllGroups.getInstance().setIsManagers((ArrayList<GroupObject>)getHash.get("isManager"));
-                AllGroups.getInstance().setNotManagers((ArrayList<GroupObject>)getHash.get("notManager"));
+                if(getHash != null) {
+                    AllGroups.getInstance().setIsManagers(getHash.get("isManager"));
+                    AllGroups.getInstance().setNotManagers(getHash.get("notManager"));
+                }
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<HashMap<String,ArrayList<GroupObject>>> call, Throwable t) {
 
             }
@@ -199,18 +208,20 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        HashMap hashMap = new HashMap();
+        HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("doing","getFriends");
 
         Call<ArrayList<FriendObject>> getFriend = userService.getFriend(hashMap);
         getFriend.enqueue(new Callback<ArrayList<FriendObject>>() {
+
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<ArrayList<FriendObject>> call, Response<ArrayList<FriendObject>> response) {
                 AllFriends.getInstance().setFriends(response.body());
-                Log.d("CHKCHK",""+AllFriends.getInstance().getSize());
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<ArrayList<FriendObject>> call, Throwable t) {
 
             }
@@ -222,18 +233,20 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        HashMap hashMap = new HashMap();
+        HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("doing","getName");
 
         Call<String> getName = userService.getName(hashMap);
         getName.enqueue(new Callback<String>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful())
                     USession.getInstance().setName(response.body());
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<String> call, Throwable t) {
                 Log.d("GET_NAME_ERR","GET_NAME_EXCEPTION");
             }
@@ -284,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
             warnLogin.setTextSize(0);
 
 
-            HashMap hashMap = new HashMap();
+            HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("doing","login");
             hashMap.put("id",id);
             hashMap.put("password",pw);
