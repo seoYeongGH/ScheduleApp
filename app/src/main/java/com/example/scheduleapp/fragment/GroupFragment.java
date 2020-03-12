@@ -67,7 +67,7 @@ public class GroupFragment extends Fragment {
 
         Context context = getContext();
         if(context != null) {
-            groupAdapter = new GroupAdapter(context);
+            groupAdapter = new GroupAdapter();
             recGroup.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         }
         else{

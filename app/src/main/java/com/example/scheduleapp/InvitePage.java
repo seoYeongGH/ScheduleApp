@@ -27,7 +27,7 @@ public class InvitePage extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
         recInvite.setLayoutManager(layoutManager);
 
-        adapter = new InviteAdapter(getApplicationContext());
+        adapter = new InviteAdapter();
         adapter.setItems(AllInvites.getInstance().getInvites());
 
         recInvite.setAdapter(adapter);

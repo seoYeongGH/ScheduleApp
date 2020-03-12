@@ -1,8 +1,5 @@
 package com.example.scheduleapp.recyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,42 +7,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scheduleapp.R;
-import com.example.scheduleapp.SInputPage;
-import com.example.scheduleapp.retro.RetroController;
-import com.example.scheduleapp.retro.ScheduleService;
-import com.example.scheduleapp.structure.AllSchedules;
 import com.example.scheduleapp.structure.ScheduleViewObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
-import static com.example.scheduleapp.structure.Constant.DELETE_SUCCESS;
-import static com.example.scheduleapp.structure.Constant.FLAG_MODIFY;
 import static com.example.scheduleapp.structure.Constant.ID_DELETE;
 import static com.example.scheduleapp.structure.Constant.ID_MODIFY;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder>{
     private static OnScheduleItemListener listener;
-    static Context context;
-    static int dateIdx;
 
-    ArrayList<ScheduleViewObject> schedules  = new ArrayList<ScheduleViewObject>();
+    private ArrayList<ScheduleViewObject> schedules  = new ArrayList<>();
 
-    public ScheduleAdapter(Context context, int dateIdx){
-        this.context = context;
-        this.dateIdx = dateIdx;
-    }
+    public ScheduleAdapter(){ }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
         TextView txtSchedule;
@@ -59,7 +38,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             itemView.setOnCreateContextMenuListener(this);
         }
 
-        public void setItem(ScheduleViewObject schedule){
+        void setItem(ScheduleViewObject schedule){
             txtSchedule.setText(schedule.getSchedule());
             txtTime.setText(schedule.getTime());
         }
@@ -129,10 +108,5 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     public void setItem(int position,ScheduleViewObject schedule){
         schedules.set(position, schedule);
-    }
-
-    public void clearList(){
-        if(schedules != null)
-            schedules.clear();
     }
 }

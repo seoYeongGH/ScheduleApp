@@ -55,7 +55,7 @@ public class FriendFragment extends Fragment {
         Context context = getContext();
         if(context != null) {
             recFriend.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
-            friendAdapter = new FriendAdapter(context);
+            friendAdapter = new FriendAdapter();
         }
         setFriendView();
 

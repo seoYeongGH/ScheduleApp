@@ -1,7 +1,5 @@
 package com.example.scheduleapp.recyclerView;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,6 @@ import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.AllGroups;
 import com.example.scheduleapp.structure.GroupObject;
 import com.example.scheduleapp.structure.InviteObject;
-import com.example.scheduleapp.structure.USession;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,16 +23,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder> {
-    Context context;
-    ArrayList<InviteObject> invitations;
+    private OnInviteBtnListener listener;
+    private ArrayList<InviteObject> invitations;
 
-    OnInviteBtnListener listener;
-
-    public InviteAdapter(Context context){
-        this.context = context;
-        invitations = new ArrayList<InviteObject>();
+    public InviteAdapter(){
+        invitations = new ArrayList<>();
         setListener();
     }
 
@@ -75,8 +68,9 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
             });
         }
 
-        public void setItem(InviteObject obj){
-            txtInvite.setText(obj.getManagerName()+"님이 "+obj.getGroupName()+"그룹으로 초대하고 싶어합니다.");
+        void setItem(InviteObject obj){
+            String strInvite = obj.getManagerName()+"님이 "+obj.getGroupName()+"그룹으로 초대하고 싶어합니다.";
+            txtInvite.setText(strInvite);
         }
     }
 
@@ -108,15 +102,11 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
         invitations = list;
     }
 
-    public void removeItem(int position){
-        invitations.remove(position);
-    }
-
-    public void setListener() {
+    private void setListener() {
         listener = new OnInviteBtnListener() {
             @Override
             public void onBtnClicked(ViewHolder holder, View view, int position, String doing) {
-                HashMap hashMap = new HashMap();
+                HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("doing", doing);
                 hashMap.put("groupNum", invitations.get(position).getGroupNum());
 
@@ -126,13 +116,14 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
         };
     }
 
-    private void doService(final HashMap hashMap, final int position){
+    private void doService(final HashMap<String,Object> hashMap, final int position){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
         Call<Integer> doService = userService.get_doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
                     if("acceptInvite".equals(hashMap.get("doing")))
@@ -141,11 +132,10 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
                     invitations.remove(position);
                     notifyDataSetChanged();
                 }
-                else{
-                }
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }
@@ -153,7 +143,6 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
     }
 
     private void acceptProcess(InviteObject iObj){
-        boolean isManager;
         GroupObject gObj = new GroupObject();
 
         gObj.setGroupNum(iObj.getGroupNum());
@@ -161,5 +150,4 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
 
         AllGroups.getInstance().addMemberGroup(gObj);
     }
-
 }

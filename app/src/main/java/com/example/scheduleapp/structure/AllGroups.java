@@ -68,7 +68,7 @@ public class AllGroups {
         if(position<isManagers.size())
             isManagers.remove(position);
         else
-            notManagers.remove(position);
+            notManagers.remove(position-isManagers.size());
     }
 
     public boolean isManagerGroup(int groupNum){

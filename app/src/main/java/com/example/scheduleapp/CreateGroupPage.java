@@ -44,7 +44,7 @@ public class CreateGroupPage extends AppCompatActivity {
         txtWarn = findViewById(R.id.txtWarn);
         recMember = findViewById(R.id.recMember);
 
-        adapter = new MemberAdapter(getApplicationContext(),false, AllFriends.getInstance().getFriends());
+        adapter = new MemberAdapter(AllFriends.getInstance().getFriends());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 

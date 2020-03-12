@@ -1,8 +1,5 @@
 package com.example.scheduleapp.recyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.scheduleapp.GroupSchedulePage;
 import com.example.scheduleapp.R;
 import com.example.scheduleapp.structure.FriendObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class NameAdapter extends RecyclerView.Adapter<NameAdapter.ViewHolder> {
-    Context context;
-    ArrayList<FriendObject> friends;
+    private ArrayList<FriendObject> friends;
 
-    public NameAdapter(Context context){
-        this.context = context;
+    public NameAdapter(){
         friends = new ArrayList<>();
     }
 
@@ -37,9 +30,11 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.ViewHolder> {
             txtId = itemView.findViewById(R.id.txtId);
         }
 
-        public void setItem(FriendObject obj){
+        void setItem(FriendObject obj){
+            String strId = "("+obj.getId()+")";
+
             txtName.setText(obj.getName());
-            txtId.setText("("+obj.getId()+")");
+            txtId.setText(strId);
         }
     }
 

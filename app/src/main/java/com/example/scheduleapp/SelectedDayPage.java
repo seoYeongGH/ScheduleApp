@@ -109,7 +109,7 @@ public class SelectedDayPage extends AppCompatActivity {
             recSchedules.setLayoutManager(layoutManager);
 
             if (!isDeleted) {
-                scheduleAdapter = new ScheduleAdapter(getApplicationContext(),dateIdx);
+                scheduleAdapter = new ScheduleAdapter();
                 schedules = AllSchedules.getInstance().getSchedule(dateIdx);
                 int schSize = schedules.getScheduleSize();
 

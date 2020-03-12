@@ -115,7 +115,7 @@ public class MemberActivity extends AppCompatActivity {
                 notMembers.add(friends.get(i));
             }
         }
-        memberAdapter = new MemberAdapter(getApplicationContext(),false,notMembers);
+        memberAdapter = new MemberAdapter(notMembers);
         recMember.setAdapter(memberAdapter);
 
         btnHashMap.put("doing","sendInvite");
@@ -138,7 +138,7 @@ public class MemberActivity extends AppCompatActivity {
             }
         }
 
-        memberAdapter = new MemberAdapter(getApplicationContext(),false,members);
+        memberAdapter = new MemberAdapter(members);
         recMember.setAdapter(memberAdapter);
 
         btnHashMap.put("doing","withdrawMember");
@@ -197,7 +197,7 @@ public class MemberActivity extends AppCompatActivity {
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                     recMember.setLayoutManager(layoutManager);
 
-                    adapter = new NameAdapter(getApplicationContext());
+                    adapter = new NameAdapter();
                     adapter.setNames(members);
 
                     recMember.setAdapter(adapter);

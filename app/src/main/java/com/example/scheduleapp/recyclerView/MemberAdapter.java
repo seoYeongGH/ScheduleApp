@@ -1,7 +1,6 @@
 package com.example.scheduleapp.recyclerView;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +17,16 @@ import com.example.scheduleapp.structure.FriendObject;
 import java.util.ArrayList;
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder> {
-    Context context;
+    private ArrayList<FriendObject> members;
+    private Boolean[] selectList;
+    private int selectSize = 0;
 
-    boolean isView;
-    ArrayList<FriendObject> members;
-    Boolean[] selectList;
-    int selectSize = 0;
-
-    public MemberAdapter(Context context, boolean isView, ArrayList<FriendObject> friendList){
-        this.context = context;
-        this.isView = isView;
+    public MemberAdapter( ArrayList<FriendObject> friendList){
         members = friendList;
 
         int size = members.size();
         selectList = new Boolean[size];
+
         for(int i=0; i<size; i++){
             selectList[i] = false;
         }
@@ -97,9 +92,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
             });
         }
 
-        public void setItem(FriendObject obj){
+        void setItem(FriendObject obj){
+            String strId = "("+obj.getId()+")";
+
             txtName.setText(obj.getName());
-            txtId.setText("("+obj.getId()+")");
+            txtId.setText(strId);
         }
 
     }
@@ -110,7 +107,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
 
         for(int i=0; i<selectSize; i++){
             if(selectList[i]) {
-                strIds = strIds+members.get(i).getId()+",";
+                strIds = strIds.concat(members.get(i).getId()).concat(",");
             }
         }
 
@@ -120,6 +117,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     public int getInviteNum(){
         return selectSize;
     }
+
     public void setItem(int position,FriendObject obj){
         members.set(position,obj);
     }

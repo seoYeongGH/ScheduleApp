@@ -1,8 +1,5 @@
 package com.example.scheduleapp.recyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.scheduleapp.GroupSchedulePage;
 import com.example.scheduleapp.R;
-import com.example.scheduleapp.structure.AllGroups;
 import com.example.scheduleapp.structure.GroupObject;
 
 import java.util.ArrayList;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
-    Context context;
-    OnGroupListener listener;
+    private ArrayList<GroupObject> groups;
+    private OnGroupListener listener;
 
-    ArrayList<GroupObject> groups;
-    int managerSize=0;
+    private int managerSize=0;
 
-    public GroupAdapter(Context context){
-        this.context = context;
-        groups = new ArrayList<GroupObject>();
+    public GroupAdapter(){
+        groups = new ArrayList<>();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -36,7 +29,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         Button btnDelete;
         Button btnMember;
 
-        public ViewHolder(final Context context, View itemView, final OnGroupListener listener){
+        public ViewHolder(View itemView, final OnGroupListener listener){
             super(itemView);
 
             txtName = itemView.findViewById(R.id.txtName);
@@ -68,8 +61,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             });
         }
 
-        public void setItem(GroupObject obj,boolean isManager){
-            txtName.setText(" "+obj.getGroupName());
+        void setItem(GroupObject obj,boolean isManager){
+            txtName.setText(obj.getGroupName());
 
             if(isManager)
                 txtName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.manager,0,0,0);
@@ -85,7 +78,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.group_view,parent,false);
 
-        return new GroupAdapter.ViewHolder(context, view,listener);
+        return new GroupAdapter.ViewHolder(view,listener);
     }
 
     @Override
@@ -120,27 +113,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         return managerSize;
     }
 
-    public void addManagerGroup(int index){
-        groups.add(index, AllGroups.getInstance().getManagerObject(index));
-        managerSize++;
-    }
-
-    public void addMemberGroup(int index, GroupObject obj){
-        groups.add(index,obj);
-    }
-
     public void setListener(OnGroupListener listener){
         this.listener = listener;
     }
 
     public GroupObject getItem(int position){
         return  groups.get(position);
-    }
-
-    public void removeItem(int position){
-        if(position<managerSize)
-            managerSize--;
-        groups.remove(position);
     }
 
     public void clearList(){

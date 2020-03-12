@@ -1,6 +1,5 @@
 package com.example.scheduleapp.recyclerView;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +15,11 @@ import com.example.scheduleapp.structure.FriendObject;
 import java.util.ArrayList;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder>{
-    Context context;
+    private ArrayList<FriendObject> friendObjects ;
     private OnFriendBtnListener listener;
 
-    ArrayList<FriendObject> friendObjects ;
-
-    public FriendAdapter(Context context){
-        this.context = context;
-
-        friendObjects = new ArrayList<FriendObject>();
+    public FriendAdapter(){
+        friendObjects = new ArrayList<>();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -50,9 +45,11 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             });
         }
 
-        public void setItem(FriendObject obj){
+        void setItem(FriendObject obj){
+            String strId = "("+obj.getId()+")";
+
             txtName.setText(obj.getName());
-            txtId.setText("("+obj.getId()+")");
+            txtId.setText(strId);
         }
     }
 
@@ -71,8 +68,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         holder.setItem(obj);
     }
 
-
-
     public void setListener(OnFriendBtnListener listener){
         this.listener = listener;
     }
@@ -80,34 +75,20 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     @Override
     public int getItemCount() {
         if(friendObjects == null)
-            friendObjects = new ArrayList<FriendObject>();
+            friendObjects = new ArrayList<>();
 
         return friendObjects.size();
-    }
-
-    public void clearList(){
-        if(friendObjects != null)
-            friendObjects.clear();
-    }
-
-    public void setItem(int position,FriendObject obj){
-        friendObjects.set(position,obj);
-    }
-
-    public FriendObject getItem(int position){
-        return friendObjects.get(position);
-    }
-
-    public void addItem(FriendObject obj){
-        friendObjects.add(obj);
     }
 
     public void setItems(ArrayList<FriendObject> list){
         friendObjects = list;
     }
 
+    public FriendObject getItem(int position){
+        return friendObjects.get(position);
+    }
+
     public void removeItem(int position){
         friendObjects.remove(position);
     }
-
 }
