@@ -1,6 +1,7 @@
 package com.example.scheduleapp.fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
 import static com.example.scheduleapp.structure.Constant.TO_FRIEND;
@@ -38,9 +40,7 @@ public class FriendFragment extends Fragment {
     private RecyclerView recFriend;
     private FriendAdapter friendAdapter;
 
-    public FriendFragment() {
-        // Required empty public constructor
-    }
+    public FriendFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,9 +52,11 @@ public class FriendFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_friend, container, false);
         recFriend = rootView.findViewById(R.id.recFriend);
 
-        recFriend.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
-        friendAdapter = new FriendAdapter(getContext());
-
+        Context context = getContext();
+        if(context != null) {
+            recFriend.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+            friendAdapter = new FriendAdapter(context);
+        }
         setFriendView();
 
         Button btnAdd = rootView.findViewById(R.id.btnAdd);
@@ -88,7 +90,7 @@ public class FriendFragment extends Fragment {
                 String name= obj.getName();
                 String id = obj.getId();
 
-                HashMap hashMap = new HashMap();
+                HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("doing","deleteFriend");
                 hashMap.put("id",id);
                 hashMap.put("name",name);
@@ -101,7 +103,7 @@ public class FriendFragment extends Fragment {
         recFriend.setAdapter(friendAdapter);
     }
 
-    private void showAlert(final HashMap hashMap, final int position){
+    private void showAlert(final HashMap<String, Object> hashMap, final int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle("Notice");
@@ -124,23 +126,24 @@ public class FriendFragment extends Fragment {
         builder.create().show();
     }
 
-    private void doService(final HashMap hashMap, final Integer position){
+    private void doService(final HashMap<String, Object> hashMap, final Integer position){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
         Call<Integer> doService = userService.doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
+
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
                     friendAdapter.removeItem(position);
                     recFriend.setAdapter(friendAdapter);
                 }
-                else{
-                }
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }

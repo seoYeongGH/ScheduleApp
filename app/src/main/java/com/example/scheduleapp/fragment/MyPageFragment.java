@@ -34,20 +34,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
-import static com.example.scheduleapp.structure.Constant.ERR;
 import static com.example.scheduleapp.structure.Constant.SHARED_PREF_USER_CODE;
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
 public class MyPageFragment extends Fragment {
-    TextView txtName;
-
-    TextView txtInvite;
-    TextView txtGetInfo;
-    TextView txtChangeEmail;
-    TextView txtChangePw;
-    TextView txtLogout;
-    TextView txtWithdraw;
+    private TextView txtInvite;
+    private TextView txtGetInfo;
+    private TextView txtChangeEmail;
+    private TextView txtChangePw;
+    private TextView txtLogout;
+    private TextView txtWithdraw;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +56,7 @@ public class MyPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_my_page, container, false);
 
-        txtName = rootView.findViewById(R.id.txtName);
+        TextView txtName = rootView.findViewById(R.id.txtName);
         txtName.setText(USession.getInstance().getName());
 
         txtInvite = rootView.findViewById(R.id.txtInvite);
@@ -167,6 +165,7 @@ public class MyPageFragment extends Fragment {
         Call<ArrayList<InviteObject>> getInvites = userService.get_getInvites(hashMap);
         getInvites.enqueue(new Callback<ArrayList<InviteObject>>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<ArrayList<InviteObject>> call, Response<ArrayList<InviteObject>> response) {
                 if (response.isSuccessful()) {
                     AllInvites.getInstance().setInvites(response.body());
@@ -176,6 +175,7 @@ public class MyPageFragment extends Fragment {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<ArrayList<InviteObject>> call, Throwable t) {
 
             }
@@ -186,43 +186,57 @@ public class MyPageFragment extends Fragment {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        Context context = getContext();
-        SharedPreferences preferences = context.getSharedPreferences("schPref",context.MODE_PRIVATE);
+        SharedPreferences preferences = null;
+        if(getContext() != null)
+            preferences = getContext().getSharedPreferences("schPref",Context.MODE_PRIVATE);
 
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("doing","logout");
-        hashMap.put("userCode",preferences.getString(SHARED_PREF_USER_CODE,""));
+        if(preferences != null) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("doing", "logout");
+            hashMap.put("userCode", preferences.getString(SHARED_PREF_USER_CODE, ""));
 
-        Call<Integer> doService = userService.get_doService(hashMap);
-        doService.enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful() && response.body()==SUCCESS){
-                    USession.getInstance().setId(null);
-                    USession.getInstance().setIsLogin(false);
+            Call<Integer> doService = userService.get_doService(hashMap);
+            doService.enqueue(new Callback<Integer>() {
+                @Override
+                @EverythingIsNonNull
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    if (response.isSuccessful() && response.body()!=null && response.body()==SUCCESS) {
+                        USession.getInstance().setId(null);
+                        USession.getInstance().setIsLogin(false);
 
-                    Context context = getContext();
+                        SharedPreferences preferences = null;
+                        SharedPreferences.Editor editor = null;
 
-                    SharedPreferences preferences = context.getSharedPreferences("schPref",context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
+                        if(getContext() != null)
+                            preferences = getContext().getSharedPreferences("schPref", Context.MODE_PRIVATE);
 
-                    editor.clear();
-                    editor.commit();
+                        if(preferences != null)
+                            editor = preferences.edit();
 
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        if(editor != null) {
+                            editor.clear();
+                            editor.apply();
+                        }
 
-                    startActivity(intent);
-                    Toast.makeText(getContext(),"LOGOUT",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        startActivity(intent);
+                        Toast.makeText(getContext(), "LOGOUT", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
-            }
-
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                Log.d("LOG_OUT_ERR",t.getMessage());
-            }
-        });
+                @Override
+                @EverythingIsNonNull
+                public void onFailure(Call<Integer> call, Throwable t) {
+                        Log.d("LOG_OUT_ERR", ""+t.getMessage());
+                }
+            });
+        }
+        else{
+            Log.d("ERRRR","LOG_OUT_PREF_NULL");
+        }
     }
 
     private void setNewIcon(boolean isEmpty){
