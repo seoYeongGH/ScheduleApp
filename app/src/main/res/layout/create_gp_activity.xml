@@ -55,7 +55,8 @@
         android:layout_height="wrap_content"
         android:text="* 그룹 이름을 입력해주세요."
         android:textColor="#B90000"
-        android:textSize="0sp" />
+        android:textSize="14sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView25"

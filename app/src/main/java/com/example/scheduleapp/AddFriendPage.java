@@ -3,7 +3,6 @@ package com.example.scheduleapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.scheduleapp.retro.RetroController;
-import com.example.scheduleapp.retro.ScheduleService;
 import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.AllFriends;
 import com.example.scheduleapp.structure.FriendObject;
@@ -25,7 +23,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.example.scheduleapp.structure.Constant.CODE_ADD;
 import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
 import static com.example.scheduleapp.structure.Constant.ERR;
 import static com.example.scheduleapp.structure.Constant.NO_DATA;

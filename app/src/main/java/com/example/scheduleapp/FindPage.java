@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,11 +52,11 @@ public class FindPage extends AppCompatActivity {
         String email = iptEmail.getText().toString();
 
         if(name.length()==0 || email.length()==0){
-            txtWarn.setTextSize(15);
+            txtWarn.setVisibility(View.VISIBLE);
             return ;
         }
 
-        txtWarn.setTextSize(0);
+        txtWarn.setVisibility(View.GONE);
 
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("doing","findInfo");

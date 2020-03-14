@@ -100,7 +100,7 @@ public class JoinPage extends AppCompatActivity {
         }
 
         if(chkId){
-            HashMap<String,String> hashMap = new HashMap<>();
+            HashMap<String,Object> hashMap = new HashMap<>();
             hashMap.put("doing","chkId");
             hashMap.put("id",id);
 
@@ -165,7 +165,7 @@ public class JoinPage extends AppCompatActivity {
         return builder.create();
     }
 
-    private void doChkId(HashMap hashMap){
+    private void doChkId(HashMap<String, Object> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
@@ -190,7 +190,7 @@ public class JoinPage extends AppCompatActivity {
         });
     }
 
-    private void doCommunication(HashMap hashMap){
+    private void doCommunication(HashMap<String, String> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 

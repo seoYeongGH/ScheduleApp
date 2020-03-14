@@ -62,10 +62,10 @@ public class CreateGroupPage extends AppCompatActivity {
         String name = iptGpName.getText().toString();
 
         if(name.length()==0){
-            txtWarn.setTextSize(14);
+            txtWarn.setVisibility(View.VISIBLE);
             return;
         }
-        txtWarn.setTextSize(0);
+        txtWarn.setVisibility(View.GONE);
 
         HashMap hashMap = new HashMap();
         hashMap.put("doing","createGroup");

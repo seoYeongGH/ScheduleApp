@@ -32,7 +32,7 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
-    Call<Integer> doService(@FieldMap HashMap<String,Object> parameters);
+    Call<Integer> doService(@FieldMap HashMap<String,String> parameters);
 
     @FormUrlEncoded
     @POST("/schedule/user.do")    Call<HashMap> getService(@FieldMap HashMap<String,Object> parameters);

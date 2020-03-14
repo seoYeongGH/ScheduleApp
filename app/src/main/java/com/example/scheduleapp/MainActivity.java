@@ -62,42 +62,78 @@ public class MainActivity extends AppCompatActivity {
         alertDialog = makeAlert();
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (task.isSuccessful() && task.getResult()!=null) {
-                            String token = task.getResult().getToken();
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (task.isSuccessful() && task.getResult()!=null) {
+                    String token = task.getResult().getToken();
 
-                            SharedPreferences preferences = getSharedPreferences("schPref", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
+                    SharedPreferences preferences = getSharedPreferences("schPref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
 
-                            editor.putString(SHARED_PREF_USER_CODE, token);
-                            editor.apply();
-                        }
-                        else{
-                            Log.d("CHKCHK", "getInstanceId failed: "+task.getException());
-                        }
+                    editor.putString(SHARED_PREF_USER_CODE, token);
+                    editor.apply();
+                }
+                else{
+                    Log.d("ERRRRR", "getInstanceId failed: "+task.getException());
+                }
 
-                    }
-                });
+            }
+        });
     }
 
     public void onResume(){
         super.onResume();
 
-        if(!USession.getInstance().getIsLogin()) {
-            SharedPreferences preferences = getSharedPreferences("schPref", Context.MODE_PRIVATE);
-            if (preferences != null && preferences.getBoolean(SHARED_PREF_ISLOGIN, false)) {
-                HashMap<String,Object> hashMap = new HashMap<>();
-                hashMap.put("doing", "autoLogin");
-                hashMap.put("userCode", preferences.getString(SHARED_PREF_USER_CODE, ""));
+        SharedPreferences preferences = getSharedPreferences("schPref", Context.MODE_PRIVATE);
+        if (preferences!=null && preferences.getBoolean(SHARED_PREF_ISLOGIN, false)) {
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("doing", "autoLogin");
+            hashMap.put("userCode", preferences.getString(SHARED_PREF_USER_CODE, ""));
 
-                loginCommunication(hashMap);
-            }
+            loginCommunication(hashMap);
         }
+
     }
+
     @Override
     public void onBackPressed() {
         BackButton.getInstance().onBtnPressed(getApplicationContext(),this);
+    }
+
+    public void onBtnLoginClicked(View view){
+        String id = iptId.getText().toString();
+        String pw = iptPw.getText().toString();
+
+        if(id.length()==0 || pw.length()==0) {
+            warnLogin.setVisibility(View.VISIBLE);
+        }
+        else {
+            warnLogin.setVisibility(View.GONE);
+
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("doing","login");
+            hashMap.put("id",id);
+            hashMap.put("password",pw);
+
+            SharedPreferences preferences = getSharedPreferences("schPref",Context.MODE_PRIVATE);
+            hashMap.put("userCode", preferences.getString(SHARED_PREF_USER_CODE,""));
+
+            loginCommunication(hashMap);
+        }
+    }
+
+    public void onBtnJoinClicked(View view){
+        Intent intent = new Intent(getApplicationContext(), JoinPage.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+        startActivity(intent);
+    }
+
+    public void onBtnFindClicked(View view){
+        Intent intent = new Intent(getApplicationContext(), FindPage.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+        startActivity(intent);
     }
 
     private void loginCommunication(HashMap<String, Object> hashMap) {
@@ -109,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<HashMap> call, Response<HashMap> response) {
-                if(response.isSuccessful()){
+                if(response.isSuccessful() && response.body()!=null){
                     double tmpCode = (double)response.body().get("code");
                     doLogin(response.body(), (int)tmpCode);
                 }
@@ -203,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     private void getFriends(){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
@@ -227,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void getName(){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
@@ -262,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
         getGroups();
         getFriends();
     }
+
     private AlertDialog makeAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Sorry :(");
@@ -287,38 +322,4 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void onBtnLoginClicked(View view){
-        String id = iptId.getText().toString();
-        String pw = iptPw.getText().toString();
-
-        if(id.length()==0 || pw.length()==0)
-            warnLogin.setTextSize(15);
-        else {
-            warnLogin.setTextSize(0);
-
-
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("doing","login");
-            hashMap.put("id",id);
-            hashMap.put("password",pw);
-
-            SharedPreferences preferences = getSharedPreferences("schPref",Context.MODE_PRIVATE);
-            hashMap.put("userCode", preferences.getString(SHARED_PREF_USER_CODE,""));
-
-            loginCommunication(hashMap);
-        }
-    }
-
-    public void onBtnJoinClicked(View view){
-        Intent intent = new Intent(getApplicationContext(), JoinPage.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-
-        startActivity(intent);
-    }
-
-    public void onBtnFindClicked(View view){
-        Intent intent = new Intent(getApplicationContext(), FindPage.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-    }
 }
