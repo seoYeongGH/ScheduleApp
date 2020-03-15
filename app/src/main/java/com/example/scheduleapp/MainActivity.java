@@ -191,10 +191,7 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("doing","getLinkGroups");
-
-        Call<ArrayList<Integer>> getGroups = userService.get_getLinkGroups(hashMap);
+        Call<ArrayList<Integer>> getGroups = userService.get_getLinkGroups("getLinkGroups");
         getGroups.enqueue(new Callback<ArrayList<Integer>>() {
             @Override
             @EverythingIsNonNull
@@ -215,10 +212,7 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("doing","getGroups");
-
-        Call<HashMap<String, ArrayList<GroupObject>>> getGroup = userService.get_getGroup(hashMap);
+        Call<HashMap<String, ArrayList<GroupObject>>> getGroup = userService.get_getGroup("getGroups");
         getGroup.enqueue(new Callback<HashMap<String,ArrayList<GroupObject>>>() {
             @Override
             @EverythingIsNonNull

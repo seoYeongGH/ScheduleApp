@@ -90,7 +90,7 @@ public class FriendFragment extends Fragment {
                 String name= obj.getName();
                 String id = obj.getId();
 
-                HashMap<String, Object> hashMap = new HashMap<>();
+                HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put("doing","deleteFriend");
                 hashMap.put("id",id);
                 hashMap.put("name",name);
@@ -103,7 +103,7 @@ public class FriendFragment extends Fragment {
         recFriend.setAdapter(friendAdapter);
     }
 
-    private void showAlert(final HashMap<String, Object> hashMap, final int position){
+    private void showAlert(final HashMap<String, String> hashMap, final int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle("Notice");
@@ -126,7 +126,7 @@ public class FriendFragment extends Fragment {
         builder.create().show();
     }
 
-    private void doService(final HashMap<String, Object> hashMap, final Integer position){
+    private void doService(final HashMap<String, String> hashMap, final Integer position){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 

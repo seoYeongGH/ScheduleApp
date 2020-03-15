@@ -16,19 +16,20 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.QueryName;
 
 public interface UserService {
     @GET("/schedule/user.do")
     Call<Integer> get_doService(@QueryMap() HashMap<String,Object> parameters);
 
     @GET("/schedule/user.do")
-    Call<HashMap<String,ArrayList<GroupObject>>> get_getGroup(@QueryMap HashMap<String,String> parameters);
+    Call<HashMap<String,ArrayList<GroupObject>>> get_getGroup(@Query("doing") String doing);
 
     @GET("/schedule/user.do")
     Call<ArrayList<InviteObject>> get_getInvites(@QueryMap HashMap<String,String> parameters);
 
     @GET("/schedule/user.do")
-    Call<ArrayList<Integer>> get_getLinkGroups(@QueryMap HashMap<String,String> parameters);
+    Call<ArrayList<Integer>> get_getLinkGroups(@Query("doing")  String doing);
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
