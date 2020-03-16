@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -36,7 +37,8 @@ public interface UserService {
     Call<Integer> doService(@FieldMap HashMap<String,String> parameters);
 
     @FormUrlEncoded
-    @POST("/schedule/user.do")    Call<HashMap> getService(@FieldMap HashMap<String,Object> parameters);
+    @POST("/schedule/user.do")
+    Call<HashMap<String,Object>> getService(@FieldMap HashMap<String,Object> parameters);
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
@@ -44,6 +46,5 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
-    Call<String> getName(@FieldMap HashMap<String,String> parameters);
-
+    Call<String> getName(@Field("doing") String doing);
 }

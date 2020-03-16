@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 public class MyInfoActivity extends AppCompatActivity {
     TextView txtName;
@@ -52,8 +53,9 @@ public class MyInfoActivity extends AppCompatActivity {
 
         getService.enqueue(new Callback<HashMap<String,String>>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<HashMap<String,String>> call, Response<HashMap<String,String>> response) {
-                if(response.isSuccessful()){
+                if(response.isSuccessful() && response.body()!=null){
                     txtName.setText(response.body().get("name"));
                     txtEmail.setText(response.body().get("email"));
                 }
@@ -63,6 +65,7 @@ public class MyInfoActivity extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<HashMap<String,String>> call, Throwable t) {
                 Log.d("ERRRRR",t.getMessage());
             }

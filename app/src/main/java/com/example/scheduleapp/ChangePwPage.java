@@ -20,6 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
@@ -65,7 +66,7 @@ public class ChangePwPage extends AppCompatActivity {
         if(warnPwCode == 0){
             String newPw = iptNewPw.getText().toString();
 
-            HashMap hashMap = new HashMap();
+            HashMap<String,String> hashMap = new HashMap<>();
             hashMap.put("doing","changePw");
             hashMap.put("newPw",newPw);
 
@@ -77,7 +78,7 @@ public class ChangePwPage extends AppCompatActivity {
         finish();
     }
 
-    private void doCommunication(final HashMap hashMap){
+    private void doCommunication(final HashMap<String,String> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
@@ -85,16 +86,17 @@ public class ChangePwPage extends AppCompatActivity {
 
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
-                    processCode(response.body().intValue());
-                }
-                else{
+                if(response.isSuccessful() && response.body()!=null)
+                    processCode(response.body());
+                else
                     Log.d("CHANGE_PW_ERR","Change Pw Retrofit Err");
-                }
+
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }
@@ -114,7 +116,7 @@ public class ChangePwPage extends AppCompatActivity {
     }
 
     private TextWatcher getWatcher(final EditText editText){
-        TextWatcher watcher = new TextWatcher() {
+        return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -141,7 +143,5 @@ public class ChangePwPage extends AppCompatActivity {
 
             }
         };
-
-        return watcher;
     }
 }

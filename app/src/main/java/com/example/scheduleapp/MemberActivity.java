@@ -30,6 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 public class MemberActivity extends AppCompatActivity {
     RecyclerView  recMember;
@@ -188,6 +189,7 @@ public class MemberActivity extends AppCompatActivity {
         Call<ArrayList<FriendObject>> getName = userService.getFriend(hashMap);
         getName.enqueue(new Callback<ArrayList<FriendObject>>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<ArrayList<FriendObject>> call, Response<ArrayList<FriendObject>> response) {
                 if(response.isSuccessful()) {
                     members = response.body();
@@ -202,6 +204,7 @@ public class MemberActivity extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<ArrayList<FriendObject>> call, Throwable t) {
 
             }

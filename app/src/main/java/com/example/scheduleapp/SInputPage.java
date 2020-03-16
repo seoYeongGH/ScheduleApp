@@ -23,6 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.ADD_SUCCESS;
 import static com.example.scheduleapp.structure.Constant.CODE_ISCHANGED;
@@ -125,7 +126,7 @@ public class SInputPage extends AppCompatActivity {
                 }
                 txtWarn.setTextSize(0);
 
-                HashMap hashMap = new HashMap();
+                HashMap<String,Object> hashMap = new HashMap<>();
                 hashMap.put("doing",flag);
                 hashMap.put("date",date);
                 hashMap.put("groupNum",groupNum);
@@ -176,7 +177,7 @@ public class SInputPage extends AppCompatActivity {
         }
     }
 
-    private void doCommunication(final HashMap hashMap){
+    private void doCommunication(final HashMap<String,Object> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         ScheduleService scheduleService = retrofit.create(ScheduleService.class);
 
@@ -184,9 +185,10 @@ public class SInputPage extends AppCompatActivity {
 
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
-                    processCode(response.body().intValue(),hashMap);
+                if(response.isSuccessful() && response.body()!=null){
+                    processCode(response.body(),hashMap);
                 }
                 else{
                     Log.d("SCHEDULES_ERR","Input Schedule Retrofit Err");
@@ -194,6 +196,7 @@ public class SInputPage extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
             }
         });

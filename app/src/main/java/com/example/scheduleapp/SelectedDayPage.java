@@ -31,6 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.CODE_ADD;
 import static com.example.scheduleapp.structure.Constant.CODE_ISCHANGED;
@@ -208,7 +209,7 @@ public class SelectedDayPage extends AppCompatActivity {
     }
 
     private void setDelete(final int position, final int scheduleSize){
-        HashMap hashMap = new HashMap<>();
+        HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("doing","deleteSchedule");
         hashMap.put("date", AllSchedules.getInstance().getSchedule(dateIdx).getDate());
         hashMap.put("schedule",schedules.getSchedules().get(position));
@@ -223,14 +224,14 @@ public class SelectedDayPage extends AppCompatActivity {
 
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
+                if(response.isSuccessful() && response.body()!=null){
                     if(response.body() == DELETE_SUCCESS) {
                         AllSchedules.getInstance().deleteSchedule(dateIdx,position);
                         Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
 
                         isChanged = true;
-                        Log.d("CHKCHK","DELTE:"+isChanged);
                         if(scheduleSize == 1) {
                             setView(true);
                             haveSchedule = false;
@@ -246,6 +247,7 @@ public class SelectedDayPage extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
             }
         });

@@ -21,6 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
@@ -62,7 +63,7 @@ public class CheckPwActivity extends AppCompatActivity {
         if(strIptPw.length() != 0) {
             txtWarn.setTextSize(0);
 
-            HashMap hashMap = new HashMap();
+            HashMap<String,String> hashMap = new HashMap<>();
             hashMap.put("doing", "chkPw");
             hashMap.put("password",strIptPw );
 
@@ -81,28 +82,31 @@ public class CheckPwActivity extends AppCompatActivity {
         else if("changeEmail".equals(doing))
             intent = new Intent(getApplicationContext(),ChangeEmailActivity.class);
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        if(intent !=null) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
-        finish();
-        startActivity(intent);
+            finish();
+            startActivity(intent);
+        }
     }
 
     private void doWithdraw(){
-        HashMap hashMap = new HashMap();
+        HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("doing","withdraw");
 
         doCommunication(hashMap);
     }
 
-    private void doCommunication(final HashMap hashMap) {
+    private void doCommunication(final HashMap<String,String> hashMap) {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
         Call<Integer> doService = userService.doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body()!=null) {
                     doProcess(hashMap.get("doing").toString(),response.body());
                 } else {
                     Log.d("CHK_PW_ERR", "CHECK PW Retrofit Err");
@@ -110,6 +114,7 @@ public class CheckPwActivity extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }

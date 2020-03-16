@@ -136,30 +136,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void loginCommunication(HashMap<String, Object> hashMap) {
-        Retrofit retrofit = RetroController.getInstance().getRetrofit();
-        UserService userService = retrofit.create(UserService.class);
-
-        Call<HashMap> getService = userService.getService(hashMap);
-        getService.enqueue(new Callback<HashMap>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<HashMap> call, Response<HashMap> response) {
-                if(response.isSuccessful() && response.body()!=null){
-                    double tmpCode = (double)response.body().get("code");
-                    doLogin(response.body(), (int)tmpCode);
-                }
-            }
-
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<HashMap> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void doLogin(HashMap<String, Object> hashMap, int code){
+    private void doLogin(String getId, int code){
         String id = "";
 
         switch(code){
@@ -171,22 +148,48 @@ public class MainActivity extends AppCompatActivity {
                 editor.putBoolean(SHARED_PREF_ISLOGIN,true);
                 editor.apply();
 
-            case AUTO_LOG_SUCCESS: Object tmpId = hashMap.get("id");
-                if(id.equals("") && tmpId!=null)
-                    id = tmpId.toString();
-
+            case AUTO_LOG_SUCCESS: if(id.equals("")) id = getId;
                 getDatas(id);
+
                 Intent intent = new Intent(this, AfterLoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
+
             case ERR_AUTO_LOG_IN: Toast.makeText(getApplicationContext(),"자동 로그인에 실패했습니다. :(", Toast.LENGTH_SHORT).show();
                                   break;
+
             case ERR_LOG_ID:
             case ERR_LOG_PW: showAlert(alertDialog,code); break;
             default: showAlert(alertDialog,0); break;
         }
     }
+
+    private void loginCommunication(HashMap<String, Object> hashMap) {
+        Retrofit retrofit = RetroController.getInstance().getRetrofit();
+        UserService userService = retrofit.create(UserService.class);
+
+        Call<HashMap<String,Object>> getService = userService.getService(hashMap);
+        getService.enqueue(new Callback<HashMap<String,Object>>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<HashMap<String,Object>> call, Response<HashMap<String,Object>> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    double tmpCode = (double)response.body().get("code");
+                    String tmpId = (String)response.body().get("id");
+
+                    doLogin(tmpId, (int)tmpCode);
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<HashMap<String,Object>> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void getGroupNums(){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
@@ -261,10 +264,7 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("doing","getName");
-
-        Call<String> getName = userService.getName(hashMap);
+        Call<String> getName = userService.getName("getName");
         getName.enqueue(new Callback<String>() {
             @Override
             @EverythingIsNonNull

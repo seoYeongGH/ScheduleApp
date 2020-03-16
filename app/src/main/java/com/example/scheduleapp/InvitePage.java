@@ -5,14 +5,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.scheduleapp.recyclerView.InviteAdapter;
-import com.example.scheduleapp.retro.RetroController;
-import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.AllInvites;
-import com.example.scheduleapp.structure.InviteObject;
 
 public class InvitePage extends AppCompatActivity {
     RecyclerView recInvite;

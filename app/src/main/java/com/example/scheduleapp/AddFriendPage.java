@@ -22,6 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
 import static com.example.scheduleapp.structure.Constant.ERR;
@@ -113,11 +114,14 @@ public class AddFriendPage extends AppCompatActivity {
         Call<Integer> doService = userService.doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                processCode(hashMap.get("doing").toString(),response.body());
+                if(response.body() != null)
+                    processCode(hashMap.get("doing").toString(),response.body());
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }
@@ -127,8 +131,9 @@ public class AddFriendPage extends AppCompatActivity {
     public void processCode(String doing, int code){
         if("findFriend".equals(doing)){
             switch(code){
-                case SUCCESS: txtInfo.setTextSize(18);
-                              txtInfo.setText("이름: "+hashMap.get("name")+"   ID: "+hashMap.get("id"));
+                case SUCCESS: String tmpTxt = "이름: "+hashMap.get("name")+"   ID: "+hashMap.get("id");
+                              txtInfo.setTextSize(18);
+                              txtInfo.setText(tmpTxt);
                               btnAdd.setVisibility(View.VISIBLE);
                               layoutFInd.setVisibility(View.VISIBLE);
                               break;

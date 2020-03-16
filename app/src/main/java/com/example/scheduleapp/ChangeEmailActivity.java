@@ -18,6 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 public class ChangeEmailActivity extends AppCompatActivity {
     EditText iptEmail;
@@ -42,7 +43,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
         if(strEmail.length() != 0) {
             txtWarn.setTextSize(0);
 
-            HashMap hashMap = new HashMap();
+            HashMap<String,String> hashMap = new HashMap<>();
             hashMap.put("doing","changeEmail");
             hashMap.put("email",strEmail);
 
@@ -54,7 +55,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
     }
 
 
-    private void doCommunication(final HashMap hashMap){
+    private void doCommunication(final HashMap<String,String> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
@@ -62,6 +63,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
 
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(ChangeEmailActivity.this, "이메일 주소가 변경되었습니다.", Toast.LENGTH_SHORT).show();
@@ -73,6 +75,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }

@@ -19,6 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.ERR;
 import static com.example.scheduleapp.structure.Constant.NO_DATA;
@@ -66,7 +67,7 @@ public class FindPage extends AppCompatActivity {
         doCommunication(hashMap);
     }
 
-    private void doCommunication(final HashMap hashMap){
+    private void doCommunication(final HashMap<String,String> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
@@ -74,9 +75,10 @@ public class FindPage extends AppCompatActivity {
 
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
-                    showAlert(response.body().intValue());
+                if(response.isSuccessful() && response.body()!=null){
+                    showAlert(response.body());
                 }
                 else{
                     Log.d("FIND_ERR","Find Retrofit Err");
@@ -84,6 +86,7 @@ public class FindPage extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }
@@ -104,8 +107,6 @@ public class FindPage extends AppCompatActivity {
 
         alertDialog.setMessage(msg);
         alertDialog.show();
-
-        return ;
     }
 
     private AlertDialog makeAlert(final int code){

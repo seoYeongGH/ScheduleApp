@@ -26,6 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
 
@@ -67,7 +68,7 @@ public class CreateGroupPage extends AppCompatActivity {
         }
         txtWarn.setVisibility(View.GONE);
 
-        HashMap hashMap = new HashMap();
+        HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("doing","createGroup");
         hashMap.put("name",name);
         hashMap.put("ids",adapter.getIds());
@@ -75,15 +76,16 @@ public class CreateGroupPage extends AppCompatActivity {
         SendInvite(hashMap);
     }
 
-    private void SendInvite(final HashMap hashMap){
+    private void SendInvite(final HashMap<String,Object> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
         Call<Integer> doService = userService.get_doService(hashMap);
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()) {
+                if(response.isSuccessful() && response.body()!=null) {
                     GroupObject newGroup = new GroupObject();
                     newGroup.setGroupNum(response.body());
                     newGroup.setGroupName(hashMap.get("name").toString());
@@ -97,6 +99,7 @@ public class CreateGroupPage extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }

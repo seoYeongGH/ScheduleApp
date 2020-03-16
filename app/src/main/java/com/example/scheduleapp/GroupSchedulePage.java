@@ -21,6 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.SUCCESS;
 
@@ -76,7 +77,7 @@ public class GroupSchedulePage extends AppCompatActivity {
     }
 
     public void onBtnConnect(View view){
-        HashMap hashMap = new HashMap();
+        HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("doing","connectGroup");
         hashMap.put("groupNum",groupNum);
 
@@ -84,13 +85,13 @@ public class GroupSchedulePage extends AppCompatActivity {
     }
 
     public void onBtnDisconnect(View view){
-        HashMap hashMap = new HashMap();
+        HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("doing","disconnectGroup");
         hashMap.put("groupNum",groupNum);
 
         doCommunication(hashMap);
     }
-    private void doCommunication(final HashMap hashMap){
+    private void doCommunication(final HashMap<String,Object> hashMap){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
@@ -98,8 +99,9 @@ public class GroupSchedulePage extends AppCompatActivity {
 
         doService.enqueue(new Callback<Integer>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
+                if(response.isSuccessful() && response.body()!=null){
                     if(response.body() == SUCCESS) {
                         isConnect = !isConnect;
                         setBtnView(isConnect);
@@ -115,6 +117,7 @@ public class GroupSchedulePage extends AppCompatActivity {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<Integer> call, Throwable t) {
 
             }
