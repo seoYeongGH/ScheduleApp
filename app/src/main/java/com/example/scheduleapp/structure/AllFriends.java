@@ -1,14 +1,10 @@
 package com.example.scheduleapp.structure;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class AllFriends {
-    public static AllFriends instance;
-
-    public ArrayList<FriendObject> friends;
-    public boolean isInit = false;
+    private static AllFriends instance;
+    private ArrayList<FriendObject> friends;
 
     private AllFriends(){}
 
@@ -47,19 +43,10 @@ public class AllFriends {
         friends.remove(position);
     }
 
-    public ArrayList<FriendObject> getFriends() {
-        return friends;
-    }
-
     public void setFriends(ArrayList<FriendObject> friends) {
         this.friends = friends;
     }
-
-    public boolean isInit() {
-        return isInit;
-    }
-
-    public void setInit(boolean init) {
-        isInit = init;
+    public ArrayList<FriendObject> getFriends() {
+        return friends;
     }
 }

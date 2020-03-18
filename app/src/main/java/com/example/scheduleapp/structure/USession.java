@@ -14,7 +14,7 @@ public class USession {
     private USession(){
         isLogin = false;
         id = null;
-        connectGroups = new ArrayList<Integer>();
+        connectGroups = new ArrayList<>();
         }
 
     public static USession getInstance(){
@@ -34,38 +34,33 @@ public class USession {
         }
     }
 
-    public void addGroup(int groupNum){
-        connectGroups.add(groupNum);
-    }
     public void setIsLogin(boolean login) {
         isLogin = login;
     }
-
     public void setId(String id) {
         this.id = id;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setConnectGroups(ArrayList<Integer> connectGroups) {
+        this.connectGroups = connectGroups;
     }
 
     public boolean getIsLogin() {
         return isLogin;
     }
-
     public String getId() {
         return id;
     }
-
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public ArrayList<Integer> getConnectGroups() {
         return connectGroups;
     }
 
-    public void setConnectGroups(ArrayList<Integer> connectGroups) {
-        this.connectGroups = connectGroups;
+    public void addGroup(int groupNum){
+        connectGroups.add(groupNum);
     }
 }
