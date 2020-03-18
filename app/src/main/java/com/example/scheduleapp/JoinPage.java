@@ -48,7 +48,7 @@ public class JoinPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.join_activity);
+        setContentView(R.layout.activity_join);
 
         iptName = findViewById(R.id.iptName);
         iptId = findViewById(R.id.iptId);

@@ -47,7 +47,7 @@ public class SInputPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sinput_activity);
+        setContentView(R.layout.activity_sinput);
 
         final Intent getIntent = getIntent();
         date = getIntent.getStringExtra("date");

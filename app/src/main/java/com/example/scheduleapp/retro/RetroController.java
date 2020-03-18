@@ -12,7 +12,6 @@ public class RetroController {
 
     private RetroController(){
         buildService();
-        return;
     }
 
     public Retrofit getRetrofit(){
@@ -26,7 +25,7 @@ public class RetroController {
         return instance;
     }
 
-    public void buildService(){
+    private void buildService(){
         String baseUrl = "localhost";
 
         synchronized (RetroController.class){
@@ -41,7 +40,5 @@ public class RetroController {
                     .addConverterFactory(factory)
                     .build();
         }
-
-        return ;
     }
 }

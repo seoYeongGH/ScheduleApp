@@ -35,7 +35,7 @@ public class ChangePwPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.change_pw_activity);
+        setContentView(R.layout.activity_change_pw);
 
         iptNewPw = findViewById(R.id.iptNewPw);
         iptChkNew = findViewById(R.id.iptChkNew);

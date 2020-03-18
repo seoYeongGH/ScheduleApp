@@ -36,7 +36,7 @@ public class FindPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.find_activity);
+        setContentView(R.layout.activity_find);
 
         iptName = findViewById(R.id.iptName);
         iptEmail = findViewById(R.id.iptEmail);

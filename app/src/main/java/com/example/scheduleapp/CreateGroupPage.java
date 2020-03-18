@@ -39,7 +39,7 @@ public class CreateGroupPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_gp_activity);
+        setContentView(R.layout.activity_create_gp);
 
         iptGpName = findViewById(R.id.iptGpName);
         txtWarn = findViewById(R.id.txtWarn);

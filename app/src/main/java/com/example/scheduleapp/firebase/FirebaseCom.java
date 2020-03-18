@@ -15,8 +15,8 @@ import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.ERR;
 
-public class FirebaseCom {
-    public void updateToken(String oldToken, String newToken){
+class FirebaseCom {
+    void updateToken(String oldToken, String newToken){
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 

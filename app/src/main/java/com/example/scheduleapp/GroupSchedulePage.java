@@ -35,7 +35,7 @@ public class GroupSchedulePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.group_schedule_activity);
+        setContentView(R.layout.activity_group_schedule);
 
         Intent getIntent = getIntent();
 

@@ -16,7 +16,7 @@ public class InvitePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.invite_activity);
+        setContentView(R.layout.activity_invite);
 
         recInvite = findViewById(R.id.recInvite);
 

@@ -45,7 +45,7 @@ public class AddFriendPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.addfriend_activity);
+        setContentView(R.layout.activity_addfriend);
 
         iptName = findViewById(R.id.iptName);
         iptId = findViewById(R.id.iptId);
