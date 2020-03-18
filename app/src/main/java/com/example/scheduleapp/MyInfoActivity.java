@@ -3,15 +3,12 @@ package com.example.scheduleapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.scheduleapp.retro.RetroController;
 import com.example.scheduleapp.retro.UserService;
 import com.example.scheduleapp.structure.USession;
-
-import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,8 +30,9 @@ public class MyInfoActivity extends AppCompatActivity {
         txtId = findViewById(R.id.txtId);
         txtEmail = findViewById(R.id.txtEmail);
 
-
         txtId.setText(USession.getInstance().getId());
+        txtName.setText(USession.getInstance().getName());
+
         getCommunication();
     }
 
@@ -46,28 +44,18 @@ public class MyInfoActivity extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        HashMap hashMap = new HashMap();
-        hashMap.put("doing","getInfo");
-
-        Call<HashMap<String,String>> getService = userService.getService(hashMap);
-
-        getService.enqueue(new Callback<HashMap<String,String>>() {
+        Call<String> getInfo = userService.getInfo("getEmail");
+        getInfo.enqueue(new Callback<String>() {
             @Override
             @EverythingIsNonNull
-            public void onResponse(Call<HashMap<String,String>> call, Response<HashMap<String,String>> response) {
-                if(response.isSuccessful() && response.body()!=null){
-                    txtName.setText(response.body().get("name"));
-                    txtEmail.setText(response.body().get("email"));
-                }
-                else{
-                    Log.d("INFO_ERR","Info Retrofit Err");
-                }
+            public void onResponse(Call<String> call, Response<String> response) {
+                txtEmail.setText(response.body());
             }
 
             @Override
             @EverythingIsNonNull
-            public void onFailure(Call<HashMap<String,String>> call, Throwable t) {
-                Log.d("ERRRRR",t.getMessage());
+            public void onFailure(Call<String> call, Throwable t) {
+
             }
         });
     }

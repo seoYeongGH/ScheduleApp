@@ -155,6 +155,7 @@ public class MemberActivity extends AppCompatActivity {
             Call<Integer> doService = userService.doService(btnHashMap);
             doService.enqueue(new Callback<Integer>() {
                 @Override
+                @EverythingIsNonNull
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                     if (response.isSuccessful())
                         showAlert();
@@ -163,6 +164,7 @@ public class MemberActivity extends AppCompatActivity {
                 }
 
                 @Override
+                @EverythingIsNonNull
                 public void onFailure(Call<Integer> call, Throwable t) {
 
                 }

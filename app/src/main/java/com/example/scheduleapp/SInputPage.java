@@ -7,10 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.scheduleapp.retro.RetroController;
@@ -33,10 +32,9 @@ import static com.example.scheduleapp.structure.Constant.MOD_SUCCESS;
 
 public class SInputPage extends AppCompatActivity {
     EditText iptSchedule;
-    EditText iptStartH;
-    EditText iptStartM;
-    EditText iptEndH;
-    EditText iptEndM;
+    TimePicker startPicker;
+    TimePicker endPicker;
+
     TextView txtWarn;
 
     private String date;
@@ -62,23 +60,10 @@ public class SInputPage extends AppCompatActivity {
         Button btnSave = findViewById(R.id.btnSave);
 
         iptSchedule = findViewById(R.id.iptSchedule);
-        iptStartH = findViewById(R.id.iptStartH);
-        iptStartM = findViewById(R.id.iptStartM);
-        iptEndH = findViewById(R.id.iptEndH);
-        iptEndM = findViewById(R.id.iptEndM);
-        txtWarn  = findViewById(R.id.txtWarn);
+        startPicker = findViewById(R.id.startPicker);
+        endPicker = findViewById(R.id.endPicker);
 
-        CheckBox chkAll = findViewById(R.id.chkAll);
-        chkAll.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener(){
-            public void onCheckedChanged(CompoundButton checkBox, boolean isChecked){
-                if(isChecked){
-                    iptStartH.setText("00");
-                    iptStartM.setText("00");
-                    iptEndH.setText("23");
-                    iptEndM.setText("59");
-                }
-            }
-        });
+        txtWarn  = findViewById(R.id.txtWarn);
 
         TextView txtDate = findViewById(R.id.txtDate);
         txtDate.setText(date);
@@ -92,10 +77,10 @@ public class SInputPage extends AppCompatActivity {
                 String strSchedule = iptSchedule.getText().toString();
 
                 String[] strTimes = new String[4];
-                strTimes[0] = iptStartH.getText().toString();
-                strTimes[1] = iptStartM.getText().toString();
-                strTimes[2] = iptEndH.getText().toString();
-                strTimes[3] = iptEndM.getText().toString();
+                strTimes[0] = String.valueOf(startPicker.getHour());
+                strTimes[1] = String.valueOf(startPicker.getMinute());
+                strTimes[2] = String.valueOf(endPicker.getHour());
+                strTimes[3] = String.valueOf(endPicker.getMinute());
 
                 if(strSchedule.length()==0) {
                     txtWarn.setTextSize(15);
@@ -103,25 +88,7 @@ public class SInputPage extends AppCompatActivity {
                 }
 
                 for(int i=0; i<4; i++){
-                    int length = strTimes[i].length();
-
-                    if(length==0){
-                        txtWarn.setTextSize(15);
-                        return;
-                    }
-                    if(Integer.parseInt(strTimes[i])<0)
-                        strTimes[i] = "00";
-
-                    if(i%2==1){
-                        if(Integer.parseInt(strTimes[i])>59)
-                            strTimes[i] = "59";
-                    }
-                    else{
-                        if(Integer.parseInt(strTimes[i])>23)
-                            strTimes[i] = "23";
-                    }
-
-                    if(length==1)
+                    if(strTimes[i].length()==1)
                         strTimes[i] = "0"+strTimes[i];
                 }
                 txtWarn.setTextSize(0);
@@ -159,8 +126,8 @@ public class SInputPage extends AppCompatActivity {
 
         if(time != null) {
             tmpTime = time.split(":");
-            iptStartH.setText(tmpTime[0]);
-            iptStartM.setText(tmpTime[1]);
+            startPicker.setHour(Integer.parseInt(tmpTime[0]));
+            startPicker.setMinute(Integer.parseInt(tmpTime[1]));
         }
         else{
             toast.show();
@@ -169,8 +136,8 @@ public class SInputPage extends AppCompatActivity {
         time = getIntent().getStringExtra("endTime");
         if(time != null) {
             tmpTime = time.split(":");
-            iptEndH.setText(tmpTime[0]);
-            iptEndM.setText(tmpTime[1]);
+            endPicker.setHour(Integer.parseInt(tmpTime[0]));
+            endPicker.setMinute(Integer.parseInt(tmpTime[1]));
         }
         else{
             toast.show();

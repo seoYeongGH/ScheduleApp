@@ -46,5 +46,5 @@ public interface UserService {
 
     @FormUrlEncoded
     @POST("/schedule/user.do")
-    Call<String> getName(@Field("doing") String doing);
+    Call<String> getInfo(@Field("doing") String doing);
 }

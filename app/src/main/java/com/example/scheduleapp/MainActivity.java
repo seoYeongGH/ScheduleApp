@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = RetroController.getInstance().getRetrofit();
         UserService userService = retrofit.create(UserService.class);
 
-        Call<String> getName = userService.getName("getName");
+        Call<String> getName = userService.getInfo("getName");
         getName.enqueue(new Callback<String>() {
             @Override
             @EverythingIsNonNull

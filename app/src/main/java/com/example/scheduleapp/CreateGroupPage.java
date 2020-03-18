@@ -88,7 +88,7 @@ public class CreateGroupPage extends AppCompatActivity {
                 if(response.isSuccessful() && response.body()!=null) {
                     GroupObject newGroup = new GroupObject();
                     newGroup.setGroupNum(response.body());
-                    newGroup.setGroupName(hashMap.get("name").toString());
+                    newGroup.setGroupName(String.valueOf(hashMap.get("name")));
 
                     AllGroups.getInstance().addManagerGroup(newGroup);
 
