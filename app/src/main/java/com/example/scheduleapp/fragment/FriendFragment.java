@@ -34,6 +34,7 @@ import retrofit2.Retrofit;
 import retrofit2.internal.EverythingIsNonNull;
 
 import static com.example.scheduleapp.structure.Constant.CODE_ISADDED;
+import static com.example.scheduleapp.structure.Constant.SUCCESS;
 import static com.example.scheduleapp.structure.Constant.TO_FRIEND;
 
 public class FriendFragment extends Fragment {
@@ -136,7 +137,7 @@ public class FriendFragment extends Fragment {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()){
+                if(response.isSuccessful() && response.body()==SUCCESS){
                     friendAdapter.removeItem(position);
                     recFriend.setAdapter(friendAdapter);
                 }
